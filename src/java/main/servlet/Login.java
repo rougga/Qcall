@@ -16,15 +16,15 @@ public class Login extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
            
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Login</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Login at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            String branchId = request.getParameter("branchId");
+            String windowText = request.getParameter("windowText");
+            String rand = request.getParameter("rand");
+            String window = request.getParameter("window");
+            
+            
+            
         }
     }
 
