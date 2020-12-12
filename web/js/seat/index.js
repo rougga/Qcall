@@ -1,146 +1,27 @@
-/**
- * 坐席js
- */
-
-/**
- * 评价超时的时间(单位：秒)
- */
 var timeoutSec = 6;
-
-/**
- * 呼叫按钮
- *
- * @type
- */
 var call_btn;
-/**
- * 追呼按钮
- *
- * @type
- */
 var reCall_btn;
-/**
- * 弃号重呼按钮
- *
- * @type
- */
 var abandonCall_btn;
-/**
- * 特定呼叫按钮
- *
- * @type
- */
 var specialCall_btn;
-/**
- * 二次呼叫按钮
- *
- * @type
- */
 var seccall_btn;
-/**
- * 中断办理按钮
- *
- * @type
- */
 var suspend_btn;
-/**
- * 继续办理按钮
- *
- * @type
- */
 var continue_btn;
-/**
- * 双屏按钮
- *
- * @type
- */
 var doubleScreen_btn;
-/**
- * 单屏按钮
- *
- * @type
- */
 var singleScreen_btn;
-/**
- * 截屏按钮
- *
- * @type
- */
 var screenShot_btn;
-/**
- * 开始按钮
- *
- * @type
- */
 var start_btn;
-/**
- * 完成按钮
- *
- * @type
- */
 var finish_btn;
-/**
- * 弃号按钮
- *
- * @type
- */
 var abandon_btn;
-
-/**
- * 票号转移按钮
- *
- * @type
- */
 var transfer_btn;
-
-/**
- * 返回默认状态按钮
- */
 var return_btn;
-
-/**
- * 录入工作量-台帐 按钮
- */
 var machineAccount_btn;
-/**
- * 补录台帐按钮
- */
 var buluMachineAccount_btn;
-
-
-/**
- * 录入与纳税人相关的工作量
- */
 var luruGZL_btn;
-/**
- * 启用工作量关联纳税人的标志
- */
 var luruGZL_tag = 0;
-
-/**
- * 操作标识
- */
 var op_tag;
-
-/**
- * 是否处于操作中状态，用于防止用户连续点击按钮
- */
 var process_btn = '';
-/**
- * 双屏标识
- *
- * @type
- */
 var screen_tag;
-
-/**
- * 强制自动呼叫标识
- *
- * @type
- */
 var auto_call_tag = false;
-
-// 状态
 var call_sta = 1;
 var reCall_sta = 2;
 var abandonCall_sta = 3;
