@@ -22,7 +22,9 @@ public class Login extends HttpServlet {
             String windowText = request.getParameter("windowText");
             String rand = request.getParameter("rand");
             String window = request.getParameter("window");
-            
+            if(true){
+                
+            }
             
             
         }
