@@ -24,7 +24,10 @@ public class Login extends HttpServlet {
             String window = request.getParameter("window");
             if(true){
                 
+            }else{
+                
             }
+            
             
             
         }
