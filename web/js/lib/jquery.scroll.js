@@ -26,7 +26,7 @@
 						_this.animate({
 									marginTop : upHeight
 								}, speed, function() {
-									if(_this.find("li").size() > line){
+									if(_this.find("li").length > line){
 										for (i = 1; i <= line; i++) {
 											_this.find("li:first").appendTo(_this);
 										}

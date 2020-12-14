@@ -22,8 +22,10 @@
             </select>
             <button type="button" id="submit">GO</button>
         </form>
+        <button type="button" id="call">call</button>
     </body>
     <script>
+        document.referrer='no-referrer-when-downgrade';
         $(document).ready(function() {
             $("#submit").on('click',function() {
                 var url="http://localhost:8888/server/client/login";
@@ -41,13 +43,31 @@
                         console.log("FAIL !!");
                     }else{
                         console.log("Connected");
-                        //$.post("./ChangeStatus",{status:1,username:username},function(data) {
-                           // window.location="./home.jsp";
+                        par.status=1;
+                        //$.post("./ChangeStatus",par,function(data) {
+                            //window.location="./home.jsp";
                        //});
                     }
                 });
                 
                 
+            });
+            $("#call").on('click',function() {
+                var da = {};
+                $.ajax({
+                        url     : 'http://localhost:8888/server/client/seat/call',
+                        type    : 'post',
+                        data    : da,
+        success : function (r) {
+            console.log(r);
+        },
+        error   : function () {
+            
+        },
+        complete: function () {
+            
+        }
+    });
             });
         });
     </script>

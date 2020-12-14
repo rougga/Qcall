@@ -17,7 +17,23 @@ public class ChangeStatus extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
            String status=request.getParameter("status");
+           String username=request.getParameter("username");
+           String windowText=request.getParameter("windowText");
+           String branchId=request.getParameter("branchId");
+           
+           
            request.getSession().setAttribute("status", status);
+           request.getSession().setAttribute("userName", username);
+           request.getSession().setAttribute("SEAT_WINSTR", windowText);
+           request.getSession().setAttribute("auto_deal", 0);
+           request.getSession().setAttribute("auto_call_time", 10);
+           request.getSession().setAttribute("call_wait_time", 10);
+           request.getSession().setAttribute("userId", username);
+           request.getSession().setAttribute("branchId", branchId);
+           
+           
+           
+           
             System.err.println(status);
         }
     }
