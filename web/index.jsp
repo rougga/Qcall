@@ -25,7 +25,6 @@
         <button type="button" id="call">call</button>
     </body>
     <script>
-        document.referrer='no-referrer-when-downgrade';
         $(document).ready(function() {
             $("#submit").on('click',function() {
                 var url="http://localhost:8888/server/client/login";
