@@ -15,11 +15,11 @@ public class ChangeStatus extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
            String status=request.getParameter("status");
            String username=request.getParameter("username");
            String windowText=request.getParameter("windowText");
            String branchId=request.getParameter("branchId");
+           String auto_call="0";
            
            
            request.getSession().setAttribute("status", status);
@@ -30,6 +30,8 @@ public class ChangeStatus extends HttpServlet {
            request.getSession().setAttribute("call_wait_time", 10);
            request.getSession().setAttribute("userId", username);
            request.getSession().setAttribute("branchId", branchId);
+           request.getSession().setAttribute("auto_call", auto_call);
+           
            
            
            

@@ -37,71 +37,66 @@ var abandon_sta = 12;
 var default_sta = 13;
 var seccall_sta = 14;
 
-var ticketId = "";// 当前票号
-var userInfoWindow;// 员工信息窗口
-var loginUrl = "";// 坐席登录地址
+var ticketId = "";
+var userInfoWindow;
+var loginUrl = "";
 var basePath = "";
 var scrollTick;
 var freshBizTick;
 
-// 系统参数
-var evalType = "";// 评价器类型
-var autoCallTime = 10000;// 自动呼叫等待时间
+var evalType = "";
+var autoCallTime = 10000;
 var autoDeal = 0;
 var fvts_client_tag;
-var call_wait_time = 0;//呼叫后等待时间
+var call_wait_time = 0;
 
-// 窗口参数
-var enableEval = 1;// 是否启动评价器
-var record_items = 0;// 完成后录入工作量
 
-// 双屏评价窗口
+var enableEval = 1;
+var record_items = 0;
+
+
 var screenEvalWin;
 
 var userId;
 
-// 窗口是否已经关闭
+
 window.isExit = false;
 
-// 评价定时器
+
 var eval_inter;
 
 var double_screen_obj;
 
 var dealTimeWarn = 0;
 
-//系统错误提示
 var sys_error = $.i18n.prop('server.system.fail');
 
-//暂停子选项,为1时,坐席暂停要选择子项,为0时直接暂停
 var pauseSubItem = "0";
 
 var autoCall_Timer;
 
 var flag;
 
-//大厅ID
+
 var branchId;
 
-//微信票状态
+
 var wxTag = 0;
 
-var refresh_biz_delay = 5000;//定时刷新票号间隔时间
+var refresh_biz_delay = 5000;
 
-/**
- * 初始化坐席主页面
- */
+
 function init() {
-    initButton();// 初始化按钮
-    bindEvent2Button();// 绑定事件
+    initButton();
+    bindEvent2Button();
 
-    // 设置操作按钮的初始状态
+    
     op_tag = default_sta;
     setButton();
 
     if (evalType == 'SCREEN') {
         double_screen_obj = $("#double_screen")[0];
-        // 设置双屏按钮的初始状态
+        
         screen_tag = doubleScreen_sta;
         setScreenButton();
     }
@@ -111,7 +106,7 @@ function init() {
         $('#menu_out').hide();
     }
 
-    // 定时刷新业务refreshBiz
+    
     reFreshBiz(windowId, userId, 0);
     flag = 0;
     freshBizTick = setInterval("reFreshBiz(windowId,userId,flag)", refresh_biz_delay);
@@ -281,24 +276,13 @@ function call(tid) {
 }
 
 
-/**
- * 显示票号纳税人消息页面
- * @param tid
- */
 function showNsrMessage(tid) {
     var msgUrl = basePath + "client/seat/queryNsrMsgs?ticketId=" + tid + "&rand=" + Math.random();
     showModDialog(msgUrl, 600, 380);
 }
 
-
-/**
- * 查询纳税人是否为CA认证用户
- *
- * @param {}
- *            sbh 纳税人识别号
- */
 function queryIsCa(sbh) {
-    var url = 'client/ticket/isCaUser?rand=' + Math.random();
+    var url = basePath+'client/ticket/isCaUser?rand=' + Math.random();
     var par = {};
     par.nsrsbh = sbh;
     $.getJSON(url, par, function (d) {
@@ -340,7 +324,7 @@ function abandonCall() {
     var ti = showModDialog(url, 600, 420);
     if (ti != undefined) {
         var str = ti.split("_");
-        url = "client/seat/abandonCall?action=do&rand=" + Math.random();
+        url = basePath+"client/seat/abandonCall?action=do&rand=" + Math.random();
         var par = {};
         par.id = str[0];
         par.tBizTypeId = str[1];
@@ -380,7 +364,7 @@ function specialCall() {
         + Math.random();
     var ti = showModDialog(url, 550, 420);
     if (ti != undefined) {
-        url = "client/seat/specialCall?action=do&rand=" + Math.random();
+        url = basePath+"client/seat/specialCall?action=do&rand=" + Math.random();
         var par = {};
         par.tid = ti;
         $.get(url, par, function (r) {
@@ -417,7 +401,7 @@ function seccall() {
         + Math.random();
     var ti = showModDialog(url, 400, 160);
     if (ti != undefined) {
-        url = "client/seat/seccall?action=do&rand=" + Math.random();
+        url = basePath+"client/seat/seccall?action=do&rand=" + Math.random();
         var par = {};
         par.tid = ti;
         $.get(url, par, function (r) {
@@ -537,7 +521,7 @@ function continued() {
     var ti = showModDialog(url, 550, 420);
     if (ti != undefined) {
         var str = ti.split("_");
-        url = "client/seat/suspendCall?action=do&rand=" + Math.random();
+        url = basePath+"client/seat/suspendCall?action=do&rand=" + Math.random();
         var par = {};
         par.id = str[0];
         par.tBizTypeId = str[1];
@@ -770,10 +754,10 @@ function setBizItemCount(evalRet) {
         if (confirm($.i18n.prop('server.effort.fail'))) {
             finishAction(evalRet);
         } else {
-            $(document).unmask();
+            //$(document).unmask();
         }
     } else {
-        $(document).unmask();
+       // $(document).unmask();
     }
 }
 
@@ -782,21 +766,21 @@ function finishAction(evalRet) {
     if(!tid ){
         return;
     }
-    var url = 'client/seat/finish?tid=' + tid + "&evalRet=" + evalRet
+    var url = basePath+'client/seat/finish?tid=' + tid + "&evalRet=" + evalRet
         + "&rand=" + Math.random();
     $.get(url, function (r) {
         if (r.error != undefined && r.error != '') {
             setTicketStateBar(r.error);
         } else {
             unlockProcess();
-            t_clock('stop');// 计时
+            t_clock('stop');
             op_tag = finish_sta;
             setButton();
             autoCall();
-            trans();// 自动转移
+            trans();
         }
     });
-    $(document).unmask();
+    //$(document).unmask();
     palyThanks();
 }
 
@@ -1202,9 +1186,6 @@ function setOnline() {
     });
 }
 
-/**
- * 切换为暂停
- */
 function setStop() {
     if (pauseSubItem == "1") {
         var url = basePath + "client/seat/loginStatus?action=load&rand=" + Math.random();
@@ -1242,16 +1223,14 @@ function toStop(type) {
     });
 }
 
-/**
- * 切换为注销
- */
+
 function setLogoff(status) {
-    //退出注销窗口前，销毁定时刷新业务。
+    
     flag = 1;
     clearInterval(freshBizTick);
-    var url = "client/logout";
+    var url = basePath+"client/logout";
     $.ajax({
-        url    : "client/logout",
+        url    : url,
         type   : "post",
         async  : false,
         data   : {"status": status},
@@ -1265,16 +1244,12 @@ function setLogoff(status) {
 
 }
 
-/**
- * 退出
- */
 function setLogout() {
-    //退出注销窗口前，销毁定时刷新业务。
     flag = 1;
     clearInterval(freshBizTick);
-    var url = "client/logout";
+    var url = basePath+"client/logout";
     $.ajax({
-        url    : "client/logout",
+        url    : url,
         type   : "post",
         async  : false,
         data   : {"status": status},
@@ -1418,18 +1393,13 @@ function autoCall(immediate) {
     }
 }
 
-var biz_length;// 窗口可办业务数
-var iswait;// 当前是否有客户等待
-
-/**
- * 定时刷新业务
- */
+var biz_length;
+var iswait;
 function reFreshBiz(windowId, userId, flag) {
     var url = basePath + "client/seat/refreshBiz?rand=" + Math.random();
     $.getJSON(url, function (r) {
         var l = $('#biz_list_');
         if (r != undefined) {
-            // 可办理业务数量与刷新前的数量不同时提示坐席业务能力被修改
             if (biz_length != undefined && r.length != biz_length) {
                 var MSG1 = new CLASS_MSN_MESSAGE("bizChange", 300, 160, "",
                     $.i18n.prop('server.ticket.tip'), $.i18n.prop('server.window.ability'), "_blank");
@@ -1439,21 +1409,20 @@ function reFreshBiz(windowId, userId, flag) {
             l.empty();
             var show = false;
             $.each(r, function (i, d) {
-                var html = "<li><span style='width:55px;text-align:left;overflow:hidden;' title='" + d.bizname + "'>"
+                var html = "<li class='list-group-item d-flex justify-content-between align-items-center'>"
                     + d.bizname
-                    + "</span><p style='width:20px;overflow:hidden;' title="+$.i18n.prop('server.now.waiting.number')+">"
+                    + "<span  class='badge badge-primary badge-pill' title="+$.i18n.prop('server.now.waiting.number')+">"
                     + (d.waitcount < 0 ? 0 : d.waitcount);
 
-                //下一票号和下一票号等待的时间
+                
                 if (d.nextticket) {
-                    html = html + "</p><span title="+$.i18n.prop('page.tickettype.next.number')+">"
+                    html = html + "</span><span title="+$.i18n.prop('page.tickettype.next.number')+">"
                         + d.nextticket
                         + "</span>";
                 }
                 html = html + "</span></li>";
 
                 l.append(html);
-                // 等待人数从0变为大于0时提示坐席有用户等待办理
                 if (Number(d.waitcount) > 0) {
                     show = true;
                 }
@@ -1461,7 +1430,6 @@ function reFreshBiz(windowId, userId, flag) {
             // alert('before:'+iswait);
             if (show && !iswait) {
                 iswait = true;
-                //当等待人数从0变为大于0时启动自动呼叫
                 autoCall();
                 var MSG2 = new CLASS_MSN_MESSAGE("isWaiting", 300, 160, "",
                     $.i18n.prop('server.ticket.tip'), $.i18n.prop('server.waiting.business'), "_blank");

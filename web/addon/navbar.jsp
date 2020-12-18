@@ -1,4 +1,3 @@
-<%@page import="java.util.Objects"%>
 <nav class="navbar navbar-expand-lg navbar-dark " style="background-color: #004F2D;">
     <a class="navbar-brand" href="#">Qcall</a>
 
@@ -25,12 +24,20 @@
         <ul class="navbar-nav">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <b id="userInfo">${user}</b>
+                    <b id="userInfo">${userName}</b>
+                    @
+                    <small>${SEAT_WINSTR}</small>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item font-weight-bold navHover disabled" href="" >Paramètres</a>
+                    <a class="dropdown-item font-weight-bold " href="javascript:void(0);" id="settings" data-toggle="modal" data-target="#settingsModal">Paramètres</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item font-weight-bold navHover" href="javascript:void(0);" id="logOut">
+                    <a class="dropdown-item font-weight-bold" href="javascript:void(0);" onclick="setOnline();return false;">
+                        Enligne
+                    </a>
+                    <a class="dropdown-item font-weight-bold" href="javascript:void(0);" onclick="setStop();return false;">
+                        Pause
+                    </a>
+                    <a class="dropdown-item font-weight-bold" href="javascript:void(0);" onclick="setLogoff(0);return false;">
                         Déconnexion
                     </a>
                 </div>

@@ -8,6 +8,10 @@
         <servlet-name>ChangeStatus</servlet-name>
         <servlet-class>main.servlet.ChangeStatus</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetAllWindows</servlet-name>
+        <servlet-class>main.api.GetAllWindows</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -16,9 +20,13 @@
         <servlet-name>ChangeStatus</servlet-name>
         <url-pattern>/ChangeStatus</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetAllWindows</servlet-name>
+        <url-pattern>/getAllWindows</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            14400000
         </session-timeout>
     </session-config>
 </web-app>
