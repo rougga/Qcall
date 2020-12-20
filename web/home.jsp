@@ -25,7 +25,9 @@
         <link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="./css/body.css" rel="stylesheet" type="text/css"/>
         <script src="./js/lib/bootstrap.bundle.min.js"></script>
+        <script src="./js/script.js"></script>
         <script src="./js/home.js"></script>
+        
         <script type="text/javascript">
             var windowId = "${windowId}";
             var userId = "${userId}";
@@ -33,7 +35,7 @@
             var ip = "${ip}";
             window.win_quit = function () {
                 setLogout();
-            }   
+            };
             var eval_tool_fac = "${eval_tool_fac}";
         </script>
     </head>
@@ -42,10 +44,11 @@
             <div>
                 <%@include file="./addon/navbar.jsp" %>
             </div>
-
+            
             <div>
+                
                 <div class="col-12 col-md-9 mx-auto" >
-
+                    
                     <div class="col-12 p-2">       
                         <a href="javascript:void(0);" onclick="queryTicket();return false;" onfocus="blur()" class="btn btn-secondary">
                             Query
@@ -62,8 +65,8 @@
                         </c:if>
                     </div>
                     <div class="col-12 my-4 py-4">
-                        <h1 class="text-danger" id="current_ticket"></h1>
-                        <h2 id="ticket_state_bar" class="text-danger">---</h2>
+                        <h1 class="text-white" id="current_ticket"></h1>
+                        <h2 id="ticket_state_bar" class="text-white">---</h2>
                         <span id="nsr_state_bar" style="color:red;"></span>
                     </div>
 
@@ -173,7 +176,7 @@
                     MSG1.show();
                 } catch (e) {
                 }
-                //如果超时就处理 ，指定要跳转的页面
+               
                 clearInterval(freshBizTick);
                 setTimeout(function () {
                     window.location.href = loginUrl;
@@ -186,10 +189,10 @@
     });*/
 
     $(function () {
-        basePath = "http://192.168.1.103:8888/server/";
-        //basePath = getPath().base;
-        loginUrl = "http://192.168.1.103:8888/Qcall/";
-        //loginUrl= getPath().login;
+       // basePath = "http://<%=request.getLocalAddr() %>:8888/server/";
+        basePath = getPath().base;
+        //loginUrl = "http://192.168.1.103:8888/Qcall/";
+        loginUrl= getPath().login;
         evalType = '${eval_type}';
         autoDeal = '${auto_deal}';
         autoDeal = autoDeal === '' ? 0 : autoDeal;
@@ -216,19 +219,7 @@
         init();
     });
 
-    function getPath(){
-        var ipSS = localStorage.getItem("ipSS");
-        var portSS = localStorage.getItem("portSS");;
-        var pathSS = {};
-        if(!ipSS){
-            pathSS.base = "http://"+ipSS+":"+portSS+"/server/";
-            pathSS.login = "http://"+ipSS+":"+portSS+"/Qcall/";
-            pathSS.mng = "http://"+ipSS+":"+portSS+"/mng/";
-            return pathSS;
-        }else{
-         console.log("open setting dialog");   
-        }
-    }
+    
 
     
     function MM_showHideLayers() { //v9.0

@@ -29,7 +29,7 @@
                     <small>${SEAT_WINSTR}</small>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item font-weight-bold " href="javascript:void(0);" id="settings" data-toggle="modal" data-target="#settingsModal">Paramètres</a>
+                    <a class="dropdown-item font-weight-bold " href="javascript:void(0);" id="settingsBtn" >Paramètres</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item font-weight-bold" href="javascript:void(0);" onclick="setOnline();return false;">
                         Enligne

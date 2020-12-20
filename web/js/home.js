@@ -111,9 +111,9 @@ function init() {
     flag = 0;
     freshBizTick = setInterval("reFreshBiz(windowId,userId,flag)", refresh_biz_delay);
 
-    // 设置评价器星级
+    
     //var evalObj = getEvaluation("evalFac");
-    //修改成从后台获取设置的评价器
+    
     var evalObj = getEvaluationByToolFac(eval_tool_fac);
     if (evalObj != null) {
         evalObj.setStars(5);
@@ -122,13 +122,11 @@ function init() {
 
     $.cookie("eval_val", null);
 
-    // 计时
+    
     setInterval("timerTick()", 1000);
 }
 
-/**
- * 恢复异常状态的票号
- */
+
 function recoverTkt() {
     var r = $.cookie("fvts_seat_ticket");
     var t_status = "";
@@ -138,7 +136,7 @@ function recoverTkt() {
             return;
         } else {
             var lastDate = $.cookie('last_tickedate');
-            if (lastDate == new Date().getDate()) {//如果是当天的票号则提示继续完成
+            if (lastDate == new Date().getDate()) {
                 alert($.i18n.prop('server.last.time.error'));
                 var data = {'tid': r.tid};
                 $.ajax({
@@ -171,16 +169,14 @@ function recoverTkt() {
     }
 }
 
-/**
- * 双屏显示人员信息
- */
+
 function showUserInfo() {
     if (evalType == 'SCREEN') {
         var url = basePath + "client/seat/userInfo?rand=" + Math.random()
             + "&userId=" + userId;
         try {
             var r = double_screen_obj.ExternOpenUrl(url);
-            // 设置双屏按钮的初始状态
+            
             screen_tag = doubleScreen_sta;
             setScreenButton();
         } catch (e) {
@@ -188,13 +184,9 @@ function showUserInfo() {
     }
 }
 
-/**
- * 呼叫
- * @param tid
- *            业务类型id，自选呼叫时用
- */
+
 function call(tid) {
-    //呼叫时清除自动呼叫的定时器
+    
     if (autoCall_Timer != null) {
         clearTimeout(autoCall_Timer);
     }
@@ -207,7 +199,7 @@ function call(tid) {
     }
 
     if (op_tag == 1 || op_tag == 10) {
-        if (tid != 'auto') {//自动呼叫时不提示
+        if (tid != 'auto') {
             alert($.i18n.prop('server.call.next.banks.error'));
         } else {
             //alert("自动呼叫");
@@ -234,9 +226,9 @@ function call(tid) {
             } else {
                 dealTimeWarn = 0;
                 if (r.dealTimeWarn) {
-                    dealTimeWarn = r.dealTimeWarn * 60;// 办理时长预警
+                    dealTimeWarn = r.dealTimeWarn * 60;
                 }
-                t_clock('start');// 计时
+                t_clock('start');
                 op_tag = call_sta;
                 setButton();
                 saveTicket2Cookie(r);
@@ -251,14 +243,14 @@ function call(tid) {
                 setTicketStateBar(r.ticket_id + "," + r.biz_name + ","
                     + r.type_name + autoTrans);
                 setNsrStateBar(r.id_card_name, r.id_card_info_id)
-                // 自动开始办理
+                
                 if (autoDeal == 1) {
                     deal();
                 }
-                //呼叫中状态，双屏根据此标志进行切换
+                
                 openDscreenCall(r.ticket_id);
 
-                //如果当前设置了自动呼叫则弹出呼叫提醒
+                
                 if (auto_call_tag) {
                     var MSG1 = new CLASS_MSN_MESSAGE("autoCall", 300, 160, "",
                         $.i18n.prop('server.auto.call.reminder'), $.i18n.prop('server.enable.automatic.call')+"<span style='color: red'>" + r.ticket_id + "</span>", "_blank");
@@ -293,9 +285,7 @@ function queryIsCa(sbh) {
     });
 }
 
-/**
- * 追呼
- */
+
 function reCall() {
     op_tag = reCall_sta;
     var tid = getTidFromCookie();
@@ -308,15 +298,12 @@ function reCall() {
         if (r.error != undefined && r.error != '') {
             setTicketStateBar(r.error);
         } else {
-            //呼叫中状态，双屏根据此标志进行切换
+            
             openDscreenCall($.cookie('fvts_seat_ticketId'));
         }
     });
 }
 
-/**
- * 弃号重呼
- */
 function abandonCall() {
     op_tag = abandon_sta;
     var url = basePath + "client/seat/abandonCall?action=load&rand="
@@ -335,17 +322,17 @@ function abandonCall() {
             } else {
                 dealTimeWarn = 0;
                 if (r.dealTimeWarn) {
-                    dealTimeWarn = r.dealTimeWarn * 60;// 办理时长预警
+                    dealTimeWarn = r.dealTimeWarn * 60;
                 }
                 setTransferedTag('N');
-                t_clock('start');// 计时
+                t_clock('start');
                 op_tag = call_sta;
                 setButton();
                 saveTicket2Cookie(r);
                 $('#current_ticket').text(r.ticketId);
                 setTicketStateBar(r.ticket_id + "," + r.biz_name + ","
                     + r.type_name);
-                // 自动开始办理
+                
                 if (autoDeal == 1) {
                     deal();
                 }
@@ -355,9 +342,7 @@ function abandonCall() {
     }
 }
 
-/**
- * 特定呼号
- */
+
 function specialCall() {
     op_tag = specialCall_sta;
     var url = basePath + "client/seat/specialCall?action=load&rand="
@@ -373,16 +358,16 @@ function specialCall() {
             } else {
                 dealTimeWarn = 0;
                 if (r.dealTimeWarn) {
-                    dealTimeWarn = r.dealTimeWarn * 60;// 办理时长预警
+                    dealTimeWarn = r.dealTimeWarn * 60;
                 }
-                t_clock('start');// 计时
+                t_clock('start');
                 op_tag = call_sta;
                 setButton();
                 saveTicket2Cookie(r);
                 $('#current_ticket').text(r.ticket_id);
                 setTicketStateBar(r.ticket_id + "," + r.biz_name + ","
                     + r.type_name);
-                // 自动开始办理
+                
                 if (autoDeal == 1) {
                     deal();
                 }
@@ -392,9 +377,6 @@ function specialCall() {
     }
 }
 
-/**
- * 二次呼叫
- */
 function seccall() {
     op_tag = seccall_sta;
     var url = basePath + "client/seat/seccall?action=load&rand="
@@ -409,19 +391,13 @@ function seccall() {
                 setTicketStateBar(r.error);
             } else {
                 setTicketStateBar($.i18n.prop('server.second.call.success'))
-                $.cookie('fvts_seat_tid', ti);// 将票号主键保存在cookie
+                $.cookie('fvts_seat_tid', ti);
                 setButton();
             }
         });
     }
 }
 
-/**
- * 票号转移
- *
- * @param needFin
- *            转移后是否需要完成 转移流程： 1.手动转移：先转移再完成票号 2.自动转移：先完成票号再进行转移
- */
 function transfer(tag, needFin) {
     var seccallTran = false;
     needFin = (!needFin?true:needFin);
@@ -440,13 +416,13 @@ function transfer(tag, needFin) {
     }
     if (bizid != undefined) {
         var par = {};
-        if (bizid.type == "bizTrans") {// 业务转移
+        if (bizid.type == "bizTrans") {
             url = basePath + "client/seat/transfer?action=bizTrans&rand="
                 + Math.random();
             par.tId = getTidFromCookie();
             par.bizId = bizid.id;
             par.priority = bizid.priority;
-        } else if (bizid.type == "winTrans") {// 窗口转移
+        } else if (bizid.type == "winTrans") {
             url = basePath + "client/seat/transfer?action=winTrans&rand="
                 + Math.random();
             par.tId = getTidFromCookie();
@@ -454,7 +430,7 @@ function transfer(tag, needFin) {
             par.priority = bizid.priority;
         }
         $.getJSON(url, par, function (r) {
-            t_clock('stop');// 计时
+            t_clock('stop');
             if (r.error == undefined || r.error == "") {
                 setTransferedTag('Y');
                 if (needFin != false) {
@@ -474,9 +450,7 @@ function transfer(tag, needFin) {
     }
 }
 
-/**
- * 中断办理
- */
+
 function suspend() {
     var tid = getTidFromCookie();
     var url = 'tid=' + tid;
@@ -496,7 +470,7 @@ function suspend() {
                 setTicketStateBar(r.error);
 
             } else {
-                t_clock('stop');// 计时
+                t_clock('stop');
                 op_tag = suspend_sta;
                 setButton();
                 autoCall();
@@ -510,9 +484,7 @@ function suspend() {
     });
 }
 
-/**
- * 继续办理
- */
+
 function continued() {
     op_tag = continued_sta;
     setButton();
@@ -532,17 +504,16 @@ function continued() {
             } else {
                 dealTimeWarn = 0;
                 if (r.dealTimeWarn) {
-                    dealTimeWarn = r.dealTimeWarn * 60;// 办理时长预警
+                    dealTimeWarn = r.dealTimeWarn * 60;
                 }
                 setTransferedTag('N');
-                t_clock('start');// 计时
+                t_clock('start');
                 op_tag = call_sta;
                 setButton();
                 saveTicket2Cookie(r);
                 $('#current_ticket').text(r.ticket_id);
                 setTicketStateBar(r.ticket_id + "," + r.biz_name + ","
                     + r.type_name);
-                // 自动开始办理
                 if (autoDeal == 1) {
                     deal();
                 }
@@ -551,9 +522,6 @@ function continued() {
     }
 }
 
-/**
- * 双屏
- */
 function doubleScreen() {
     // dsc.doubleScr();
     try {
@@ -564,9 +532,6 @@ function doubleScreen() {
     setScreenButton();
 }
 
-/**
- * 单屏
- */
 function singleScreen() {
     // dsc.singleScr();
     try {
@@ -577,9 +542,7 @@ function singleScreen() {
     setScreenButton();
 }
 
-/**
- * 截屏
- */
+
 function screenShot() {
     // dsc.shortcutScr();
     try {
@@ -607,9 +570,7 @@ function doRefuseDeal() {
     });
 }
 
-/**
- * 开始办理
- */
+
 function deal() {
     doStartCall();
     /*
@@ -620,19 +581,19 @@ function deal() {
         type: 'post',
         data: url,
         success: function (t) {
-            //身份证ID
+            
             if (t != null) {
                 var idCardId = t.id;
                 if (idCardId != null && idCardId != "") {
                         var modelUrl = basePath + "client/seat/showIdCardInfo?idCardId=" + idCardId + "&tid="+tid+"&action=load&rand=" + Math.random();
 
                         var result = showModDialog(modelUrl, 850, 520);
-                        if (result == '1') {//正常办理
+                        if (result == '1') {
                             doStartCall();
                         } else if (result == "0") {
                             doRefuseDeal();
                         }
-                } else { //如果不关联身份证
+                } else { 
                     doStartCall();
                 }
             }
@@ -654,7 +615,7 @@ function doStartCall() {
         lockProcess(start_sta);
     }
 
-    //微信票标记
+    
     wxTag = 0;
 
     $.ajax({
@@ -680,45 +641,32 @@ function doStartCall() {
     });
 }
 
-/**
- * 完成,1.评价.2.选择业务细项,保存结果.3.修改票号状态和保存评价结果
- */
+
 function finish() {
     var tid = getTidFromCookie();
     if (!tid) {
         return;
     }
-    // 评价
-    if (record_items == '1' && machineAccount_tag != "1" && luruGZL_tag != "1") {// 完成后录入工作量且不启用台帐
+    
+    if (record_items == '1' && machineAccount_tag != "1" && luruGZL_tag != "1") {
         evaluation(setBizItemCount);
     } else {
         evaluation(finishAction);
     }
 }
 
-/**
- * 评价
- *
- * @param tid
- *            票号
- * @param func
- *            评价完要处理的函数
- */
 function evaluation(func) {
     var evalRet = -1;
-    // 评价 且 该票不是通过微信取票
     if (enableEval == 1 && wxTag != 1) {
-        if (evalType == "BUTTON") { // 按钮
-            // 从cookies读取评价器厂商evalFac
+        if (evalType == "BUTTON") { 
             //var obj = getEvaluation('evalFac');
-            //修改成从后台获取设置的评价器
             var obj = getEvaluationByToolFac(eval_tool_fac);
             if (obj == null) {
                 func(-1);
             } else {
                 obj.receive(timeoutSec, func);
             }
-        } else if (evalType == "SCREEN") { // 双屏
+        } else if (evalType == "SCREEN") { 
             $(document).mask($.i18n.prop('server.waiting.evaluation'));
             try {
                 palyEval();
@@ -731,20 +679,14 @@ function evaluation(func) {
         } else {
             func(-1);
         }
-    } else {// 不启用评价
+    } else {
         func(-1);
     }
 }
 
-/**
- * 选择业务细项（录入工作量）
- *
- * @param tid
- * @param evalRet
- */
 function setBizItemCount(evalRet) {
     var tkid = getTidFromCookie();
-    // 选择业务细项
+    
     var urlshow = basePath + 'client/seat/finishBiz?action=show&tid=' + tkid
         + "&rand=" + Math.random();
     var msg = showModDialog(urlshow, 900, 460);
@@ -787,7 +729,7 @@ function finishAction(evalRet) {
 function trans() {
     var transfered = getTransferedTag();
     if (transfered == 'Y') {
-        // 已经转移过，不需要再进行自动转移，避免出现死循环
+       
         return;
     }
     var autotrans = getAutotransFromCookie();
@@ -806,16 +748,14 @@ function trans() {
                     biz.type = "bizTrans";
                     biz.id = autotrans;
                     biz.priority = priority;
-                    transfer(biz, false);// 自动转移的业务不再需要进行完成操作
+                    transfer(biz, false);
                 }
             }
         });
     }
 }
 
-/**
- * 弃号
- */
+
 function abandon() {
     //alert(111);
     var tid = getTidFromCookie();
@@ -834,7 +774,7 @@ function abandon() {
         data   : url,
         success: function (r) {
             unlockProcess();
-            t_clock('stop');// 计时
+            t_clock('stop');
             if (r.error != undefined && r.error != '') {
                 setTicketStateBar(r.error);
             } else {
@@ -851,9 +791,7 @@ function abandon() {
     });
 }
 
-/**
- * 初始化操作按钮
- */
+
 function initButton() {
     call_btn = $('#call_btn');
     reCall_btn = $('#reCall_btn');
@@ -872,13 +810,9 @@ function initButton() {
     return_btn = $('#return_btn');
     machineAccount_btn = $("#to_machineAccount");
     buluMachineAccount_btn = $("#bulu_machineAccount");
-    //录入与纳税人相关的工作量按钮
     luruGZL_btn = $("#luruGZL");
 }
 
-/**
- * 给按钮绑定事件
- */
 function bindEvent2Button() {
     call_btn.bind('click', call);
     reCall_btn.bind('click', reCall);
@@ -901,11 +835,9 @@ function bindEvent2Button() {
     luruGZL_btn.bind('click', lurugongzuoliang);
 }
 
-/**
- * 设置按钮的显示状态
- */
+
 function setButton() {
-    //取消批量处理复选
+    
     $("#batch_handle").removeAttr("checked");
     switch (op_tag) {
         case call_sta :
@@ -921,9 +853,7 @@ function setButton() {
             transfer_btn.hide();
             abandon_btn.show();
             return_btn.hide();
-            //录入工作量(台帐)
             machineAccount_btn.hide();
-            //录入与纳税人相关的工作量
             luruGZL_btn.hide();
             break;
         case suspend_sta :
@@ -942,9 +872,7 @@ function setButton() {
             setTicketStateBar('---');
             $('#current_ticket').text('');
             $.cookie("fvts_seat_ticket", null);
-            //录入工作量(台帐)
             machineAccount_btn.hide();
-            //录入与纳税人相关的工作量
             luruGZL_btn.hide();
             break;
         case start_sta :
@@ -960,9 +888,7 @@ function setButton() {
             finish_btn.show();
             abandon_btn.show();
             return_btn.hide();
-            //录入工作量(台帐)
             machineAccount_btn.show();
-            //录入与纳税人相关的工作量
             luruGZL_btn.show();
             break;
         case finish_sta :
@@ -981,9 +907,7 @@ function setButton() {
             setTicketStateBar('---');
             $('#current_ticket').text('');
             $.cookie("fvts_seat_ticket", null);
-            //录入工作量(台帐)
             machineAccount_btn.hide();
-            //录入与纳税人相关的工作量
             luruGZL_btn.hide();
             break;
         case abandon_sta :
@@ -1002,9 +926,7 @@ function setButton() {
             setTicketStateBar('---');
             $('#current_ticket').text('');
             $.cookie("fvts_seat_ticket", null);
-            //录入工作量(台帐)
             machineAccount_btn.hide();
-            //录入与纳税人相关的工作量
             luruGZL_btn.hide();
             break;
         case default_sta :
@@ -1022,9 +944,7 @@ function setButton() {
             return_btn.hide();
             setTicketStateBar('---');
             $('#current_ticket').text('');
-            //录入工作量(台帐)
             machineAccount_btn.hide();
-            //录入与纳税人相关的工作量
             luruGZL_btn.hide();
             break;
         case seccall_sta :
@@ -1040,7 +960,6 @@ function setButton() {
             start_btn.hide();
             finish_btn.hide();
             abandon_btn.hide();
-            //录入工作量(台帐)
             machineAccount_btn.hide();
             break;
         default :
@@ -1075,9 +994,7 @@ function setButton() {
     }
 }
 
-/**
- * 设置截屏按钮的显示状态
- */
+
 function setScreenButton() {
     switch (screen_tag) {
         case doubleScreen_sta :
@@ -1118,29 +1035,20 @@ function showModDialog(url, width, height, model) {
      }*/
 }
 
-/**
- * 坐席显示公告内容
- *
- * @param {}
- *            url
- */
+
 function showNotice(n_id) {
     var url = 'client/seat/showNotice?action=show&noticeId=' + n_id;
     showModDialog(url, 400, 380);
 }
 
-/**
- * 票号查询
- */
+
 function queryTicket() {
     var url = basePath + "client/seat/queryTicket?action=load&rand="
         + Math.random();
     showModDialog(url, 720, 420);
 }
 
-/**
- * 自选业务呼叫
- */
+
 function setBiz() {
     var url = basePath + "client/seat/setBiz?rand=" + Math.random();
     var tid = showModDialog(url, 400, 300);
@@ -1149,17 +1057,11 @@ function setBiz() {
     }
 }
 
-/**
- * 发布取件信息
- */
 function pickNotice() {
     var url = basePath + "client/seat/pickNotice?rand=" + Math.random();
     showModDialog(url, 400, 280);
 }
 
-/**
- * 切换为在线
- */
 function setOnline() {
     var url;
     if ($("#ticket_state_bar").text() == $.i18n.prop('json.msg.unableCall3') ||
@@ -1174,7 +1076,6 @@ function setOnline() {
             setTicketStateBar($.i18n.prop('public.operate.fail'));
         }
         togglePaus();
-        //在双屏打开人员信息页面
         if (evalType == 'SCREEN') {
             var url = basePath + "client/seat/userInfo?rand=" + Math.random() + "&userId=" + userId;
 
@@ -1212,7 +1113,6 @@ function toStop(type) {
             return;
         }
         togglePaus(1);
-        //在双屏打开暂停页面
         if (evalType == 'SCREEN') {
             var url = basePath + "client/seat/dscreenPause?rand=" + Math.random();
             try {
@@ -1256,67 +1156,49 @@ function setLogout() {
         success: function () {
             window.opener = null;
             window.open('', '_self');
-            window.close();//关闭模式窗口后,原窗口关闭.
+            window.close();
         },
         error  : function () {
             window.opener = null;
             window.open('', '_self');
-            window.close();//关闭模式窗口后,原窗口关闭.
+            window.close();
         }
     });
 }
 
-/**
- * 保存票号主键id到cookie中
- *
- * @param {}
- *            tid
- */
 function saveTicket2Cookie(t) {
-    // 先清除
-    $.cookie('fvts_seat_tid', '');// 将票号主键保存在cookie
-    $.cookie('fvts_seat_ticketId', '');// 将票号保存在cookie
-    $.cookie('fvts_seat_callLanguage', '');//
-    $.cookie('fvts_seat_bizType', '');//
+    
+    $.cookie('fvts_seat_tid', '');
+    $.cookie('fvts_seat_ticketId', '');
+    $.cookie('fvts_seat_callLanguage', '');
+    $.cookie('fvts_seat_bizType', '');
     $.cookie('fvts_seat_autotrans', '');
     $.cookie('fvts_seat_transfered', 'N');
     $.cookie('fvts_seat_nsrdzdah', '');
 
-    // 再保存
-    $.cookie('fvts_seat_tid', t.tid);// 将票号主键保存在cookie
-    $.cookie('fvts_seat_ticketId', t.ticket_id);// 将票号保存在cookie
-    $.cookie('fvts_seat_callLanguage', t.call_language);//
-    $.cookie('fvts_seat_bizType', t.biz_type_id);//
+    $.cookie('fvts_seat_tid', t.tid);
+    $.cookie('fvts_seat_ticketId', t.ticket_id);
+    $.cookie('fvts_seat_callLanguage', t.call_language);
+    $.cookie('fvts_seat_bizType', t.biz_type_id);
     if (t.biz_type_id != t.auto_trans) {
         $.cookie('fvts_seat_autotrans', t.auto_trans);
     }
     $.cookie('last_tickedate', new Date().getDate(), {expires: 0.1});
-    // 将呼叫到的票号保存在cookie中，当客户端异常退出时再恢复到原来的状态,0.1为大约2个小时多
     $.cookie("fvts_seat_ticket", JSON.stringify(t), {expires: 0.1});
     $.cookie('fvts_seat_nsrdzdah', t.nsrdzdah);
 }
 
-/**
- * 从cookie中读取票号主键id
- *
- * @return {}
- */
+
 function getTidFromCookie() {
-    return $.cookie('fvts_seat_tid');// 从cookie取票号id
+    return $.cookie('fvts_seat_tid');
 }
 
-/**
- * 从cookie取自动转移业务
- *
- * @return {}
- */
+
 function getAutotransFromCookie() {
-    return $.cookie('fvts_seat_autotrans');// 从cookie取自动转移业务
+    return $.cookie('fvts_seat_autotrans');
 }
 
-/**
- * 是否已经进行过转移
- */
+
 function setTransferedTag(tag) {
     $.cookie('fvts_seat_transfered', tag);
 }
@@ -1325,12 +1207,6 @@ function getTransferedTag() {
     return $.cookie('fvts_seat_transfered');
 }
 
-/**
- * 设置票号信息状态栏
- *
- * @param {}
- *            info
- */
 function setTicketStateBar(info) {
     $('#ticket_state_bar').text(info);
     if (info == "---") {
@@ -1341,12 +1217,7 @@ function setTicketStateBar(info) {
     }
 }
 
-/**
- * 设置纳税人信息状态栏
- *
- * @param {}
- *            info
- */
+
 function setNsrStateBar() {
     if (arguments) {
         var str = "";
@@ -1359,19 +1230,11 @@ function setNsrStateBar() {
     }
 }
 
-/**
- * 设置坐席操作状态栏
- *
- * @param {}
- *            info
- */
 function setSeatStateBar(info) {
     $('#seat_state_bar').text(info);
 }
 
-/**
- * 改变自动呼叫标识
- */
+
 function setAutoCallTag() {
     if ($(this).is(':checked')) {
         auto_call_tag = true;
@@ -1380,10 +1243,6 @@ function setAutoCallTag() {
     }
 }
 
-/**
- * 自动呼叫下一票号
- * immediate=true时立即进行呼叫
- */
 function autoCall(immediate) {
     if (autoCall_Timer != null) {
         clearTimeout(autoCall_Timer);
@@ -1464,9 +1323,7 @@ function reFreshBiz(windowId, userId, flag) {
         }*/
 }
 
-/**
- * 返回默认状态
- */
+
 function returnCallSta() {
     op_tag = default_sta;
     setButton();
@@ -1485,19 +1342,17 @@ function togglePaus(tag) {
     }
 }
 
-// 播放欢迎语
+
 function playWelcome() {
-    // 评价
+    
     if (enableEval == 1) {
-        if (evalType == "BUTTON") { // 按钮
-            // 评价器欢迎光临
+        if (evalType == "BUTTON") { 
             //var evalObj = getEvaluation("evalFac");
-            //修改成从后台获取设置的评价器
             var evalObj = getEvaluationByToolFac(eval_tool_fac);
             if (evalObj != null) {
                 evalObj.welcome();
             }
-        } else if (evalType == "SCREEN") { // 双屏
+        } else if (evalType == "SCREEN") {
             try {
                 document.getElementById('Welcome').controls.play();
             } catch (e) {
@@ -1506,7 +1361,7 @@ function playWelcome() {
     }
 }
 
-// 播放评价语
+
 function palyEval() {
     try {
         document.getElementById('Evaluate').controls.play();
@@ -1515,7 +1370,6 @@ function palyEval() {
     }
 }
 
-// 播放感谢语
 function palyThanks() {
     if (enableEval == 1) {
         if (evalType == "SCREEN") {
@@ -1527,7 +1381,7 @@ function palyThanks() {
     }
 }
 
-// 开始从cookie中读取评价结果
+
 function startReadEval(callback) {
     eval_inter = setInterval(readEval(callback), 1000);
     openDscreenEval();
@@ -1537,7 +1391,7 @@ function startReadEval(callback) {
     }
 }
 
-// 停止从cookie中读取评价结果
+
 function stopReadEval() {
     clearInterval(eval_inter);
     $.cookie("eval_val", null, {expires: 1});
@@ -1549,7 +1403,7 @@ function stopReadEval() {
 
 var et = timeoutSec;
 
-// 从cookie读取评价
+
 function readEval(callback) {
     return function () {
         var eval = $.cookie("eval_val");
@@ -1568,8 +1422,8 @@ function readEval(callback) {
 var tim = 1;
 var $timer=$("#timer_");
 var $timer_mask=$("#timer_mask");
-var countTime = false;//开始记录时长
-// 计时
+var countTime = false;
+
 function t_clock(t) {
     if (t == 'start') {
         $timer.text('1');
@@ -1578,11 +1432,11 @@ function t_clock(t) {
         $timer_mask.hide();
         countTime = true;
     } else if (t == 'stop') {
-        if (auto_call_tag == true) {//开启了自动呼叫，开始倒计时
+        if (auto_call_tag == true) {
             $timer.text(autoCallTime / 1000);
         }
         tim = 1;
-        //开启了自动呼叫时显示倒计时，否则隐藏
+        
         if (auto_call_tag == false) {
             $timer.hide();
             $timer_mask.show();
@@ -1598,7 +1452,7 @@ function timerTick() {
     if ($timer_mask == undefined) {
         $timer_mask = $('#timer_mask');
     }
-    if (auto_call_tag == true && countTime == false) {//开启了自动呼叫，开始倒计时
+    if (auto_call_tag == true && countTime == false) {
         $timer.text(autoCallTime / 1000 - tim);
         if (autoCallTime / 1000 - tim == 0) {
             $timer.hide();
@@ -1619,10 +1473,8 @@ function timerTick() {
 
         dealTimeWarn = 0;
     }
-    //是否启用了等待超时后自动弃号并呼叫下一票号
-    //需满足以下条件，1.处于计时中；2.开启了强制自动呼叫；3.等待时长和设置的限制值相等；4.票号处于呼叫状态，还没有开始办理
     if (countTime == true && auto_call_tag == true && tim == call_wait_time && op_tag == call_sta) {
-        abandon();//等待超时，自动弃号
+        abandon();
     }
     tim++;
 }
@@ -1638,23 +1490,15 @@ function openSetBizWindow() {
     showModDialog(url, 500, 380);
 }
 
-/**
- * 锁定按钮，锁定后用户不能连续点击同一按钮
- */
 function lockProcess(btnid) {
     process_btn = btnid;
 }
 
-/**
- * 解锁按钮
- */
 function unlockProcess() {
     process_btn = '';
 }
 
-/**
- * 判断按钮是否被锁定
- */
+
 function isLockProcess(btnid) {
     if (process_btn == btnid) {
         setTicketStateBar($.i18n.prop('server.in.operation'));
@@ -1662,9 +1506,6 @@ function isLockProcess(btnid) {
     return process_btn == btnid;
 }
 
-/**
- * 批量处理中的复选框选中事件
- */
 function batchHandleClick() {
     var c = $("#batch_handle").attr("checked");
     if (c == "checked") {
@@ -1687,49 +1528,42 @@ function batchHandleClick() {
     }
 }
 
-/**
- * 录入工作量-台帐
- */
 function toMachineAccount() {
     var tid = getTidFromCookie();
     var url = basePath + "client/seat/machineAccount?tid=" + tid + "&rand=" + Math.random();
     showModDialog(url, 720, 420, false);
 }
 
-/**
- * 导出台帐
- */
+
 function exportMachineAccount() {
     var url = basePath + "client/seat/machineAccount?action=to_export&rand=" + Math.random();
     showModDialog(url, 650, 260);
 }
 
-/**
- * 补录台帐
- */
+
 function buluMachineAccount() {
     var url = basePath + "client/seat/machineAccount?tid=&rand=" + Math.random();
     showModDialog(url, 720, 420);
 }
 
-//打开双屏叫号页面
+
 function openDscreenCall(ticket) {
-    //在双屏打开暂停页面
+    
     if (evalType == 'SCREEN') {
         var url = basePath + "client/seat/dscreenCall?rand=" + Math.random() + "&ticket=" + ticket + "&tid=" + getTidFromCookie();
         try {
             // alert(ticket);
             double_screen_obj.ExternOpenUrl(url);
-            //显示叫号信息30秒后返回到人员信息页面
+            
             setTimeout("showUserInfo()", 30000);
         } catch (e) {
         }
     }
 }
 
-//打开双屏评价页面
+
 function openDscreenEval() {
-    //在双屏打开评价页面
+    
     if (evalType == 'SCREEN') {
         var url = basePath + "client/seat/dscreenEval?rand=" + Math.random();
         try {
@@ -1739,9 +1573,9 @@ function openDscreenEval() {
     }
 }
 
-//打开双屏批量处理中页面
+
 function openDscreenBatchHandle() {
-    //在双屏打开评价页面
+    
     if (evalType == 'SCREEN') {
         var url = basePath + "client/seat/dscreenBatchHandle?branchId=" + branchId + "&rand=" + Math.random();
         try {
@@ -1751,9 +1585,6 @@ function openDscreenBatchHandle() {
     }
 }
 
-/**
- * 录入票号与纳税人相关联的工作量
- */
 function lurugongzuoliang() {
     var tid = getTidFromCookie();
     var url = basePath + "client/seat/lurugzl?tid=" + tid + "&rand=" + Math.random();

@@ -19,8 +19,8 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success">Sauvegarder</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-success" id="settingsSaveBtn">Sauvegarder</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="settingsCloseBtn">Fermer</button>
             </div>
         </div>
     </div>

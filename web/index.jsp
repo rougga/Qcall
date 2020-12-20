@@ -11,15 +11,20 @@
         <script src="./js/lib/jquery.js"></script>
         <link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <script src="./js/lib/bootstrap.bundle.min.js"></script>
+        <script src="./js/script.js"></script>
+        <script src="./js/login.js"></script>
         <title>Connexion</title>
     </head>
     <body class="bg-dark">
         <div class="container-md ">
-            <div>
-                <a href="javascript:void(0);"><img src="img/setting.png"/></a> 
+            <div class="alert alert-danger alert-dismissible fade show m-4" role="alert" id="err">
+                <strong id="errText"></strong>
+                <button type="button" class="close" id="errClose" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="col-12 col-md-6 mx-auto">
-                <h1 class="text-center text-white">MY YOUSSEF</h1>
+            <div class="col-12 col-md-6 mx-auto mt-4">
+                <h1 class="text-center text-white">CallPad</h1>
                 <h4 class="text-white">Connexion:</h4>
                 <form action="Login" method="POST" class="form text-white">
                     <div class="form-group">
@@ -47,7 +52,7 @@
                         }
                     }
                     } catch (ClassNotFoundException | SQLException ex) {
-            
+                            %> <script>console.log("SERVER: <%= ex.getMessage() %>"); </script> <%
                     }
                             %>
 
@@ -55,7 +60,9 @@
                     </div>
                     <input type="hidden" id="branchId" class="form-control"/>
                     <input type="hidden" id="windowText" value="Guichet 11" class="form-control"/>
-                    <button type="button" id="submit" class="btn btn-primary btn-lg float-right"><img src="img/login.png"/> Connexion</button>
+                    <button type="button" id="submit" class="btn btn-primary btn-lg float-right"><img src="img/login.png" alt=""/> Connexion</button>
+                    <a href="#" id="settingsBtn" class="float-right btn btn-secondary mx-2 btn-lg "><img src="img/setting.png" alt=""/></a>
+                    
                 </form>
             </div>
             <div>
@@ -64,36 +71,4 @@
         </div>
 
     </body>
-    <script>
-        $(document).ready(function() {
-            var ip = "192.168.1.103";
-            var port ="8989";
-            $("#submit").on('click',function() {
-                
-                var url="http://"+ip+":8888/server/client/login";
-                var par ={};
-                par.username=$("#username").val();
-                par.password=$("#password").val();
-                par.branchId=$("#branchId").val();
-                par.windowText=$("#window option:selected").html();
-                par.rand=Math.random();
-                par.window=$("#window").val();
-                
-                
-                $.post(url,par,function(data) {
-                    if(data.indexOf("login_center")>=0){
-                        console.log("FAIL !!");
-                    }else{
-                        console.log("Connected");
-                        par.status=1;
-                        $.post("./ChangeStatus",par,function(data) {
-                            window.location="./home.jsp";
-                       });
-                    }
-                });
-                
-                
-            });
-        });
-    </script>
 </html>
