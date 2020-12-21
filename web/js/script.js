@@ -2,7 +2,7 @@ function getPath() {
     var ipSS = localStorage.getItem("ipSS");
     var portSS = localStorage.getItem("portSS");
     var pathSS = {};
-    if (ipSS !== null || portSS !== null) {
+    if (ipSS !== null && portSS !== null) {
         pathSS.base = "http://" + ipSS + ":" + portSS + "/server/";
         pathSS.login = "http://" + ipSS + ":" + portSS + "/Qcall/";
         pathSS.mng = "http://" + ipSS + ":" + portSS + "/mng/";

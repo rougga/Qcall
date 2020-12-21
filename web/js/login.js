@@ -18,7 +18,6 @@ $(document).ready(function () {
         $.post(url, par, function (data) {
             if (data.indexOf("login_center") >= 0) {
                 $("#err").show();
-                $("#err").addClass("show");
                 $("#errText").html("L'identifiant ou le mot de passe est incorrect");
                 console.log("FAIL !!");
             } else {
