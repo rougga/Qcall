@@ -27,18 +27,21 @@
                     <b id="userInfo">${userName}</b>
                     @
                     <small>${SEAT_WINSTR}</small>
+                    <img src="./img/icon/online.png" id="statusImg"/>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item font-weight-bold " href="javascript:void(0);" id="settingsBtn" >Paramètres</a>
+                    <a class="dropdown-item font-weight-bold " href="javascript:void(0);" id="settingsBtn" ><img src="./img/icon/setting-black.png"/> Paramètres</a>
+                    
                     <div class="dropdown-divider"></div>
+                    
                     <a class="dropdown-item font-weight-bold" href="javascript:void(0);" onclick="setOnline();return false;">
-                        Enligne
+                        <img src="./img/icon/online.png"/> Enligne
                     </a>
                     <a class="dropdown-item font-weight-bold" href="javascript:void(0);" onclick="setStop();return false;">
-                        Pause
+                        <img src="./img/icon/pause.png"/> Pause
                     </a>
                     <a class="dropdown-item font-weight-bold" href="javascript:void(0);" onclick="setLogoff(0);return false;">
-                        Déconnexion
+                        <img src="./img/icon/logout.png"/> Déconnexion
                     </a>
                 </div>
             </li>

@@ -7,3 +7,9 @@ a{
 .body{
     background-color: #0A8754;
 }
+.bg-costum{
+    background-color: #004F2D;
+}
+.bg-costum:hover{
+    opacity: .8;
+}

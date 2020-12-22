@@ -21,13 +21,13 @@
         <script src="./js/lib/I18nUtil.js"></script>
         <script src="./js/lib/message.js"></script>
         <script src="./js/lib/warning.js"></script>
-        <script src="./js/seat/evaluation.js"></script>
+        <script src="./js/lib/evaluation.js"></script>
         <link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="./css/body.css" rel="stylesheet" type="text/css"/>
         <script src="./js/lib/bootstrap.bundle.min.js"></script>
         <script src="./js/script.js"></script>
         <script src="./js/home.js"></script>
-        
+
         <script type="text/javascript">
             var windowId = "${windowId}";
             var userId = "${userId}";
@@ -40,15 +40,15 @@
         </script>
     </head>
     <body class="bg-dark">
-        <div class="container-md body p-0 h-100">
+        <div class="container-md body p-0 min-vh-100">
             <div>
                 <%@include file="./addon/navbar.jsp" %>
             </div>
-            
+
             <div>
-                
+
                 <div class="col-12 col-md-9 mx-auto" >
-                    
+
                     <div class="col-12 p-2">       
                         <a href="javascript:void(0);" onclick="queryTicket();return false;" onfocus="blur()" class="btn btn-secondary">
                             Query
@@ -64,19 +64,20 @@
                             </a> 
                         </c:if>
                     </div>
-                    <div class="col-12 my-4 py-4">
-                        <h1 class="text-white" id="current_ticket"></h1>
-                        <h2 id="ticket_state_bar" class="text-white">---</h2>
-                        <span id="nsr_state_bar" style="color:red;"></span>
+                    <div class="col-12 my-4 py-4" id="displayPanel">
+                        <h1 class="text-white text-center" id="current_ticket"></h1>
+                        <h2 id="ticket_state_bar" class="text-white text-center">---</h2>
+                        <h4 id="nsr_state_bar" class="text-center text-danger"></h4>
+                    </div>
+                    <div id="pause_icon" style="display:none" class="col-12 m-4">
+                        <img src="./img/icon/pause-big.png" class="img-fluid mx-auto d-block">
                     </div>
 
+                    <div class="col-12 p-2" id="controlPanel">
 
-                    <div class="col-12 p-2">
-                        <div id="pause_icon" style="display:none;float:left;vertical-align:bottom;">
-                            Pause
-                        </div>
-                        <a class="btn btn-lg btn-success" id="call_btn"/> 
-                        Call
+                        <a class="btn btn-lg bg-costum p-4 text-white border" id="call_btn"/>
+                        <img src="./img/icon/call.png" class="pb-1 m-0"/>
+                            Suivant
                         </a>
                         <a class="btn btn-secondary" id="reCall_btn"/> 
                         additional
@@ -96,7 +97,8 @@
                         <a class="btn btn-primary" id="continue_btn"/>
                         continue
                         </a>
-                        <a class="btn btn-lg btn-success" id="start_btn"/>
+                        <a class="btn btn-lg bg-costum p-4 text-white border" id="start_btn"/>
+                        <img src="./img/icon/call.png" class="pb-1 m-0"/>
                         start
                         </a>
                         <a class="btn btn-danger" id="abandon_btn"/>
@@ -117,39 +119,34 @@
                         <a class="btn btn-secondary" id="screenShot_btn"/>
                         screenshots
                         </a>
+                        <div>
+                            <span>Auto:</span>
+                            <c:if test='${auto_call == "1"}'>
+                                <c:set var="au_ck" value="checked"></c:set>
+                                <c:set var="au_dis" value="disabled"></c:set>
+                                <c:set var="au_title" value="${server.auto.title2}"></c:set>
+                                    <script>
+                                        $(function () {
+                                            auto_call_tag = true;
+                                            setTimeout(function () {
+                                                var MSG1 = new CLASS_MSN_MESSAGE("autoCallOn", 300, 160, "",
+                                                    "<spring:message code='server.ticket.tip'/> ", "<spring:message code='server.ticket.timeout1'/> <br/><br/><spring:message code='server.ticket.timeout2'/> <span style='color:red'>${auto_call_time==null?10:auto_call_time}S</span><spring:message code='server.ticket.timeout3'/> ", "_blank");
+                                                MSG1.show();
+                                            }, 15000);
+                                        });
+                                </script>
+                            </c:if>
+                            <label>
+                                <input type="checkbox" id="enabel_auto_call" value="Y"
+                                       style="vertical-align: middle;" ${au_ck} ${au_dis} /> 
+                            </label>
+                            <h2>
+                                Timer ：
+                                <span style="display:none" id="timer_" class="text-white"></span>
+                                <span style="color:red;" id="timer_mask">--</span>
+                            </h2>
+                        </div>
                     </div>
-                    <span>Auto:</span>
-                    <c:if test='${auto_call == "1"}'>
-                        <c:set var="au_ck" value="checked"></c:set>
-                        <c:set var="au_dis" value="disabled"></c:set>
-                        <c:set var="au_title" value="${server.auto.title2}"></c:set>
-                        <script>
-                            $(function () {
-                                auto_call_tag = true;
-                                setTimeout(function () {
-                                    var MSG1 = new CLASS_MSN_MESSAGE("autoCallOn", 300, 160, "",
-                                        "<spring:message code='server.ticket.tip'/> ", "<spring:message code='server.ticket.timeout1'/> <br/><br/><spring:message code='server.ticket.timeout2'/> <span style='color:red'>${auto_call_time==null?10:auto_call_time}S</span><spring:message code='server.ticket.timeout3'/> ", "_blank");
-                                    MSG1.show();
-                                }, 15000);
-                            });
-                        </script>
-                    </c:if>
-                    <label>
-                        <input type="checkbox" id="enabel_auto_call" value="Y"
-                               style="vertical-align: middle;" ${au_ck} ${au_dis} /> 
-                    </label>
-
-
-
-
-                    <h2>
-                        Timer ：
-                        <span style="color:red;display:none" id="timer_"></span>
-                        <span style="color:red;" id="timer_mask">--</span>
-                    </h2>
-
-
-
                     <div  id="scrollDiv">
                         <ul id="biz_list_" class=" list-group ">
 

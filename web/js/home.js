@@ -90,13 +90,13 @@ function init() {
     initButton();
     bindEvent2Button();
 
-    
+
     op_tag = default_sta;
     setButton();
 
     if (evalType == 'SCREEN') {
         double_screen_obj = $("#double_screen")[0];
-        
+
         screen_tag = doubleScreen_sta;
         setScreenButton();
     }
@@ -106,14 +106,14 @@ function init() {
         $('#menu_out').hide();
     }
 
-    
+
     reFreshBiz(windowId, userId, 0);
     flag = 0;
     freshBizTick = setInterval("reFreshBiz(windowId,userId,flag)", refresh_biz_delay);
 
-    
+
     //var evalObj = getEvaluation("evalFac");
-    
+
     var evalObj = getEvaluationByToolFac(eval_tool_fac);
     if (evalObj != null) {
         evalObj.setStars(5);
@@ -122,7 +122,7 @@ function init() {
 
     $.cookie("eval_val", null);
 
-    
+
     setInterval("timerTick()", 1000);
 }
 
@@ -140,9 +140,9 @@ function recoverTkt() {
                 alert($.i18n.prop('server.last.time.error'));
                 var data = {'tid': r.tid};
                 $.ajax({
-                    url    : basePath + 'client/seat/recoverTicket',
-                    type   : 'post',
-                    data   : data,
+                    url: basePath + 'client/seat/recoverTicket',
+                    type: 'post',
+                    data: data,
                     success: function (result) {
                         t_status = result.status;
                         if (t_status == "1") {
@@ -162,10 +162,10 @@ function recoverTkt() {
         $('#current_ticket').text(r.ticket_id);
         var autoTrans = "";
         if (r.AUTO_TRANS != undefined && r.biz_type_id != r.AUTO_TRANS) {
-            autoTrans = ","+$.i18n.prop('server.automatic.transfer');
+            autoTrans = "," + $.i18n.prop('server.automatic.transfer');
         }
         setTicketStateBar(r.ticket_id + "," + r.biz_name + "," + r.type_name
-            + autoTrans);
+                + autoTrans);
     }
 }
 
@@ -173,10 +173,10 @@ function recoverTkt() {
 function showUserInfo() {
     if (evalType == 'SCREEN') {
         var url = basePath + "client/seat/userInfo?rand=" + Math.random()
-            + "&userId=" + userId;
+                + "&userId=" + userId;
         try {
             var r = double_screen_obj.ExternOpenUrl(url);
-            
+
             screen_tag = doubleScreen_sta;
             setScreenButton();
         } catch (e) {
@@ -186,12 +186,12 @@ function showUserInfo() {
 
 
 function call(tid) {
-    
+
     if (autoCall_Timer != null) {
         clearTimeout(autoCall_Timer);
     }
-    //if(isLockProcess(call_sta)  || (tid == 'auto' && $("#pause_icon").is(":hidden") == false)){
-    if (isLockProcess(call_sta) || (tid == 'auto' && $("#pause_icon").is(":hidden") == false)) {
+    
+    if (isLockProcess(call_sta) || (tid == 'auto' && $("#pause_icon").is(":hidden") === false)) {
         setTicketStateBar($.i18n.prop('server.call.fail'));
         return;
     } else {
@@ -215,12 +215,12 @@ function call(tid) {
     if (tid != undefined && tid != "" && (tid instanceof Object) == false) {
         pars['bizid'] = tid;
     }
-    
+
     $.ajax({
-        url     : basePath + 'client/seat/call',
-        type    : 'post',
-        data    : pars,
-        success : function (r) {
+        url: basePath + 'client/seat/call',
+        type: 'post',
+        data: pars,
+        success: function (r) {
             if (r.error != undefined && r.error != '') {
                 setTicketStateBar(r.error);
             } else {
@@ -232,33 +232,31 @@ function call(tid) {
                 op_tag = call_sta;
                 setButton();
                 saveTicket2Cookie(r);
-                
-                console.log(r);
                 $('#current_ticket').text(r.ticket_id);
                 var autoTrans = "";
                 if (r.auto_trans && r.biz_type_id != r.auto_trans) {
-                    autoTrans = ","+$.i18n.prop('server.automatic.transfer');
+                    autoTrans = "," + $.i18n.prop('server.automatic.transfer');
                 }
                 setTransferedTag('N');
                 setTicketStateBar(r.ticket_id + "," + r.biz_name + ","
-                    + r.type_name + autoTrans);
+                        + r.type_name + autoTrans);
                 setNsrStateBar(r.id_card_name, r.id_card_info_id)
-                
+
                 if (autoDeal == 1) {
                     deal();
                 }
-                
+
                 openDscreenCall(r.ticket_id);
 
-                
+
                 if (auto_call_tag) {
                     var MSG1 = new CLASS_MSN_MESSAGE("autoCall", 300, 160, "",
-                        $.i18n.prop('server.auto.call.reminder'), $.i18n.prop('server.enable.automatic.call')+"<span style='color: red'>" + r.ticket_id + "</span>", "_blank");
+                            $.i18n.prop('server.auto.call.reminder'), $.i18n.prop('server.enable.automatic.call') + "<span style='color: red'>" + r.ticket_id + "</span>", "_blank");
                     MSG1.show();
                 }
             }
         },
-        error   : function () {
+        error: function () {
             setTicketStateBar(sys_error);
         },
         complete: function () {
@@ -274,13 +272,13 @@ function showNsrMessage(tid) {
 }
 
 function queryIsCa(sbh) {
-    var url = basePath+'client/ticket/isCaUser?rand=' + Math.random();
+    var url = basePath + 'client/ticket/isCaUser?rand=' + Math.random();
     var par = {};
     par.nsrsbh = sbh;
     $.getJSON(url, par, function (d) {
         if (d != undefined && d.isCaUser) {
             var str = $('#nsr_state_bar marquee').text();
-            $('#nsr_state_bar marquee').text($.i18n.prop('server.CA.auth.user')+"," + str);
+            $('#nsr_state_bar marquee').text($.i18n.prop('server.CA.auth.user') + "," + str);
         }
     });
 }
@@ -293,12 +291,12 @@ function reCall() {
         return;
     }
     var url = basePath + 'client/seat/reCall?id='
-        + tid + "&rand=" + Math.random();
+            + tid + "&rand=" + Math.random();
     $.get(url, function (r) {
         if (r.error != undefined && r.error != '') {
             setTicketStateBar(r.error);
         } else {
-            
+
             openDscreenCall($.cookie('fvts_seat_ticketId'));
         }
     });
@@ -307,11 +305,11 @@ function reCall() {
 function abandonCall() {
     op_tag = abandon_sta;
     var url = basePath + "client/seat/abandonCall?action=load&rand="
-        + Math.random();
+            + Math.random();
     var ti = showModDialog(url, 600, 420);
     if (ti != undefined) {
         var str = ti.split("_");
-        url = basePath+"client/seat/abandonCall?action=do&rand=" + Math.random();
+        url = basePath + "client/seat/abandonCall?action=do&rand=" + Math.random();
         var par = {};
         par.id = str[0];
         par.tBizTypeId = str[1];
@@ -331,8 +329,8 @@ function abandonCall() {
                 saveTicket2Cookie(r);
                 $('#current_ticket').text(r.ticketId);
                 setTicketStateBar(r.ticket_id + "," + r.biz_name + ","
-                    + r.type_name);
-                
+                        + r.type_name);
+
                 if (autoDeal == 1) {
                     deal();
                 }
@@ -346,10 +344,10 @@ function abandonCall() {
 function specialCall() {
     op_tag = specialCall_sta;
     var url = basePath + "client/seat/specialCall?action=load&rand="
-        + Math.random();
+            + Math.random();
     var ti = showModDialog(url, 550, 420);
     if (ti != undefined) {
-        url = basePath+"client/seat/specialCall?action=do&rand=" + Math.random();
+        url = basePath + "client/seat/specialCall?action=do&rand=" + Math.random();
         var par = {};
         par.tid = ti;
         $.get(url, par, function (r) {
@@ -366,8 +364,8 @@ function specialCall() {
                 saveTicket2Cookie(r);
                 $('#current_ticket').text(r.ticket_id);
                 setTicketStateBar(r.ticket_id + "," + r.biz_name + ","
-                    + r.type_name);
-                
+                        + r.type_name);
+
                 if (autoDeal == 1) {
                     deal();
                 }
@@ -380,10 +378,10 @@ function specialCall() {
 function seccall() {
     op_tag = seccall_sta;
     var url = basePath + "client/seat/seccall?action=load&rand="
-        + Math.random();
+            + Math.random();
     var ti = showModDialog(url, 400, 160);
     if (ti != undefined) {
-        url = basePath+"client/seat/seccall?action=do&rand=" + Math.random();
+        url = basePath + "client/seat/seccall?action=do&rand=" + Math.random();
         var par = {};
         par.tid = ti;
         $.get(url, par, function (r) {
@@ -400,7 +398,7 @@ function seccall() {
 
 function transfer(tag, needFin) {
     var seccallTran = false;
-    needFin = (!needFin?true:needFin);
+    needFin = (!needFin ? true : needFin);
     if (op_tag == seccall_sta) {
         seccallTran = true;
         needFin = false;
@@ -408,7 +406,7 @@ function transfer(tag, needFin) {
     var bizid;
     op_tag = specialCall_sta;
     var url = basePath + "client/seat/transfer?bizid="
-        + $.cookie('fvts_seat_bizType') + "&rand=" + Math.random();
+            + $.cookie('fvts_seat_bizType') + "&rand=" + Math.random();
     if (tag != undefined && (tag.type == "bizTrans" || tag.type == "winTrans")) {
         bizid = tag;
     } else {
@@ -418,13 +416,13 @@ function transfer(tag, needFin) {
         var par = {};
         if (bizid.type == "bizTrans") {
             url = basePath + "client/seat/transfer?action=bizTrans&rand="
-                + Math.random();
+                    + Math.random();
             par.tId = getTidFromCookie();
             par.bizId = bizid.id;
             par.priority = bizid.priority;
         } else if (bizid.type == "winTrans") {
             url = basePath + "client/seat/transfer?action=winTrans&rand="
-                + Math.random();
+                    + Math.random();
             par.tId = getTidFromCookie();
             par.winId = bizid.id;
             par.priority = bizid.priority;
@@ -461,9 +459,9 @@ function suspend() {
     }
 
     $.ajax({
-        url    : basePath + "client/seat/suspend",
-        type   : 'post',
-        data   : url,
+        url: basePath + "client/seat/suspend",
+        type: 'post',
+        data: url,
         success: function (r) {
             unlockProcess();
             if (r.error != undefined && r.error != '') {
@@ -477,7 +475,7 @@ function suspend() {
                 showUserInfo();
             }
         },
-        error  : function () {
+        error: function () {
             unlockProcess();
             setTicketStateBar(sys_error);
         }
@@ -489,11 +487,11 @@ function continued() {
     op_tag = continued_sta;
     setButton();
     var url = basePath + "client/seat/suspendCall?action=load&rand="
-        + Math.random();
+            + Math.random();
     var ti = showModDialog(url, 550, 420);
     if (ti != undefined) {
         var str = ti.split("_");
-        url = basePath+"client/seat/suspendCall?action=do&rand=" + Math.random();
+        url = basePath + "client/seat/suspendCall?action=do&rand=" + Math.random();
         var par = {};
         par.id = str[0];
         par.tBizTypeId = str[1];
@@ -513,7 +511,7 @@ function continued() {
                 saveTicket2Cookie(r);
                 $('#current_ticket').text(r.ticket_id);
                 setTicketStateBar(r.ticket_id + "," + r.biz_name + ","
-                    + r.type_name);
+                        + r.type_name);
                 if (autoDeal == 1) {
                     deal();
                 }
@@ -559,9 +557,9 @@ function doRefuseDeal() {
     var url = 'tid=' + tid;
 
     $.ajax({
-        url    : basePath + "client/seat/refuseDeal",
-        type   : 'post',
-        data   : url,
+        url: basePath + "client/seat/refuseDeal",
+        type: 'post',
+        data: url,
         success: function (t) {
             if (t) {
                 abandon();
@@ -574,39 +572,39 @@ function doRefuseDeal() {
 function deal() {
     doStartCall();
     /*
-    var tid = getTidFromCookie();
-    var url = 'tid=' + tid;
-    $.ajax({
-        url: basePath + "client/seat/dealCheck",
-        type: 'post',
-        data: url,
-        success: function (t) {
-            
-            if (t != null) {
-                var idCardId = t.id;
-                if (idCardId != null && idCardId != "") {
-                        var modelUrl = basePath + "client/seat/showIdCardInfo?idCardId=" + idCardId + "&tid="+tid+"&action=load&rand=" + Math.random();
-
-                        var result = showModDialog(modelUrl, 850, 520);
-                        if (result == '1') {
-                            doStartCall();
-                        } else if (result == "0") {
-                            doRefuseDeal();
-                        }
-                } else { 
-                    doStartCall();
-                }
-            }
-
-        }
-    });
-*/
+     var tid = getTidFromCookie();
+     var url = 'tid=' + tid;
+     $.ajax({
+     url: basePath + "client/seat/dealCheck",
+     type: 'post',
+     data: url,
+     success: function (t) {
+     
+     if (t != null) {
+     var idCardId = t.id;
+     if (idCardId != null && idCardId != "") {
+     var modelUrl = basePath + "client/seat/showIdCardInfo?idCardId=" + idCardId + "&tid="+tid+"&action=load&rand=" + Math.random();
+     
+     var result = showModDialog(modelUrl, 850, 520);
+     if (result == '1') {
+     doStartCall();
+     } else if (result == "0") {
+     doRefuseDeal();
+     }
+     } else { 
+     doStartCall();
+     }
+     }
+     
+     }
+     });
+     */
 }
 
 function doStartCall() {
     var tid = getTidFromCookie();
     var url = 'tid=' + tid;
-    if(!tid ){
+    if (!tid) {
         return;
     }
     if (isLockProcess(start_sta)) {
@@ -615,14 +613,14 @@ function doStartCall() {
         lockProcess(start_sta);
     }
 
-    
+
     wxTag = 0;
 
     $.ajax({
-        url    : basePath + "client/seat/deal",
-        type   : 'post',
+        url: basePath + "client/seat/deal",
+        type: 'post',
         //async:false,
-        data   : url,
+        data: url,
         success: function (r) {
             unlockProcess();
             if (r.error != undefined && r.error != '') {
@@ -634,7 +632,7 @@ function doStartCall() {
                 playWelcome();
             }
         },
-        error  : function () {
+        error: function () {
             unlockProcess();
             setTicketStateBar(sys_error);
         }
@@ -647,7 +645,7 @@ function finish() {
     if (!tid) {
         return;
     }
-    
+
     if (record_items == '1' && machineAccount_tag != "1" && luruGZL_tag != "1") {
         evaluation(setBizItemCount);
     } else {
@@ -658,7 +656,7 @@ function finish() {
 function evaluation(func) {
     var evalRet = -1;
     if (enableEval == 1 && wxTag != 1) {
-        if (evalType == "BUTTON") { 
+        if (evalType == "BUTTON") {
             //var obj = getEvaluation('evalFac');
             var obj = getEvaluationByToolFac(eval_tool_fac);
             if (obj == null) {
@@ -666,7 +664,7 @@ function evaluation(func) {
             } else {
                 obj.receive(timeoutSec, func);
             }
-        } else if (evalType == "SCREEN") { 
+        } else if (evalType == "SCREEN") {
             $(document).mask($.i18n.prop('server.waiting.evaluation'));
             try {
                 palyEval();
@@ -686,9 +684,9 @@ function evaluation(func) {
 
 function setBizItemCount(evalRet) {
     var tkid = getTidFromCookie();
-    
+
     var urlshow = basePath + 'client/seat/finishBiz?action=show&tid=' + tkid
-        + "&rand=" + Math.random();
+            + "&rand=" + Math.random();
     var msg = showModDialog(urlshow, 900, 460);
     if ("success" == msg) {
         finishAction(evalRet);
@@ -699,17 +697,17 @@ function setBizItemCount(evalRet) {
             //$(document).unmask();
         }
     } else {
-       // $(document).unmask();
+        // $(document).unmask();
     }
 }
 
 function finishAction(evalRet) {
     var tid = getTidFromCookie();
-    if(!tid ){
+    if (!tid) {
         return;
     }
-    var url = basePath+'client/seat/finish?tid=' + tid + "&evalRet=" + evalRet
-        + "&rand=" + Math.random();
+    var url = basePath + 'client/seat/finish?tid=' + tid + "&evalRet=" + evalRet
+            + "&rand=" + Math.random();
     $.get(url, function (r) {
         if (r.error != undefined && r.error != '') {
             setTicketStateBar(r.error);
@@ -729,17 +727,17 @@ function finishAction(evalRet) {
 function trans() {
     var transfered = getTransferedTag();
     if (transfered == 'Y') {
-       
+
         return;
     }
     var autotrans = getAutotransFromCookie();
     if (autotrans != undefined && autotrans != '') {
         var url = "client/seat/getBizInfo?bizId=" + autotrans + "&rand="
-            + Math.random();
+                + Math.random();
         $.get(url, function (r) {
             if (r.name != undefined) {
-                var result=true;
-                if(showTransferConfirm && showTransferConfirm == "yes"){
+                var result = true;
+                if (showTransferConfirm && showTransferConfirm == "yes") {
                     result = confirm($.i18n.prop('server.auto.transferred.business') + '【' + r.name + '】？');
                 }
                 if (result) {
@@ -759,7 +757,7 @@ function trans() {
 function abandon() {
     //alert(111);
     var tid = getTidFromCookie();
-    if(!tid ){
+    if (!tid) {
         return;
     }
     var url = 'tid=' + tid;
@@ -769,9 +767,9 @@ function abandon() {
         lockProcess(abandon_sta);
     }
     $.ajax({
-        url    : basePath + "client/seat/abandon",
-        type   : "post",
-        data   : url,
+        url: basePath + "client/seat/abandon",
+        type: "post",
+        data: url,
         success: function (r) {
             unlockProcess();
             t_clock('stop');
@@ -784,7 +782,7 @@ function abandon() {
                 showUserInfo();
             }
         },
-        error  : function () {
+        error: function () {
             unlockProcess();
             setTicketStateBar(sys_error);
         }
@@ -837,7 +835,7 @@ function bindEvent2Button() {
 
 
 function setButton() {
-    
+
     $("#batch_handle").removeAttr("checked");
     switch (op_tag) {
         case call_sta :
@@ -977,7 +975,7 @@ function setButton() {
             return_btn.hide();
             setTicketStateBar('---');
             $('#current_ticket').text('');
-        //return;
+            //return;
     }
     if (machineAccount_tag != "1") {
         try {
@@ -1024,10 +1022,10 @@ function showModDialog(url, width, height, model) {
     var top = (screen.height - height) / 2 - 100;
     var left = (screen.width - width) / 2;
     var param = "dialogHeight:" + height + "px;dialogWidth:" + width
-        + "px;dialogTop:" + top + "px;dialogLeft:" + left
-        + "px;resizable:no;status:no;scroll:no;";
-    url+="&lang="+getNowLanguage();
-    return window.showModalDialog(url, window, param);
+            + "px;dialogTop:" + top + "px;dialogLeft:" + left
+            + "px;resizable:no;status:no;scroll:no;";
+    url += "&lang=" + getNowLanguage();
+    return window.open(url, window, param);
     /*if (model==false) {
      return window.showModelessDialog(url, window, param);
      }else
@@ -1044,7 +1042,7 @@ function showNotice(n_id) {
 
 function queryTicket() {
     var url = basePath + "client/seat/queryTicket?action=load&rand="
-        + Math.random();
+            + Math.random();
     showModDialog(url, 720, 420);
 }
 
@@ -1065,17 +1063,18 @@ function pickNotice() {
 function setOnline() {
     var url;
     if ($("#ticket_state_bar").text() == $.i18n.prop('json.msg.unableCall3') ||
-        $("#ticket_state_bar").text() == '---'
-    ) {
-        url = basePath + "client/online?rand=" + Math.random() + "&status=1"
+            $("#ticket_state_bar").text() == '---'
+            ) {
+        url = basePath + "client/online?rand=" + Math.random() + "&status=1";
     } else {
-        url = basePath + "client/online?rand=" + Math.random() + "&status=0"
+        url = basePath + "client/online?rand=" + Math.random() + "&status=0";
     }
     $.get(url, function (r) {
         if (r.error != '') {
             setTicketStateBar($.i18n.prop('public.operate.fail'));
         }
         togglePaus();
+        $('#statusImg').attr('src', './img/icon/online.png');
         if (evalType == 'SCREEN') {
             var url = basePath + "client/seat/userInfo?rand=" + Math.random() + "&userId=" + userId;
 
@@ -1101,7 +1100,7 @@ function setStop() {
 
 function toStop(type) {
     //$("#stopIcon").find("ul").hide();
-    $('#sta_icon').attr('src', icon_src + 'menu02.gif');
+    $('#statusImg').attr('src', './img/icon/pause.png');
     var pauseTime = "0";
     if (type) {
         pauseTime = type;
@@ -1125,19 +1124,23 @@ function toStop(type) {
 
 
 function setLogoff(status) {
-    
     flag = 1;
     clearInterval(freshBizTick);
-    var url = basePath+"client/logout";
+    var url = basePath + "client/logout";
     $.ajax({
-        url    : url,
-        type   : "post",
-        async  : false,
-        data   : {"status": status},
+        url: url,
+        type: "post",
+        async: false,
+        data: {"status": status},
         success: function () {
-            window.location.href = loginUrl;
+            //window.location.href = loginUrl;
+            
+            //changing status to disconected
+            $.post("./ChangeStatus", {status:0}, function (data) {
+                window.location = "./index.jsp";
+            });
         },
-        error  : function () {
+        error: function () {
             window.location.href = loginUrl;
         }
     });
@@ -1147,18 +1150,18 @@ function setLogoff(status) {
 function setLogout() {
     flag = 1;
     clearInterval(freshBizTick);
-    var url = basePath+"client/logout";
+    var url = basePath + "client/logout";
     $.ajax({
-        url    : url,
-        type   : "post",
-        async  : false,
-        data   : {"status": status},
+        url: url,
+        type: "post",
+        async: false,
+        data: {"status": status},
         success: function () {
             window.opener = null;
             window.open('', '_self');
             window.close();
         },
-        error  : function () {
+        error: function () {
             window.opener = null;
             window.open('', '_self');
             window.close();
@@ -1167,7 +1170,7 @@ function setLogout() {
 }
 
 function saveTicket2Cookie(t) {
-    
+
     $.cookie('fvts_seat_tid', '');
     $.cookie('fvts_seat_ticketId', '');
     $.cookie('fvts_seat_callLanguage', '');
@@ -1261,23 +1264,23 @@ function reFreshBiz(windowId, userId, flag) {
         if (r != undefined) {
             if (biz_length != undefined && r.length != biz_length) {
                 var MSG1 = new CLASS_MSN_MESSAGE("bizChange", 300, 160, "",
-                    $.i18n.prop('server.ticket.tip'), $.i18n.prop('server.window.ability'), "_blank");
+                        $.i18n.prop('server.ticket.tip'), $.i18n.prop('server.window.ability'), "_blank");
                 MSG1.show();
             }
             biz_length = r.length;
             l.empty();
             var show = false;
             $.each(r, function (i, d) {
-                var html = "<li class='list-group-item d-flex justify-content-between align-items-center'>"
-                    + d.bizname
-                    + "<span  class='badge badge-primary badge-pill' title="+$.i18n.prop('server.now.waiting.number')+">"
-                    + (d.waitcount < 0 ? 0 : d.waitcount);
+                var html = "<li class='list-group-item d-flex justify-content-between align-items-center font-weight-bold'>"
+                        + d.bizname
+                        + "<span  class='badge badge-primary badge-pill' title=" + $.i18n.prop('server.now.waiting.number') + ">"
+                        + (d.waitcount < 0 ? 0 : d.waitcount);
 
-                
+
                 if (d.nextticket) {
-                    html = html + "</span><span title="+$.i18n.prop('page.tickettype.next.number')+">"
-                        + d.nextticket
-                        + "</span>";
+                    html = html + "</span><span title=" + $.i18n.prop('page.tickettype.next.number') + ">"
+                            + d.nextticket
+                            + "</span>";
                 }
                 html = html + "</span></li>";
 
@@ -1291,7 +1294,7 @@ function reFreshBiz(windowId, userId, flag) {
                 iswait = true;
                 autoCall();
                 var MSG2 = new CLASS_MSN_MESSAGE("isWaiting", 300, 160, "",
-                    $.i18n.prop('server.ticket.tip'), $.i18n.prop('server.waiting.business'), "_blank");
+                        $.i18n.prop('server.ticket.tip'), $.i18n.prop('server.waiting.business'), "_blank");
                 //MSG2.show();
             } else if (!show && iswait) {
                 iswait = false;
@@ -1301,26 +1304,26 @@ function reFreshBiz(windowId, userId, flag) {
     });
 
     /*
-        if (flag == 0) {
-            var checkUrl = basePath + "client/seat/checkBeforeFreshBiz?rand=" + Math.random()
-                + "&windowId=" + windowId + "&userId=" + userId;
-
-            $.getJSON(checkUrl, function (r) {
-                if (r == 'relogin') {
-                    alert("当前窗口登陆时间已超过1天,请重新登录!");
-                    setLogoff(0);
-                    return;
-                } else if (r == 'continue') {} else if (r == 'exit') {
-                    alert("当前窗口的用户名为空，将强行退出!");
-                    setLogoff(1);
-                    return;
-                } else {
-                    alert(r);
-                    setLogoff(1);
-                    return;
-                }
-            });
-        }*/
+     if (flag == 0) {
+     var checkUrl = basePath + "client/seat/checkBeforeFreshBiz?rand=" + Math.random()
+     + "&windowId=" + windowId + "&userId=" + userId;
+     
+     $.getJSON(checkUrl, function (r) {
+     if (r == 'relogin') {
+     alert("当前窗口登陆时间已超过1天,请重新登录!");
+     setLogoff(0);
+     return;
+     } else if (r == 'continue') {} else if (r == 'exit') {
+     alert("当前窗口的用户名为空，将强行退出!");
+     setLogoff(1);
+     return;
+     } else {
+     alert(r);
+     setLogoff(1);
+     return;
+     }
+     });
+     }*/
 }
 
 
@@ -1330,23 +1333,26 @@ function returnCallSta() {
 }
 
 function togglePaus(tag) {
-    if (tag == 1) {
+    if (tag === 1) {
         $('#pause_icon').show();
-        $('.icon > ul').hide();
-        if (autoCall_Timer != null) {
+        $('#controlPanel').hide();
+        $('#displayPanel').hide();
+        
+        if (autoCall_Timer !== null) {
             clearTimeout(autoCall_Timer);
         }
     } else {
         $('#pause_icon').hide();
-        $('.icon > ul').show();
+        $('#controlPanel').show();
+        $('#displayPanel').show();
     }
 }
 
 
 function playWelcome() {
-    
+
     if (enableEval == 1) {
-        if (evalType == "BUTTON") { 
+        if (evalType == "BUTTON") {
             //var evalObj = getEvaluation("evalFac");
             var evalObj = getEvaluationByToolFac(eval_tool_fac);
             if (evalObj != null) {
@@ -1420,26 +1426,26 @@ function readEval(callback) {
 }
 
 var tim = 1;
-var $timer=$("#timer_");
-var $timer_mask=$("#timer_mask");
+var $timer = document.getElementById( "timer_" );
+var $timer_mask = document.getElementById( "timer_mask" );
 var countTime = false;
 
 function t_clock(t) {
     if (t == 'start') {
-        $timer.text('1');
+        $($timer).html('1');
         tim = 1;
-        $timer.show();
-        $timer_mask.hide();
+        $($timer).show();
+        $($timer_mask).hide();
         countTime = true;
     } else if (t == 'stop') {
         if (auto_call_tag == true) {
-            $timer.text(autoCallTime / 1000);
+            $($timer).html(autoCallTime / 1000);
         }
         tim = 1;
-        
+
         if (auto_call_tag == false) {
-            $timer.hide();
-            $timer_mask.show();
+            $($timer).hide();
+            $($timer_mask).show();
         }
         countTime = false;
     }
@@ -1453,22 +1459,22 @@ function timerTick() {
         $timer_mask = $('#timer_mask');
     }
     if (auto_call_tag == true && countTime == false) {
-        $timer.text(autoCallTime / 1000 - tim);
+        $($timer).html(autoCallTime / 1000 - tim);
         if (autoCallTime / 1000 - tim == 0) {
-            $timer.hide();
-            $timer_mask.show();
+            $($timer).hide();
+            $($timer_mask).show();
         }
     } else {
-        $timer.text(tim);
+        $($timer).html(tim);
     }
     if (tim >= dealTimeWarn && dealTimeWarn > 0 && countTime == true) {
         var mes = "";
-        mes += $.i18n.prop('server.business.long.time')+"<font color='red'>" + (dealTimeWarn / 60)
-            + "</font>"+$.i18n.prop('server.min')+"</div>";
+        mes += $.i18n.prop('server.business.long.time') + "<font color='red'>" + (dealTimeWarn / 60)
+                + "</font>" + $.i18n.prop('server.min') + "</div>";
         var MSG1 = new CLASS_MSN_MESSAGE("warningInfo", 350, 120, "", $.i18n.prop('server.warning.message'),
-            mes, "_blank", function () {
-                return false;
-            });
+                mes, "_blank", function () {
+                    return false;
+                });
         MSG1.show();
 
         dealTimeWarn = 0;
@@ -1481,7 +1487,7 @@ function timerTick() {
 
 function openWindowInfo() {
     var url = basePath + "client/seat/windowInfo?userId=" + userId
-        + "&rand=" + Math.random();
+            + "&rand=" + Math.random();
     showModDialog(url, 500, 380);
 }
 
@@ -1548,13 +1554,13 @@ function buluMachineAccount() {
 
 
 function openDscreenCall(ticket) {
-    
+
     if (evalType == 'SCREEN') {
         var url = basePath + "client/seat/dscreenCall?rand=" + Math.random() + "&ticket=" + ticket + "&tid=" + getTidFromCookie();
         try {
             // alert(ticket);
             double_screen_obj.ExternOpenUrl(url);
-            
+
             setTimeout("showUserInfo()", 30000);
         } catch (e) {
         }
@@ -1563,7 +1569,7 @@ function openDscreenCall(ticket) {
 
 
 function openDscreenEval() {
-    
+
     if (evalType == 'SCREEN') {
         var url = basePath + "client/seat/dscreenEval?rand=" + Math.random();
         try {
@@ -1575,7 +1581,7 @@ function openDscreenEval() {
 
 
 function openDscreenBatchHandle() {
-    
+
     if (evalType == 'SCREEN') {
         var url = basePath + "client/seat/dscreenBatchHandle?branchId=" + branchId + "&rand=" + Math.random();
         try {
