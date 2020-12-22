@@ -50,75 +50,71 @@
                 <div class="col-12 col-md-9 mx-auto" >
 
                     <div class="col-12 p-2">       
-                        <a href="javascript:void(0);" onclick="queryTicket();return false;" onfocus="blur()" class="btn btn-secondary">
-                            Query
-                        </a> 
+
                         <c:if test='${ENABLE_PICK_BIZ_CALL != "0"}'>
-                            <a href="javascript:void(0);" onclick="setBiz();return false;" onfocus="blur()" class="btn btn-secondary"/>
-                            Call customize
-                            </a> 
+                            
                         </c:if>
-                        <c:if test='${SET_BIZ_BY_WIN == "yes"}'>
-                            <a href="javascript:void(0);" onclick="openSetBizWindow();return false;"
-                               onfocus="blur()"  class="btn btn-secondary"/> Setup bus 
-                            </a> 
+                        <c:if test='${SET_BIZ_BY_WIN != "yes"}'>
+                            
                         </c:if>
                     </div>
                     <div class="col-12 my-4 py-4" id="displayPanel">
                         <h1 class="text-white text-center" id="current_ticket"></h1>
                         <h2 id="ticket_state_bar" class="text-white text-center">---</h2>
-                        <h4 id="nsr_state_bar" class="text-center text-danger"></h4>
+                        <h4 id="nsr_state_bar" class="text-center text-white"></h4>
                     </div>
                     <div id="pause_icon" style="display:none" class="col-12 m-4">
                         <img src="./img/icon/pause-big.png" class="img-fluid mx-auto d-block">
                     </div>
 
                     <div class="col-12 p-2" id="controlPanel">
+                        <div class="mx-auto d-md-flex justify-content-md-center col-12">
+                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="call_btn">
+                                <img src="./img/icon/call.png" class="pb-1 m-0"/> Suivant
+                            </a>
+                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="abandonCall_btn"> 
+                                <img src="./img/icon/recall.png" class="pb-1 m-0"/> Recall
+                            </a>
+                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="continue_btn">
+                                <img src="./img/icon/continue.png" class="pb-1 m-0"/> Continue
+                            </a>
+                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="start_btn">
+                                <img src="./img/icon/call.png" class="pb-1 m-0"/> Début
+                            </a>
+                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="finish_btn">
+                                <img src="./img/icon/deal.png" class="pb-1 m-0"/> Traité
+                            </a>
+                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="abandon_btn">
+                                <img src="./img/icon/giveup.png" class="pb-1 m-0"/> Absent
+                            </a>
+                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="reCall_btn"> 
+                                <img src="./img/icon/call.png" class="pb-1 m-0"/> Additional
+                            </a>
+                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="transfer_btn">
+                                <img src="./img/icon/trans.png" class="pb-1 m-0"/> Transfer
+                            </a>
+                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="suspend_btn">
+                                <img src="./img/icon/interrupt.png" class="pb-1 m-0"/> Interrompre
+                            </a>
+                        </div>
+                        <div class="mx-auto d-md-flex justify-content-md-center col-12">
+                            <a class="btn btn-secondary m-1" id="specialCall_btn"> 
+                                specific
+                            </a>
+                            <a class="btn btn-warning m-1" id="return_btn">
+                                return.turn
+                            </a>
+                            <a class="btn btn-secondary m-1" id="doubleScreen_btn">
+                                double.screen
+                            </a>
+                            <a class="btn btn-secondary m-1" id="singleScreen_btn"> 
+                                single.screen
+                            </a>
+                            <a class="btn btn-secondary m-1" id="screenShot_btn">
+                                screenshots
+                            </a>
+                        </div>
 
-                        <a class="btn btn-lg bg-costum p-4 text-white border" id="call_btn"/>
-                        <img src="./img/icon/call.png" class="pb-1 m-0"/>
-                            Suivant
-                        </a>
-                        <a class="btn btn-secondary" id="reCall_btn"/> 
-                        additional
-                        </a>
-                        <a class="btn btn-danger" id="abandonCall_btn"/> 
-                        abandonment
-                        </a>
-                        <a class="btn btn-secondary" id="specialCall_btn"/> 
-                        specific
-                        </a>
-                        <a class="btn btn-primary" id="transfer_btn"/>
-                        transfer
-                        </a>
-                        <a class="btn btn-danger" id="suspend_btn"/>
-                        interrupt
-                        </a>
-                        <a class="btn btn-primary" id="continue_btn"/>
-                        continue
-                        </a>
-                        <a class="btn btn-lg bg-costum p-4 text-white border" id="start_btn"/>
-                        <img src="./img/icon/call.png" class="pb-1 m-0"/>
-                        start
-                        </a>
-                        <a class="btn btn-danger" id="abandon_btn"/>
-                        give.up>
-                        </a>
-                        <a class="btn btn-lg btn-success" id="finish_btn"/>
-                        complete
-                        </a>
-                        <a class="btn btn-warning" id="return_btn"/>
-                        return.turn
-                        </a>
-                        <a class="btn btn-secondary" id="doubleScreen_btn"/>
-                        double.screen
-                        </a>
-                        <a class="btn btn-secondary" id="singleScreen_btn"/> 
-                        single.screen
-                        </a>
-                        <a class="btn btn-secondary" id="screenShot_btn"/>
-                        screenshots
-                        </a>
                         <div>
                             <span>Auto:</span>
                             <c:if test='${auto_call == "1"}'>

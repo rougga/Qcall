@@ -13,3 +13,6 @@ a{
 .bg-costum:hover{
     opacity: .8;
 }
+.appHover:hover{
+    background-color: #00cc66;
+}
