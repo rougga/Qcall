@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark " style="background-color: #004F2D;">
+<nav class="navbar navbar-expand-lg navbar-dark " style="background-color: #0A8754;">
     <a class="navbar-brand" href="#">Qcall</a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -61,3 +61,11 @@
         </ul>
     </div> 
 </nav>
+      
+
+                            <c:if test='${ENABLE_PICK_BIZ_CALL != "0"}'>
+
+                            </c:if>
+                            <c:if test='${SET_BIZ_BY_WIN != "yes"}'>
+
+                            </c:if>

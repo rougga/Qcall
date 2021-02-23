@@ -5,13 +5,14 @@ a{
    
 }
 .body{
-    background-color: #0A8754;
+    background-color: lightgray /*#0A8754*/;
+    
 }
 .bg-costum{
-    background-color: #004F2D;
+    background-color: /*#004F2D*/ #0A8754;
 }
 .bg-costum:hover{
-    opacity: .8;
+    background-color:#004F2D;
 }
 .appHover:hover{
     background-color: #00cc66;

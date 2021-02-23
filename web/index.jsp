@@ -10,6 +10,7 @@
         <link rel="icon" type="image/png" href="./img/favicon-32x32.png">
         <script src="./js/lib/jquery.js"></script>
         <link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="./css/body.css" rel="stylesheet" type="text/css"/>
         <script src="./js/lib/bootstrap.bundle.min.js"></script>
         <script src="./js/script.js"></script>
         <script src="./js/login.js"></script>
@@ -24,16 +25,16 @@
                 </button>
             </div>
             <div class="col-12 col-md-6 mx-auto mt-4">
-                <h1 class="text-center text-white">CallPad</h1>
+                <h1 class="text-center text-white"><img src="img/qcall.png" class="img-fluid"/></h1>
                 <h4 class="text-white">Connexion:</h4>
                 <form action="Login" method="POST" class="form text-white">
                     <div class="form-group">
                         <label for="username"><img src="img/user.png" alt=""/> Utilisateur:</label>
-                        <input type="text" id="username" class="form-control"/>
+                        <input type="text" id="username" class="form-control p-4"/>
                     </div>
                     <div class="form-group">
                         <label for="password"><img src="img/pass.png" alt=""/> Mot de passe:</label>
-                        <input type="password" id="password" class="form-control"/>
+                        <input type="password" id="password" class="form-control p-4"/>
                     </div>
                     <div class="form-group">
                         <label for="window"><img src="img/guichet.png" alt=""/> Guichet:</label>
@@ -60,7 +61,7 @@
                     </div>
                     <input type="hidden" id="branchId" class="form-control"/>
                     <input type="hidden" id="windowText" value="Guichet 11" class="form-control"/>
-                    <button type="button" id="submit" class="btn btn-primary btn-lg float-right"><img src="img/login.png" alt=""/> Connexion</button>
+                    <button type="button" id="submit" class="btn bg-costum btn-lg float-right text-white"><img src="img/login.png" alt=""/> Connexion</button>
                     <a href="#" id="settingsBtn" class="float-right btn btn-secondary mx-2 btn-lg "><img src="img/setting.png" alt=""/></a>
                     
                 </form>

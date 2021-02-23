@@ -40,77 +40,85 @@
         </script>
     </head>
     <body class="bg-dark">
-        <div class="container-md body p-0 min-vh-100">
+        <div class="container-lg body p-0 min-vh-100">
             <div>
                 <%@include file="./addon/navbar.jsp" %>
             </div>
-
-            <div>
-
-                <div class="col-12 col-md-9 mx-auto" >
-
-                    <div class="col-12 p-2">       
-
-                        <c:if test='${ENABLE_PICK_BIZ_CALL != "0"}'>
-                            
-                        </c:if>
-                        <c:if test='${SET_BIZ_BY_WIN != "yes"}'>
-                            
-                        </c:if>
-                    </div>
+            <div class="d-md-flex">
+                <div id="console" class="col-12 col-md-9">
                     <div class="col-12 my-4 py-4" id="displayPanel">
-                        <h1 class="text-white text-center" id="current_ticket"></h1>
-                        <h2 id="ticket_state_bar" class="text-white text-center">---</h2>
-                        <h4 id="nsr_state_bar" class="text-center text-white"></h4>
+                        <h1 class="text-dark text-center" id="current_ticket"></h1>
+                        <h2 id="ticket_state_bar" class="text-dark text-center">---</h2>
+                        <h4 id="nsr_state_bar" class="text-center text-dark"></h4>
+                        <h4 id="ticket_time" class="text-dark text-center">---</h4>
+                        <h2 class="text-center">
+                            Timer ：
+                            <span style="display:none" id="timer_" class="text-danger text-center"></span>
+                            <span id="timer_mask" class="text-danger text-center">0 sec</span>
+                        </h2>
+                        <h5 class="text-dark text-center">Totale Traité: <span id="todayUserDeal">0</span></h5>
                     </div>
-                    <div id="pause_icon" style="display:none" class="col-12 m-4">
-                        <img src="./img/icon/pause-big.png" class="img-fluid mx-auto d-block">
-                    </div>
-
                     <div class="col-12 p-2" id="controlPanel">
-                        <div class="mx-auto d-md-flex justify-content-md-center col-12">
-                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="call_btn">
+                        <div id="next" class="w-100">
+                            <a class="btn btn-lg bg-costum text-white border w-100 py-4 my-2" id="call_btn">
                                 <img src="./img/icon/call.png" class="pb-1 m-0"/> Suivant
                             </a>
-                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="abandonCall_btn"> 
-                                <img src="./img/icon/recall.png" class="pb-1 m-0"/> Recall
-                            </a>
-                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="continue_btn">
-                                <img src="./img/icon/continue.png" class="pb-1 m-0"/> Continue
-                            </a>
-                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="start_btn">
-                                <img src="./img/icon/call.png" class="pb-1 m-0"/> Début
-                            </a>
-                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="finish_btn">
-                                <img src="./img/icon/deal.png" class="pb-1 m-0"/> Traité
-                            </a>
-                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="abandon_btn">
-                                <img src="./img/icon/giveup.png" class="pb-1 m-0"/> Absent
-                            </a>
-                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="reCall_btn"> 
-                                <img src="./img/icon/call.png" class="pb-1 m-0"/> Additional
-                            </a>
-                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="transfer_btn">
-                                <img src="./img/icon/trans.png" class="pb-1 m-0"/> Transfer
-                            </a>
-                            <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="suspend_btn">
-                                <img src="./img/icon/interrupt.png" class="pb-1 m-0"/> Interrompre
+                            <a class="btn btn-lg bg-costum text-white border w-100 py-4 my-2" id="finish_btn">
+                                <img src="./img/icon/deal.png" class="pb-1 m-0"/> Suivant
                             </a>
                         </div>
+                        <div id="tasks" class="">
+                        </div>
+                        <div id="otherBtn" class="w-100">
+                            <!-- Call State -->
+                            <div class="d-flex">
+                                <a class="btn  bg-costum  text-white  px-0 py-2 m-1 " id="abandonCall_btn" style="width: 33%"> 
+                                    <img src="./img/icon/recall.png" class="pb-1 m-0"/> Rappel
+                                </a>
+                                <a class="btn  bg-costum  text-white px-0 py-2  m-1 " id="continue_btn" style="width: 33%">
+                                    <img src="./img/icon/continue.png" class="pb-1 m-0"/> Continue
+                                </a>
+                                <a class="btn bg-costum text-white  px-0 py-2  m-1 " id="specialCall_btn" style="width: 33%"> 
+                                    specific
+                                </a>
+                            </div>
+                            <!-- Deal State -->
+                            <div class="d-flex">
+                                <a class="btn bg-costum text-white  px-0 py-2  m-1 " id="abandon_btn" style="width: 33%">
+                                    <img src="./img/icon/giveup.png" class="pb-1 m-0"/> Absent
+                                </a>
+                                <a class="btn bg-costum text-white  px-0 py-2  m-1 " id="transfer_btn" style="width: 33%">
+                                    <img src="./img/icon/trans.png" class="pb-1 m-0"/> Transfer
+                                </a>
+                                <a class="btn bg-costum text-white  px-0 py-2  m-1 " id="suspend_btn" style="width: 33%">
+                                    <img src="./img/icon/interrupt.png" class="pb-1 m-0"/> Interrompre
+                                </a>
+                            </div>
+                            
+                            <div class="d-flex">
+                                <a class="btn bg-costum text-white  px-0 py-2  mx-auto " id="reCall_btn" style="width: 33%"> 
+                                    <img src="./img/icon/call.png" class="pb-1 m-0"/> Additional
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- removed step
+                        <a class="btn btn-lg bg-costum p-4 text-white border m-2" id="start_btn">
+                            <img src="./img/icon/call.png" class="pb-1 m-0"/> Début
+                        </a>
+                        -->
                         <div class="mx-auto d-md-flex justify-content-md-center col-12">
-                            <a class="btn btn-secondary m-1" id="specialCall_btn"> 
-                                specific
-                            </a>
+
                             <a class="btn btn-warning m-1" id="return_btn">
                                 return.turn
                             </a>
-                            <a class="btn btn-secondary m-1" id="doubleScreen_btn">
+                            <a class="btn btn-dark m-1" id="doubleScreen_btn">
                                 double.screen
                             </a>
-                            <a class="btn btn-secondary m-1" id="singleScreen_btn"> 
+                            <a class="btn btn-dark m-1" id="singleScreen_btn"> 
                                 single.screen
                             </a>
-                            <a class="btn btn-secondary m-1" id="screenShot_btn">
+                            <a class="btn btn-dark m-1" id="screenShot_btn">
                                 screenshots
                             </a>
                         </div>
@@ -136,18 +144,17 @@
                                 <input type="checkbox" id="enabel_auto_call" value="Y"
                                        style="vertical-align: middle;" ${au_ck} ${au_dis} /> 
                             </label>
-                            <h2>
-                                Timer ：
-                                <span style="display:none" id="timer_" class="text-white"></span>
-                                <span style="color:red;" id="timer_mask">--</span>
-                            </h2>
+
                         </div>
                     </div>
-                    <div  id="scrollDiv">
-                        <ul id="biz_list_" class=" list-group ">
-
-                        </ul>
+                    <div id="pause_icon" style="display:none" class="col-12 m-4">
+                        <img src="./img/icon/pause-128-black.png" class="img-fluid mx-auto d-block">
                     </div>
+                </div>
+                <div  id="scrollDiv" class="col-12 col-md-3 pt-2">
+                    <ul id="biz_list_" class=" list-group ">
+
+                    </ul>
                 </div>
             </div>
             <div>
@@ -184,7 +191,7 @@
     $(function () {
        // basePath = "http://<%=request.getLocalAddr() %>:8888/server/";
         basePath = getPath().base;
-        //loginUrl = "http://192.168.1.103:8888/Qcall/";
+        //loginUrl = "http://<%=request.getLocalAddr() %>:8888/Qcall/";
         loginUrl= getPath().login;
         evalType = '${eval_type}';
         autoDeal = '${auto_deal}';

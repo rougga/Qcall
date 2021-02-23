@@ -190,7 +190,7 @@ function call(tid) {
     if (autoCall_Timer != null) {
         clearTimeout(autoCall_Timer);
     }
-    
+
     if (isLockProcess(call_sta) || (tid == 'auto' && $("#pause_icon").is(":hidden") === false)) {
         setTicketStateBar($.i18n.prop('server.call.fail'));
         return;
@@ -238,14 +238,25 @@ function call(tid) {
                     autoTrans = "," + $.i18n.prop('server.automatic.transfer');
                 }
                 setTransferedTag('N');
-                setTicketStateBar(r.ticket_id + "," + r.biz_name + ","
+                setTicketStateBar(r.biz_name + ","
                         + r.type_name + autoTrans);
                 setNsrStateBar(r.id_card_name, r.id_card_info_id)
+                let pars2 = pars;
+                pars2.id_user = userId;
+                $.ajax({
+                    url: loginUrl + 'QCall/api/getInfo',
+                    type: 'post',
+                    data: pars2,
+                    success: function (r) {
+                        $('').html(r.ticketTime);
+                        $('').html(r.dealCount);
+                    }
+                });
 
-                if (autoDeal == 1) {
-                    deal();
-                }
-
+                /* if (autoDeal == 1) {
+                 deal();
+                 } */
+                deal();
                 openDscreenCall(r.ticket_id);
 
 
@@ -1134,9 +1145,9 @@ function setLogoff(status) {
         data: {"status": status},
         success: function () {
             //window.location.href = loginUrl;
-            
+
             //changing status to disconected
-            $.post("./ChangeStatus", {status:0}, function (data) {
+            $.post("./ChangeStatus", {status: 0}, function (data) {
                 window.location = "./index.jsp";
             });
         },
@@ -1272,17 +1283,19 @@ function reFreshBiz(windowId, userId, flag) {
             var show = false;
             $.each(r, function (i, d) {
                 var html = "<li class='list-group-item d-flex justify-content-between align-items-center font-weight-bold'>"
+                        + "<span  class='badge badge-success bg-costum badge-pill ' title=" + $.i18n.prop('server.now.waiting.number') + ">"
+                        + (d.waitcount < 0 ? 0 : d.waitcount)
+                        + "</span>"
                         + d.bizname
-                        + "<span  class='badge badge-primary badge-pill' title=" + $.i18n.prop('server.now.waiting.number') + ">"
-                        + (d.waitcount < 0 ? 0 : d.waitcount);
+                        ;
 
 
                 if (d.nextticket) {
-                    html = html + "</span><span title=" + $.i18n.prop('page.tickettype.next.number') + ">"
+                    html = html + "<span title=" + $.i18n.prop('page.tickettype.next.number') + ">"
                             + d.nextticket
                             + "</span>";
                 }
-                html = html + "</span></li>";
+                html = html + "</li>";
 
                 l.append(html);
                 if (Number(d.waitcount) > 0) {
@@ -1337,7 +1350,7 @@ function togglePaus(tag) {
         $('#pause_icon').show();
         $('#controlPanel').hide();
         $('#displayPanel').hide();
-        
+
         if (autoCall_Timer !== null) {
             clearTimeout(autoCall_Timer);
         }
@@ -1426,8 +1439,8 @@ function readEval(callback) {
 }
 
 var tim = 1;
-var $timer = document.getElementById( "timer_" );
-var $timer_mask = document.getElementById( "timer_mask" );
+var $timer = document.getElementById("timer_");
+var $timer_mask = document.getElementById("timer_mask");
 var countTime = false;
 
 function t_clock(t) {
