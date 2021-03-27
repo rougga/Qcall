@@ -1,3 +1,4 @@
+<%@page import="java.net.InetAddress"%>
 <%@page import="java.util.Objects"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
@@ -45,9 +46,9 @@
                 <%@include file="./addon/navbar.jsp" %>
             </div>
             <div class="d-md-flex">
-                <div id="console" class="col-12 col-md-9">
-                    <div class="col-12 my-4 py-4" id="displayPanel">
-                        <h1 class="text-dark text-center" id="current_ticket"></h1>
+                <div id="console" class="col-12 col-md-9 p-0 m-0">
+                    <div class="col-12 mb-1 mt-1 py-4" id="displayPanel">
+                        <h1 class="text-dark text-center font-weight-bolder" id="current_ticket"></h1>
                         <h2 id="ticket_state_bar" class="text-dark text-center">---</h2>
                         <h4 id="nsr_state_bar" class="text-center text-dark"></h4>
                         <h4 id="ticket_time" class="text-dark text-center">---</h4>
@@ -59,16 +60,6 @@
                         <h5 class="text-dark text-center">Totale Traité: <span id="todayUserDeal">0</span></h5>
                     </div>
                     <div class="col-12 p-2" id="controlPanel">
-                        <div id="next" class="w-100">
-                            <a class="btn btn-lg bg-costum text-white border w-100 py-4 my-2" id="call_btn">
-                                <img src="./img/icon/call.png" class="pb-1 m-0"/> Suivant
-                            </a>
-                            <a class="btn btn-lg bg-costum text-white border w-100 py-4 my-2" id="finish_btn">
-                                <img src="./img/icon/deal.png" class="pb-1 m-0"/> Suivant
-                            </a>
-                        </div>
-                        <div id="tasks" class="">
-                        </div>
                         <div id="otherBtn" class="w-100">
                             <!-- Call State -->
                             <div class="d-flex">
@@ -83,6 +74,12 @@
                                 </a>
                             </div>
                             <!-- Deal State -->
+                            
+                            <div class="d-flex">
+                                <a class="btn bg-costum text-white  px-0 py-2  mx-auto " id="reCall_btn" style="width: 33%"> 
+                                    <img src="./img/icon/call.png" class="pb-1 m-0"/> Additional
+                                </a>
+                            </div>
                             <div class="d-flex">
                                 <a class="btn bg-costum text-white  px-0 py-2  m-1 " id="abandon_btn" style="width: 33%">
                                     <img src="./img/icon/giveup.png" class="pb-1 m-0"/> Absent
@@ -94,12 +91,7 @@
                                     <img src="./img/icon/interrupt.png" class="pb-1 m-0"/> Interrompre
                                 </a>
                             </div>
-                            
-                            <div class="d-flex">
-                                <a class="btn bg-costum text-white  px-0 py-2  mx-auto " id="reCall_btn" style="width: 33%"> 
-                                    <img src="./img/icon/call.png" class="pb-1 m-0"/> Additional
-                                </a>
-                            </div>
+
                         </div>
 
                         <!-- removed step
@@ -107,24 +99,37 @@
                             <img src="./img/icon/call.png" class="pb-1 m-0"/> Début
                         </a>
                         -->
-                        <div class="mx-auto d-md-flex justify-content-md-center col-12">
-
-                            <a class="btn btn-warning m-1" id="return_btn">
-                                return.turn
+                        <!--
+                        <div class="w-100">
+                            
+                                <a class="btn btn-warning m-1" id="return_btn">
+                                    return.turn
+                                </a>
+                            <div class="d-flex">
+                                <a class="btn btn-dark m-1" id="doubleScreen_btn" style="width: 33%">
+                                    double.screen
+                                </a>
+                                <a class="btn btn-dark m-1" id="singleScreen_btn" style="width: 33%"> 
+                                    single.screen
+                                </a>
+                                <a class="btn btn-dark m-1" id="screenShot_btn" style="width: 33%">
+                                    screenshots
+                                </a>
+                            </div>
+                        </div>
+                        -->
+                        <div id="next" class="w-100">
+                            <a class="btn btn-lg bg-costum text-white border w-100 py-4 my-2" id="call_btn">
+                                <img src="./img/icon/call.png" class="pb-1 m-0"/> Suivant
                             </a>
-                            <a class="btn btn-dark m-1" id="doubleScreen_btn">
-                                double.screen
-                            </a>
-                            <a class="btn btn-dark m-1" id="singleScreen_btn"> 
-                                single.screen
-                            </a>
-                            <a class="btn btn-dark m-1" id="screenShot_btn">
-                                screenshots
+                            <a class="btn btn-lg bg-costum text-white border w-100 py-4 my-2" id="finish_btn">
+                                <img src="./img/icon/deal.png" class="pb-1 m-0"/> Suivant
                             </a>
                         </div>
-
-                        <div>
-                            <span>Auto:</span>
+                        <div id="tasks" class="">
+                        </div>
+                        <div class="bg-danger mx-auto">
+                            <span class="font-weight-bold text-white p-2 rounded">Auto:</span>
                             <c:if test='${auto_call == "1"}'>
                                 <c:set var="au_ck" value="checked"></c:set>
                                 <c:set var="au_dis" value="disabled"></c:set>
@@ -140,14 +145,14 @@
                                         });
                                 </script>
                             </c:if>
-                            <label>
-                                <input type="checkbox" id="enabel_auto_call" value="Y"
-                                       style="vertical-align: middle;" ${au_ck} ${au_dis} /> 
+                            <label >
+                                <input type="checkbox" id="enabel_auto_call" value="Y" class="mt-1"
+                                       style="width: 30px;height: 30px;" ${au_ck} ${au_dis} /> 
                             </label>
 
                         </div>
                     </div>
-                    <div id="pause_icon" style="display:none" class="col-12 m-4">
+                    <div id="pause_icon" style="display:none" class="w-100 my-4">
                         <img src="./img/icon/pause-128-black.png" class="img-fluid mx-auto d-block">
                     </div>
                 </div>
@@ -189,9 +194,9 @@
     });*/
 
     $(function () {
-       // basePath = "http://<%=request.getLocalAddr() %>:8888/server/";
+        //basePath = "http://<%=request.getLocalAddr() %>:8888/server/";
         basePath = getPath().base;
-        //loginUrl = "http://<%=request.getLocalAddr() %>:8888/Qcall/";
+       // loginUrl = "http://<%=request.getLocalAddr() %>:8888/Qcall/";
         loginUrl= getPath().login;
         evalType = '${eval_type}';
         autoDeal = '${auto_deal}';
@@ -214,7 +219,7 @@
         branchId = "${branchId}";
         showTransferConfirm = "${SHOW_TRANSFER_CONFIRM}";
 
-        $("#scrollDiv").Scroll({line: 1, speed: 1000, timer: 5000});
+        //$("#scrollDiv").Scroll({line: 1, speed: 1000, timer: 5000});
         //$('.menu a[id!="stopMenuA"]').bind('click', select_menu);
         init();
     });

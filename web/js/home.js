@@ -240,19 +240,36 @@ function call(tid) {
                 setTransferedTag('N');
                 setTicketStateBar(r.biz_name + ","
                         + r.type_name + autoTrans);
-                setNsrStateBar(r.id_card_name, r.id_card_info_id)
-                let pars2 = pars;
+                setNsrStateBar(r.id_card_name, r.id_card_info_id);
+                $('#ticket_time').html(r.ticket_time);
+                let pars2 = {};
+                pars2.id_ticket = r.tid;
                 pars2.id_user = userId;
+                pars2.id_service = r.biz_type_id;
                 $.ajax({
-                    url: loginUrl + 'QCall/api/getInfo',
+                    url: loginUrl + 'GetInfo',
+                    type: 'post',
+                    data: pars2,
+                    success: function (data) {
+                        $('#todayUserDeal').html(r.ticket_ser);
+                    }
+                });
+                $.ajax({
+                    url: loginUrl + 'GetTasks',
                     type: 'post',
                     data: pars2,
                     success: function (r) {
-                        $('').html(r.ticketTime);
-                        $('').html(r.dealCount);
+                        let html = "<div class='d-flex'>";
+                        for (let i = 0; i < r.result.length; i++) {
+                            html += "<div class='btn bg-warning text-dark px-0 py-1 m-1 bordered border-dark task font-weight-bold d-flex justify-content-center align-items-center' style='width: 33%'> "
+                                    + "<input name='task' value='" + r.result[i].id_task + "' type='checkbox' class='' style='width: 30px;height: 30px;' >"
+                                    + "<span class='ml-2'>" + r.result[i].name + "</span>"
+                                    + "</div>";
+                        }
+                        html += "</div>";
+                        $('#tasks').append(html);
                     }
                 });
-
                 /* if (autoDeal == 1) {
                  deal();
                  } */
@@ -652,6 +669,7 @@ function doStartCall() {
 
 
 function finish() {
+    setTasks();
     var tid = getTidFromCookie();
     if (!tid) {
         return;
@@ -915,6 +933,8 @@ function setButton() {
             return_btn.hide();
             setTicketStateBar('---');
             $('#current_ticket').text('');
+            $('#ticket_time').html("---");
+            $('#tasks').html("");
             $.cookie("fvts_seat_ticket", null);
             machineAccount_btn.hide();
             luruGZL_btn.hide();
@@ -1609,3 +1629,16 @@ function lurugongzuoliang() {
     var url = basePath + "client/seat/lurugzl?tid=" + tid + "&rand=" + Math.random();
     showModDialog(url, 660, 300, false);
 }
+
+
+let setTasks = function () {
+    let ids = [];
+    let pars3 = {};
+    $('input[name="task"]:checked').each(function () {
+        ids.push(this.value);
+    });
+    pars3.tid = getTidFromCookie();
+    pars3.id_tasks = ids;
+    pars3.qnt = 1;
+    console.log(pars3);
+};

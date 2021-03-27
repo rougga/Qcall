@@ -33,11 +33,11 @@
                     <a href="javascript:void(0);" onclick="queryTicket();return false;" class="dropdown-item font-weight-bold appHover">
                         <img src="./img/icon/history.png"/> Historique
                     </a> 
-                    <a href="javascript:void(0);" onclick="setBiz();return false;" onfocus="blur()" class="dropdown-item font-weight-bold appHover"/>
+                    <a href="javascript:void(0);" onclick="setBiz();return false;" onfocus="blur()" class="dropdown-item font-weight-bold appHover "/>
                     <img src="./img/icon/random.png"/> Call customize
                     </a> 
                     <a href="javascript:void(0);" onclick="openSetBizWindow();return false;"
-                       onfocus="blur()"  class="dropdown-item font-weight-bold appHover"/>
+                       onfocus="blur()"  class="dropdown-item font-weight-bold appHover disabled"/>
                     <img src="./img/icon/star.png"/> Service
                     </a> 
                     <div class="dropdown-divider"></div>

@@ -1,0 +1,30 @@
+<component name="libraryTable">
+  <library name="lib1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/httpclient5-fluent-5.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/httpclient5-win-5.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-cli-1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/rxjava-2.2.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-codec-1.13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/httpclient5-testing-5.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/postgresql-42.2.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/reactive-streams-1.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/httpclient5-5.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/httpcore5-reactive-5.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/httpcore5-5.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.25.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pdjh-core-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/json-simple-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/taglibs-standard-impl-1.2.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jna-5.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/httpcore5-h2-5.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jstl-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jna-platform-5.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-lang3-3.3.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/httpclient5-cache-5.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/httpcore5-testing-5.0.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

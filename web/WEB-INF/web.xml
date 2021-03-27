@@ -12,6 +12,18 @@
         <servlet-name>GetAllWindows</servlet-name>
         <servlet-class>main.api.GetAllWindows</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetInfo</servlet-name>
+        <servlet-class>main.api.GetInfo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SetTaskToTicket</servlet-name>
+        <servlet-class>main.api.SetTaskToTicket</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetTasks</servlet-name>
+        <servlet-class>main.api.GetTasks</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -23,6 +35,18 @@
     <servlet-mapping>
         <servlet-name>GetAllWindows</servlet-name>
         <url-pattern>/getAllWindows</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SetTaskToTicket</servlet-name>
+        <url-pattern>/SetTaskToTicket</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetInfo</servlet-name>
+        <url-pattern>/GetInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetTasks</servlet-name>
+        <url-pattern>/GetTasks</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
