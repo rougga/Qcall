@@ -259,11 +259,13 @@ function call(tid) {
                     type: 'post',
                     data: pars2,
                     success: function (r) {
-                        let html = "<div class='d-flex'>";
+                        let html = "<div class='w-100'>";
                         for (let i = 0; i < r.result.length; i++) {
-                            html += "<div class='btn bg-warning text-dark px-0 py-1 m-1 bordered border-dark task font-weight-bold d-flex justify-content-center align-items-center' style='width: 33%'> "
-                                    + "<input name='task' value='" + r.result[i].id_task + "' type='checkbox' class='' style='width: 30px;height: 30px;' >"
-                                    + "<span class='ml-2'>" + r.result[i].name + "</span>"
+                            html += "<div class='btn bg-warning col-4 text-dark bordered border-dark task font-weight-bold p-0  m-0 my-1' onClick='taskInit(this)'> "
+                                    + "<input name='task' value='" + r.result[i].id_task + "' type='checkbox' class='float-left ml-2 my-1'  onChange='checkTask(this)' style='width: 30px;height: 30px;' >"
+                                    + "<span class='mx-2'>" + r.result[i].name + "</span>"
+                                    + "<input name='' value='0' type='number' class='float-right mr-2 my-1 qte' style='width: 40px;height: 30px;' >"
+                                    
                                     + "</div>";
                         }
                         html += "</div>";
@@ -869,141 +871,141 @@ function setButton() {
     switch (op_tag) {
         case call_sta :
             call_btn.hide();
-            seccall_btn.hide();
-            abandonCall_btn.hide();
-            specialCall_btn.hide();
-            suspend_btn.hide();
-            continue_btn.hide();
-            reCall_btn.show();
+            seccall_btn.addClass("disabled");
+            abandonCall_btn.addClass("disabled");
+            specialCall_btn.addClass("disabled");
+            suspend_btn.addClass("disabled");
+            continue_btn.addClass("disabled");
+            reCall_btn.removeClass("disabled");
             start_btn.show();
             finish_btn.hide();
-            transfer_btn.hide();
-            abandon_btn.show();
-            return_btn.hide();
-            machineAccount_btn.hide();
-            luruGZL_btn.hide();
+            transfer_btn.addClass("disabled");
+            abandon_btn.removeClass("disabled");
+            return_btn.addClass("disabled");
+            machineAccount_btn.addClass("disabled");
+            luruGZL_btn.addClass("disabled");
             break;
         case suspend_sta :
             call_btn.show();
-            seccall_btn.show();
-            abandonCall_btn.show();
-            specialCall_btn.show();
-            suspend_btn.hide();
-            continue_btn.show();
-            reCall_btn.hide();
+            seccall_btn.removeClass("disabled");
+            abandonCall_btn.removeClass("disabled");
+            specialCall_btn.removeClass("disabled");
+            suspend_btn.addClass("disabled");
+            continue_btn.removeClass("disabled");
+            reCall_btn.addClass("disabled");
             start_btn.hide();
             finish_btn.hide();
-            transfer_btn.hide();
-            abandon_btn.hide();
-            return_btn.hide();
+            transfer_btn.addClass("disabled");
+            abandon_btn.addClass("disabled");
+            return_btn.addClass("disabled");
             setTicketStateBar('---');
             $('#current_ticket').text('');
             $.cookie("fvts_seat_ticket", null);
-            machineAccount_btn.hide();
-            luruGZL_btn.hide();
+            machineAccount_btn.addClass("disabled");
+            luruGZL_btn.addClass("disabled");
             break;
         case start_sta :
             call_btn.hide();
-            seccall_btn.hide();
-            abandonCall_btn.hide();
-            specialCall_btn.hide();
-            transfer_btn.show();
-            suspend_btn.show();
-            continue_btn.hide();
-            reCall_btn.show();
+            seccall_btn.addClass("disabled");
+            abandonCall_btn.addClass("disabled");
+            specialCall_btn.addClass("disabled");
+            transfer_btn.removeClass("disabled");
+            suspend_btn.removeClass("disabled");
+            continue_btn.addClass("disabled");
+            reCall_btn.removeClass("disabled");
             start_btn.hide();
             finish_btn.show();
-            abandon_btn.show();
-            return_btn.hide();
-            machineAccount_btn.show();
-            luruGZL_btn.show();
+            abandon_btn.removeClass("disabled");
+            return_btn.addClass("disabled");
+            machineAccount_btn.removeClass("disabled");
+            luruGZL_btn.removeClass("disabled");
             break;
         case finish_sta :
             call_btn.show();
-            seccall_btn.show();
-            abandonCall_btn.show();
-            specialCall_btn.show();
-            suspend_btn.hide();
-            continue_btn.show();
-            reCall_btn.hide();
+            seccall_btn.removeClass("disabled");
+            abandonCall_btn.removeClass("disabled");
+            specialCall_btn.removeClass("disabled");
+            suspend_btn.addClass("disabled");
+            continue_btn.removeClass("disabled");
+            reCall_btn.addClass("disabled");
             start_btn.hide();
             finish_btn.hide();
-            transfer_btn.hide();
-            abandon_btn.hide();
-            return_btn.hide();
+            transfer_btn.addClass("disabled");
+            abandon_btn.addClass("disabled");
+            return_btn.addClass("disabled");
             setTicketStateBar('---');
             $('#current_ticket').text('');
             $('#ticket_time').html("---");
             $('#tasks').html("");
             $.cookie("fvts_seat_ticket", null);
-            machineAccount_btn.hide();
-            luruGZL_btn.hide();
+            machineAccount_btn.addClass("disabled");
+            luruGZL_btn.addClass("disabled");
             break;
         case abandon_sta :
             call_btn.show();
-            seccall_btn.show();
-            abandonCall_btn.show();
-            specialCall_btn.show();
-            suspend_btn.hide();
-            continue_btn.show();
-            reCall_btn.hide();
+            seccall_btn.removeClass("disabled");
+            abandonCall_btn.removeClass("disabled");
+            specialCall_btn.removeClass("disabled");
+            suspend_btn.addClass("disabled");
+            continue_btn.removeClass("disabled");
+            reCall_btn.addClass("disabled");
             start_btn.hide();
             finish_btn.hide();
-            transfer_btn.hide();
-            abandon_btn.hide();
-            return_btn.hide();
+            transfer_btn.addClass("disabled");
+            abandon_btn.addClass("disabled");
+            return_btn.addClass("disabled");
             setTicketStateBar('---');
             $('#current_ticket').text('');
             $.cookie("fvts_seat_ticket", null);
-            machineAccount_btn.hide();
-            luruGZL_btn.hide();
+            machineAccount_btn.addClass("disabled");
+            luruGZL_btn.addClass("disabled");
             break;
         case default_sta :
             call_btn.show();
-            seccall_btn.show();
-            abandonCall_btn.show();
-            specialCall_btn.show();
-            suspend_btn.hide();
-            continue_btn.show();
-            reCall_btn.hide();
+            seccall_btn.removeClass("disabled");
+            abandonCall_btn.removeClass("disabled");
+            specialCall_btn.removeClass("disabled");
+            suspend_btn.addClass("disabled");
+            continue_btn.removeClass("disabled");
+            reCall_btn.addClass("disabled");
             start_btn.hide();
             finish_btn.hide();
-            transfer_btn.hide();
-            abandon_btn.hide();
-            return_btn.hide();
+            transfer_btn.addClass("disabled");
+            abandon_btn.addClass("disabled");
+            return_btn.addClass("disabled");
             setTicketStateBar('---');
             $('#current_ticket').text('');
-            machineAccount_btn.hide();
-            luruGZL_btn.hide();
+            machineAccount_btn.addClass("disabled");
+            luruGZL_btn.addClass("disabled");
             break;
         case seccall_sta :
             call_btn.hide();
-            transfer_btn.show();
-            return_btn.show();
-            seccall_btn.hide();
-            abandonCall_btn.hide();
-            specialCall_btn.hide();
-            suspend_btn.hide();
-            continue_btn.hide();
-            reCall_btn.hide();
+            transfer_btn.removeClass("disabled");
+            return_btn.removeClass("disabled");
+            seccall_btn.addClass("disabled");
+            abandonCall_btn.addClass("disabled");
+            specialCall_btn.addClass("disabled");
+            suspend_btn.addClass("disabled");
+            continue_btn.addClass("disabled");
+            reCall_btn.addClass("disabled");
             start_btn.hide();
             finish_btn.hide();
-            abandon_btn.hide();
-            machineAccount_btn.hide();
+            abandon_btn.addClass("disabled");
+            machineAccount_btn.addClass("disabled");
             break;
         default :
             call_btn.show();
-            transfer_btn.hide();
-            seccall_btn.show();
-            abandonCall_btn.show();
-            specialCall_btn.show();
-            suspend_btn.hide();
-            continue_btn.show();
-            reCall_btn.hide();
+            transfer_btn.addClass("disabled");
+            seccall_btn.removeClass("disabled");
+            abandonCall_btn.removeClass("disabled");
+            specialCall_btn.removeClass("disabled");
+            suspend_btn.addClass("disabled");
+            continue_btn.removeClass("disabled");
+            reCall_btn.addClass("disabled");
             start_btn.hide();
             finish_btn.hide();
-            abandon_btn.hide();
-            return_btn.hide();
+            abandon_btn.addClass("disabled");
+            return_btn.addClass("disabled");
             setTicketStateBar('---');
             $('#current_ticket').text('');
             //return;
@@ -1630,15 +1632,3 @@ function lurugongzuoliang() {
     showModDialog(url, 660, 300, false);
 }
 
-
-let setTasks = function () {
-    let ids = [];
-    let pars3 = {};
-    $('input[name="task"]:checked').each(function () {
-        ids.push(this.value);
-    });
-    pars3.tid = getTidFromCookie();
-    pars3.id_tasks = ids;
-    pars3.qnt = 1;
-    console.log(pars3);
-};

@@ -22,6 +22,10 @@ public class PgConnection {
         con=DriverManager.getConnection(CONNECTIONSTRING,USER,PASSWORD);
     }
 
+    public Connection getConnection(){
+        return con;
+    }
+    
     public Statement getStatement() throws SQLException {
          st= con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         return st;

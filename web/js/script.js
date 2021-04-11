@@ -36,6 +36,22 @@ function loadDataToModal() {
     setPort(portSS);
 }
 
+let taskInit = function (el) {
+    if ($(el).find("input[type=checkbox]").prop('checked')) {
+        $(el).find("input[type=checkbox]").prop('checked', false);
+        $(el).find(".qte").val(0);
+    } else {
+        $(el).find("input[type=checkbox]").prop('checked', true);
+        $(el).find(".qte").val(1);
+    }
+};
+let checkTask = function (el) {
+    if ($(el).prop('checked')) {
+        $(el).parent("div").find(".qte").val(1);
+    } else {
+        $(el).parent("div").find(".qte").val(0);
+    }
+};
 $(document).ready(function () {
     $("#settingsBtn").on('click', function () {
         loadDataToModal();
@@ -48,4 +64,5 @@ $(document).ready(function () {
     $("#settingsCloseBtn").on('click', function () {
         console.log(getPath());
     });
+
 });

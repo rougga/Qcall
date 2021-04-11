@@ -28,7 +28,7 @@
         <script src="./js/lib/bootstrap.bundle.min.js"></script>
         <script src="./js/script.js"></script>
         <script src="./js/home.js"></script>
-
+        <script src="./js/addon.js"></script>
         <script type="text/javascript">
             var windowId = "${windowId}";
             var userId = "${userId}";
@@ -41,13 +41,13 @@
         </script>
     </head>
     <body class="bg-dark">
-        <div class="container-lg body p-0 min-vh-100">
+        <div class="container-xl body p-0 min-vh-100">
             <div>
                 <%@include file="./addon/navbar.jsp" %>
             </div>
             <div class="d-md-flex">
-                <div id="console" class="col-12 col-md-9 p-0 m-0">
-                    <div class="col-12 mb-1 mt-1 py-4" id="displayPanel">
+                <div id="console" class="col-12 col-md-9 p-2 m-0">
+                    <div class="col-12 p-0 rounded border border-dark" id="displayPanel">
                         <h1 class="text-dark text-center font-weight-bolder" id="current_ticket"></h1>
                         <h2 id="ticket_state_bar" class="text-dark text-center">---</h2>
                         <h4 id="nsr_state_bar" class="text-center text-dark"></h4>
@@ -57,27 +57,24 @@
                             <span style="display:none" id="timer_" class="text-danger text-center"></span>
                             <span id="timer_mask" class="text-danger text-center">0 sec</span>
                         </h2>
-                        <h5 class="text-dark text-center">Totale Traité: <span id="todayUserDeal">0</span></h5>
+                        <h5 class="text-dark text-center ">Totale Traité: <span id="todayUserDeal">0</span></h5>
                     </div>
-                    <div class="col-12 p-2" id="controlPanel">
+                    <div class="col-12 p-0 pt-2" id="controlPanel">
                         <div id="otherBtn" class="w-100">
-                            <!-- Call State -->
-                            <div class="d-flex">
-                                <a class="btn  bg-costum  text-white  px-0 py-2 m-1 " id="abandonCall_btn" style="width: 33%"> 
-                                    <img src="./img/icon/recall.png" class="pb-1 m-0"/> Rappel
-                                </a>
-                                <a class="btn  bg-costum  text-white px-0 py-2  m-1 " id="continue_btn" style="width: 33%">
-                                    <img src="./img/icon/continue.png" class="pb-1 m-0"/> Continue
-                                </a>
-                                <a class="btn bg-costum text-white  px-0 py-2  m-1 " id="specialCall_btn" style="width: 33%"> 
-                                    specific
-                                </a>
-                            </div>
+                           
                             <!-- Deal State -->
                             
                             <div class="d-flex">
+                                <!-- Pause -->
+                                <a class="btn btn-dark text-white  px-0 py-2  mx-auto " onclick="setStop();return false;" style="width: 33%"> 
+                                    <img src="./img/icon/pause-16-white.png" class="pb-1 m-0"/> Pause
+                                </a>
                                 <a class="btn bg-costum text-white  px-0 py-2  mx-auto " id="reCall_btn" style="width: 33%"> 
-                                    <img src="./img/icon/call.png" class="pb-1 m-0"/> Additional
+                                    <img src="./img/icon/clipboard-16-white.png" class="pb-1 m-0"/> Additional
+                                </a>
+                                <!-- deconnexion -->
+                                <a class="btn btn-dark text-white  px-0 py-2  mx-auto " onclick="setLogoff(0);return false;" style="width: 33%"> 
+                                    <img src="./img/icon/logout-16-white.png" class="pb-1 m-0"/> Déconnexion
                                 </a>
                             </div>
                             <div class="d-flex">
@@ -91,7 +88,18 @@
                                     <img src="./img/icon/interrupt.png" class="pb-1 m-0"/> Interrompre
                                 </a>
                             </div>
-
+                             <!-- Call State -->
+                            <div class="d-flex">
+                                <a class="btn  bg-costum  text-white  px-0 py-2 m-1 " id="abandonCall_btn" style="width: 33%"> 
+                                    <img src="./img/icon/recall.png" class="pb-1 m-0"/> Rappel
+                                </a>
+                                <a class="btn  bg-costum  text-white px-0 py-2  m-1 " id="continue_btn" style="width: 33%">
+                                    <img src="./img/icon/continue.png" class="pb-1 m-0"/> Continue
+                                </a>
+                                <a class="btn bg-costum text-white  px-0 py-2  m-1 " id="specialCall_btn" style="width: 33%"> 
+                                    <img src="./img/icon/pin-16-white.png" class="pb-1 m-0"/> Spécifique
+                                </a>
+                            </div>
                         </div>
 
                         <!-- removed step
@@ -126,10 +134,10 @@
                                 <img src="./img/icon/deal.png" class="pb-1 m-0"/> Suivant
                             </a>
                         </div>
-                        <div id="tasks" class="">
+                        <div id="tasks" class=" d-flex align-content-center">
                         </div>
-                        <div class="bg-danger mx-auto">
-                            <span class="font-weight-bold text-white p-2 rounded">Auto:</span>
+                        <div class="bg-danger mx-auto d-flex justify-content-center align-content-center">
+                            <span class="font-weight-bold text-white p-2 rounded">Appele automatique:</span>
                             <c:if test='${auto_call == "1"}'>
                                 <c:set var="au_ck" value="checked"></c:set>
                                 <c:set var="au_dis" value="disabled"></c:set>
@@ -145,15 +153,17 @@
                                         });
                                 </script>
                             </c:if>
-                            <label >
                                 <input type="checkbox" id="enabel_auto_call" value="Y" class="mt-1"
                                        style="width: 30px;height: 30px;" ${au_ck} ${au_dis} /> 
-                            </label>
 
                         </div>
                     </div>
                     <div id="pause_icon" style="display:none" class="w-100 my-4">
+                        <h1 class="text-center">EN PAUSE</h1>
                         <img src="./img/icon/pause-128-black.png" class="img-fluid mx-auto d-block">
+                        <a class="btn btn-lg bg-costum text-white border w-100 py-4 my-2" onclick="setOnline();return false;">
+                            <img src="img/icon/online.png"/> Online
+                        </a>
                     </div>
                 </div>
                 <div  id="scrollDiv" class="col-12 col-md-3 pt-2">

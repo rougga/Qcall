@@ -1,6 +1,5 @@
 package main.api;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -8,8 +7,9 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import main.controller.TaskController;
-import main.modal.Task;
+import ma.rougga.nst.controller.TaskController;
+import ma.rougga.nst.modal.Task;
+import main.PgConnection;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -21,13 +21,9 @@ public class GetTasks extends HttpServlet {
         JSONObject all = new JSONObject();
         JSONArray result = new JSONArray();
         String id_service = req.getParameter("id_service");
-        ArrayList<Task> tasks = new ArrayList<>();
-        tasks.add(new Task("IAM", id_service));
-        tasks.add(new Task("Orange", id_service));
-        tasks.add(new Task("INWI", id_service));
         if (StringUtils.isNotBlank(id_service)) {
-            // ArrayList<Task> tasks = new TaskController().getTasksByService(id_service);
             try {
+                ArrayList<Task> tasks = new TaskController(new PgConnection().getStatement()).getTasksByService(id_service);
                 PrintWriter out = resp.getWriter();
                 resp.setContentType("application/json");
                 resp.setCharacterEncoding("UTF-8");
@@ -41,7 +37,7 @@ public class GetTasks extends HttpServlet {
                 });
                 all.put("result", result);
                 out.print(all);
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(GetInfo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

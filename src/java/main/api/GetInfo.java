@@ -37,6 +37,7 @@ public class GetInfo extends HttpServlet {
                     dealCount = r.getLong("dealCount");
                 }
                 all.put("dealCount", dealCount);
+                System.err.println("DealCount:"+dealCount);
             } catch (Exception e) {
                 all.put("error", e.getMessage());
             }
