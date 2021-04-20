@@ -16,7 +16,7 @@ public class SetTaskToTicket extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id_ticket=req.getParameter("bizId");
+        String id_ticket=req.getParameter("tid");
         String id_tasks=req.getParameter("id_task");
         String qte = req.getParameter("qte");
         if (StringUtils.isNoneBlank(id_ticket,id_tasks,qte)) {
