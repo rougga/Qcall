@@ -1074,9 +1074,8 @@ function showNotice(n_id) {
 
 
 function queryTicket() {
-    var url = basePath + "client/seat/queryTicket?action=load&rand="
-            + Math.random();
-    showModDialog(url, 720, 420);
+    var url ="./historique.jsp?1=1";
+    showModDialog(url, 1130, 420);
 }
 
 
