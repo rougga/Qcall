@@ -64,5 +64,9 @@ $(document).ready(function () {
     $("#settingsCloseBtn").on('click', function () {
         console.log(getPath());
     });
-
+    $("#setCostumService").click(function () {
+        let serviceId = $("#serviceDialog").val();
+        $('#setCostumModal').modal('toggle');
+        setBiz(serviceId);
+    });
 });

@@ -519,6 +519,7 @@ function continued() {
     var url = basePath + "client/seat/suspendCall?action=load&rand="
             + Math.random();
     var ti = showModDialog(url, 550, 420);
+    console.log(ti);
     if (ti != undefined) {
         var str = ti.split("_");
         url = basePath + "client/seat/suspendCall?action=do&rand=" + Math.random();
@@ -1079,9 +1080,9 @@ function queryTicket() {
 }
 
 
-function setBiz() {
-    var url = basePath + "client/seat/setBiz?rand=" + Math.random();
-    var tid = showModDialog(url, 400, 300);
+function setBiz(tid) {
+//    var url = basePath + "client/seat/setBiz?rand=" + Math.random();
+//    var tid = showModDialog(url, 400, 300);
     if (tid != undefined && tid != "") {
         call(tid);
     }

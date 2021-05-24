@@ -1,3 +1,8 @@
+<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
+<%@page import="ma.rougga.nst.modal.Service"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="ma.rougga.nst.controller.ServiceController"%>
+<%@page import="main.PgConnection"%>
 <%@page import="java.net.InetAddress"%>
 <%@page import="java.util.Objects"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -61,9 +66,9 @@
                     </div>
                     <div class="col-12 p-0 pt-2" id="controlPanel">
                         <div id="otherBtn" class="w-100">
-                           
+
                             <!-- Deal State -->
-                            
+
                             <div class="d-flex">
                                 <!-- Pause -->
                                 <a class="btn btn-dark text-white  px-0 py-2  mx-auto " onclick="setStop();return false;" style="width: 33%"> 
@@ -88,15 +93,15 @@
                                     <img src="./img/icon/interrupt.png" class="pb-1 m-0"/> Interrompre
                                 </a>
                             </div>
-                             <!-- Call State -->
+                            <!-- Call State -->
                             <div class="d-flex">
-                                <a class="btn  bg-costum  text-white  px-0 py-2 m-1 " id="abandonCall_btn" style="width: 33%"> 
+                                <a class="btn  bg-costum  text-white  px-0 py-2 m-1 disabled" id="abandonCall_btn" style="width: 33%"> 
                                     <img src="./img/icon/recall.png" class="pb-1 m-0"/> Rappel
                                 </a>
-                                <a class="btn  bg-costum  text-white px-0 py-2  m-1 " id="continue_btn" style="width: 33%">
+                                <a class="btn  bg-costum  text-white px-0 py-2  m-1 disabled" id="continue_btn" style="width: 33%">
                                     <img src="./img/icon/continue.png" class="pb-1 m-0"/> Continue
                                 </a>
-                                <a class="btn bg-costum text-white  px-0 py-2  m-1 " id="specialCall_btn" style="width: 33%"> 
+                                <a class="btn bg-costum text-white  px-0 py-2  m-1 disabled"  id="specialCall_btn" style="width: 33%"> 
                                     <img src="./img/icon/pin-16-white.png" class="pb-1 m-0"/> Spécifique
                                 </a>
                             </div>
@@ -153,8 +158,8 @@
                                         });
                                 </script>
                             </c:if>
-                                <input type="checkbox" id="enabel_auto_call" value="Y" class="mt-1"
-                                       style="width: 30px;height: 30px;" ${au_ck} ${au_dis} /> 
+                            <input type="checkbox" id="enabel_auto_call" value="Y" class="mt-1"
+                                   style="width: 30px;height: 30px;" ${au_ck} ${au_dis} /> 
 
                         </div>
                     </div>
@@ -175,8 +180,53 @@
             <div>
                 <%@include file="addon/footer.jsp" %>
             </div>
+            <div>
+                <!-- Modal -->
+                <div class="modal fade" id="setCostumModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Appel d'un service spécifique</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="serviceDialog">Service:</label>
+                                    <select class="form-control" id="serviceDialog">
+                                        <%
+                            try{
+                        
+                            PgConnection con = new PgConnection();
+                            ServiceController sc = new ServiceController(con.getStatement());
+                            ArrayList<Service> services = sc.getAll();
+                            for (Service service : services){
+                                if(service.getStatus()==1){
+                                        %>
 
+                                        <option value="<%=service.getId() %>" label="<%= service.getName() %>"><%=service.getName() %></option>
+                                        <%
+                                    }
+                                }
+                                } catch (Exception  ex) {
+                                        %> <script>console.log("SERVER: <%= ex.getMessage() %>"); </script> <%
+                                }
+                                        %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="setCostumService">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
     </body>
 </html>
 <script type="text/javascript">

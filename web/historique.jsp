@@ -18,7 +18,7 @@
     String[] cols = new String[]{ "Service", "Numéro", "Heure edition ticket", "Heure appel", "Heure début de traitement", "Heure fin traitement", "Guichet", "Employé", "Durée attente", "Durée traitement", "Statut"};
         
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String date1 = format.format(new Date(0));
+        String date1 = format.format(new Date());
         String date2 = format.format(new Date());
         List<ArrayList<String>> table2 = new ArrayList<>();
         String SQL = "SELECT  "
@@ -130,7 +130,7 @@
 
                 <h2 class="text-center p-4">Historique :</h2>
 
-                <table class="table table-light table-bordered table-striped  table-responsive" >
+                <table class="table table-light table-bordered table-striped  table-responsive" style="font-size: 0.7em;">
                     <a class="float-right btn btn-link text-white" id="plus">PLUS >></a>
                     <thead class="text-white" style="background-color: #0A8754;">
                         <tr class="">

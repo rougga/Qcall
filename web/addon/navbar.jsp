@@ -33,8 +33,9 @@
                     <a href="javascript:void(0);" onclick="queryTicket();return false;" class="dropdown-item font-weight-bold appHover">
                         <img src="./img/icon/history.png"/> Historique
                     </a> 
-                    <a href="javascript:void(0);" onclick="setBiz();return false;" onfocus="blur()" class="dropdown-item font-weight-bold appHover "/>
-                    <img src="./img/icon/random.png"/> Call customize
+                    <a href="#" onfocus="blur()" class="dropdown-item font-weight-bold appHover " data-toggle="modal" data-target="#setCostumModal"/>
+                    <img src="./img/icon/random.png"/> Appel spécifique
+
                     </a> 
                     <a href="javascript:void(0);" onclick="openSetBizWindow();return false;"
                        onfocus="blur()"  class="dropdown-item font-weight-bold appHover disabled"/>
