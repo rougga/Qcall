@@ -86,7 +86,7 @@
                                 <a class="btn bg-costum text-white  px-0 py-2  m-1 " id="abandon_btn" style="width: 33%">
                                     <img src="./img/icon/giveup.png" class="pb-1 m-0"/> Absent
                                 </a>
-                                <a class="btn bg-costum text-white  px-0 py-2  m-1 " id="transfer_btn" style="width: 33%">
+                                <a class="btn bg-costum text-white  px-0 py-2  m-1 " id="transfer_btn" data-toggle="modal" data-target="#transModal" style="width: 33%">
                                     <img src="./img/icon/trans.png" class="pb-1 m-0"/> Transfer
                                 </a>
                                 <a class="btn bg-costum text-white  px-0 py-2  m-1 " id="suspend_btn" style="width: 33%">
@@ -181,7 +181,7 @@
                 <%@include file="addon/footer.jsp" %>
             </div>
             <div>
-                <!-- Modal -->
+                <!-- Modal spescific call-->
                 <div class="modal fade" id="setCostumModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -217,14 +217,57 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" id="setCostumService">Save changes</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                <button type="button" class="btn btn-primary" id="setCostumService">Appel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Modal transfer-->
+                <div class="modal fade" id="transModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Transfert: </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="serviceDialog">Service:</label>
+                                    <select class="form-control" id="serviceDialogTrans">
+                                        <%
+                            try{
+                        
+                            PgConnection con = new PgConnection();
+                            ServiceController sc = new ServiceController(con.getStatement());
+                            ArrayList<Service> services = sc.getAll();
+                            for (Service service : services){
+                                    
+                                if(service.getStatus()==1){
+                                        %>
+
+                                        <option value="<%=service.getId() %>" label="<%= service.getName() %>"><%=service.getName() %></option>
+                                        <%
+                                    }
+                                }
+                                } catch (Exception  ex) {
+                                        %> <script>console.log("SERVER: <%= ex.getMessage() %>"); </script> <%
+                                }
+                                        %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                <button type="button" class="btn btn-primary" id="transBtn">Transférer</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
 
     </body>

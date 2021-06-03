@@ -261,10 +261,10 @@ function call(tid) {
                     success: function (r) {
                         let html = "<div class='w-100'>";
                         for (let i = 0; i < r.result.length; i++) {
-                            html += "<div class='btn bg-warning col-4 text-dark bordered border-dark task font-weight-bold p-0  m-0 my-1' onClick='taskInit(this)'> "
-                                    + "<input name='task' value='" + r.result[i].id_task + "' type='checkbox' class='float-left ml-2 my-1'  onChange='checkTask(this)' style='width: 30px;height: 30px;' >"
+                            html += "<div class='btn bg-warning col-4 text-dark bordered border-dark task font-weight-bold p-0  m-0 my-1' > "
+                                    + "<input name='task' value='" + r.result[i].id_task + "' type='checkbox' class='float-left ml-2 my-1'  onChange='taskInit(this)' style='width: 30px;height: 30px;' >"
                                     + "<span class='mx-2'>" + r.result[i].name + "</span>"
-                                    + "<input name='' value='0' type='number' class='float-right mr-2 my-1 qte' style='width: 40px;height: 30px;' >"
+                                    + "<input name='' value='0' type='number' class='float-right mr-2 my-1 qte' style='width: 40px;height: 30px;' min='1'>"
                                     
                                     + "</div>";
                         }
@@ -426,7 +426,7 @@ function seccall() {
     }
 }
 
-function transfer(tag, needFin) {
+function transfer(tag, needFin,bid) {
     var seccallTran = false;
     needFin = (!needFin ? true : needFin);
     if (op_tag == seccall_sta) {
@@ -440,7 +440,7 @@ function transfer(tag, needFin) {
     if (tag != undefined && (tag.type == "bizTrans" || tag.type == "winTrans")) {
         bizid = tag;
     } else {
-        bizid = showModDialog(url, 450, 380);
+        bizid = bid;
     }
     if (bizid != undefined) {
         var par = {};
@@ -856,7 +856,7 @@ function bindEvent2Button() {
     screenShot_btn.bind('click', screenShot);
     start_btn.bind('click', deal);
     finish_btn.bind('click', finish);
-    transfer_btn.bind('click', transfer);
+    //transfer_btn.bind('click', transfer);
     abandon_btn.bind('click', abandon);
     return_btn.bind('click', returnCallSta);
     $('#enabel_auto_call').bind('click', setAutoCallTag);

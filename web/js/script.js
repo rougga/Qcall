@@ -69,4 +69,18 @@ $(document).ready(function () {
         $('#setCostumModal').modal('toggle');
         setBiz(serviceId);
     });
+    $("#transBtn").click(function () {
+        let t = $("#serviceDialogTrans").val();
+        if (t == undefined || t == '') {
+            alert('Please select a business transfer !');
+            return;
+        }
+        let p = false;
+        if ($('#pro_').attr('checked') == 'checked') {
+            p = true;
+        }
+        var pars = {"type": "bizTrans", "id": t, "priority": p};
+        $('#transModal').modal('toggle');
+        transfer(undefined,false,pars);
+    });
 });
