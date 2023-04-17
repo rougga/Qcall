@@ -172,6 +172,7 @@
                     </div>
                 </div>
                 <div  id="scrollDiv" class="col-12 col-md-3 pt-2">
+                    <h4 >Tickets en Attendant: <span  class='badge badge-success bg-costum badge-pill' id="totalTicketWaiting"></span></h4>
                     <ul id="biz_list_" class=" list-group ">
 
                     </ul>

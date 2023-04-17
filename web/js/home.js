@@ -265,7 +265,7 @@ function call(tid) {
                                     + "<input name='task' value='" + r.result[i].id_task + "' type='checkbox' class='float-left ml-2 my-1'  onChange='taskInit(this)' style='width: 30px;height: 30px;' >"
                                     + "<span class='mx-2'>" + r.result[i].name + "</span>"
                                     + "<input name='' value='0' type='number' class='float-right mr-2 my-1 qte' style='width: 40px;height: 30px;' min='1'>"
-                                    
+
                                     + "</div>";
                         }
                         html += "</div>";
@@ -426,7 +426,7 @@ function seccall() {
     }
 }
 
-function transfer(tag, needFin,bid) {
+function transfer(tag, needFin, bid) {
     var seccallTran = false;
     needFin = (!needFin ? true : needFin);
     if (op_tag == seccall_sta) {
@@ -1075,7 +1075,7 @@ function showNotice(n_id) {
 
 
 function queryTicket() {
-    var url ="./historique.jsp?1=1";
+    var url = "./historique.jsp?1=1";
     showModDialog(url, 1130, 420);
 }
 
@@ -1303,6 +1303,7 @@ function reFreshBiz(windowId, userId, flag) {
             biz_length = r.length;
             l.empty();
             var show = false;
+            let totalTicketsWaiting = 0;
             $.each(r, function (i, d) {
                 var html = "<li class='list-group-item d-flex justify-content-between align-items-center font-weight-bold'>"
                         + "<span  class='badge badge-success bg-costum badge-pill ' title=" + $.i18n.prop('server.now.waiting.number') + ">"
@@ -1310,7 +1311,8 @@ function reFreshBiz(windowId, userId, flag) {
                         + "</span>"
                         + d.bizname
                         ;
-
+                //counting tickets on wait
+                totalTicketsWaiting = totalTicketsWaiting + (d.waitcount < 0 ? 0 : d.waitcount);
 
                 if (d.nextticket) {
                     html = html + "<span title=" + $.i18n.prop('page.tickettype.next.number') + ">"
@@ -1324,6 +1326,7 @@ function reFreshBiz(windowId, userId, flag) {
                     show = true;
                 }
             });
+            $('#totalTicketWaiting').text(totalTicketsWaiting);
             // alert('before:'+iswait);
             if (show && !iswait) {
                 iswait = true;
