@@ -17,13 +17,13 @@ public class ChangeStatus extends HttpServlet {
             String username = request.getParameter("username");
             String windowText = request.getParameter("windowText");
             String branchId = request.getParameter("branchId");
-            String auto_call = "0";
+            String auto_call = "1";
 
             request.getSession().setAttribute("status", status);
             request.getSession().setAttribute("userName", username);
             request.getSession().setAttribute("SEAT_WINSTR", windowText);
-            request.getSession().setAttribute("auto_deal", 0);
-            request.getSession().setAttribute("auto_call_time", 10);
+            request.getSession().setAttribute("auto_deal", 1);
+            request.getSession().setAttribute("auto_call_time", 4);
             request.getSession().setAttribute("call_wait_time", 10);
             request.getSession().setAttribute("userId", username);
             request.getSession().setAttribute("branchId", branchId);

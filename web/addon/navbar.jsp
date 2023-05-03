@@ -41,6 +41,17 @@
                        onfocus="blur()"  class="dropdown-item font-weight-bold appHover disabled"/>
                     <img src="./img/icon/star.png"/> Service
                     </a> 
+                    
+                    
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item font-weight-bold   d-flex justify-content-between">
+                        <img src="./img/icon/autoCall-16.png"/>
+                        <span class="font-weight-bold  rounded" style="height: 30px;">Appel auto:</span>
+                        <input type="checkbox" id="enabel_auto_call" value="Y" class=""
+                                   style="width: 30px;height: 30px;" /> 
+                    </div>
+
+                    
                     <div class="dropdown-divider"></div>
 
                     <a class="dropdown-item font-weight-bold  appHover" href="javascript:void(0);" id="settingsBtn" ><img src="./img/icon/setting-black.png"/> Paramètres</a>

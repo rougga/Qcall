@@ -9,7 +9,7 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%
     if (Objects.equals(session.getAttribute("status"), "0")) {
-       response.sendRedirect("./index.jsp");
+        response.sendRedirect("./index.jsp");
     }
 %>
 <!DOCTYPE html>
@@ -58,9 +58,9 @@
                         <h4 id="nsr_state_bar" class="text-center text-dark"></h4>
                         <h4 id="ticket_time" class="text-dark text-center">---</h4>
                         <h2 class="text-center">
-                            Timer ：
+                            Compteur ：
                             <span style="display:none" id="timer_" class="text-danger text-center"></span>
-                            <span id="timer_mask" class="text-danger text-center">0 sec</span>
+                            <span id="timer_mask" class="text-danger text-center">00:00</span>
                         </h2>
                         <h5 class="text-dark text-center ">Totale Traité: <span id="todayUserDeal">0</span></h5>
                     </div>
@@ -141,32 +141,22 @@
                         </div>
                         <div id="tasks" class=" d-flex align-content-center">
                         </div>
+                        <!-- 
                         <div class="bg-danger mx-auto d-flex justify-content-center align-content-center">
                             <span class="font-weight-bold text-white p-2 rounded">Appele automatique:</span>
-                            <c:if test='${auto_call == "1"}'>
-                                <c:set var="au_ck" value="checked"></c:set>
-                                <c:set var="au_dis" value="disabled"></c:set>
-                                <c:set var="au_title" value="${server.auto.title2}"></c:set>
-                                    <script>
-                                        $(function () {
-                                            auto_call_tag = true;
-                                            setTimeout(function () {
-                                                var MSG1 = new CLASS_MSN_MESSAGE("autoCallOn", 300, 160, "",
-                                                    "<spring:message code='server.ticket.tip'/> ", "<spring:message code='server.ticket.timeout1'/> <br/><br/><spring:message code='server.ticket.timeout2'/> <span style='color:red'>${auto_call_time==null?10:auto_call_time}S</span><spring:message code='server.ticket.timeout3'/> ", "_blank");
-                                                MSG1.show();
-                                            }, 15000);
-                                        });
-                                </script>
-                            </c:if>
+                            
                             <input type="checkbox" id="enabel_auto_call" value="Y" class="mt-1"
                                    style="width: 30px;height: 30px;" ${au_ck} ${au_dis} /> 
 
                         </div>
+                        -->
+
                     </div>
                     <div id="pause_icon" style="display:none" class="w-100 my-4">
                         <h1 class="text-center">EN PAUSE</h1>
                         <img src="./img/icon/pause-128-black.png" class="img-fluid mx-auto d-block">
-                        <a class="btn btn-lg bg-costum text-white border w-100 py-4 my-2" onclick="setOnline();return false;">
+                        <a class="btn btn-lg bg-costum text-white border w-100 py-4 my-2" onclick="setOnline();
+                                return false;">
                             <img src="img/icon/online.png"/> Online
                         </a>
                     </div>
@@ -197,22 +187,22 @@
                                     <label for="serviceDialog">Service:</label>
                                     <select class="form-control" id="serviceDialog">
                                         <%
-                            try{
-                        
-                            PgConnection con = new PgConnection();
-                            ServiceController sc = new ServiceController(con.getStatement());
-                            ArrayList<Service> services = sc.getAll();
-                            for (Service service : services){
-                                if(service.getStatus()==1){
+                                            try {
+
+                                                PgConnection con = new PgConnection();
+                                                ServiceController sc = new ServiceController(con.getStatement());
+                                                ArrayList<Service> services = sc.getAll();
+                                                for (Service service : services) {
+                                                    if (service.getStatus() == 1) {
                                         %>
 
-                                        <option value="<%=service.getId() %>" label="<%= service.getName() %>"><%=service.getName() %></option>
+                                        <option value="<%=service.getId()%>" label="<%= service.getName()%>"><%=service.getName()%></option>
                                         <%
-                                    }
-                                }
-                                } catch (Exception  ex) {
-                                        %> <script>console.log("SERVER: <%= ex.getMessage() %>"); </script> <%
-                                }
+                                                }
+                                            }
+                                        } catch (Exception ex) {
+                                        %> <script>console.log("SERVER: <%= ex.getMessage()%>");</script> <%
+                                            }
                                         %>
                                     </select>
                                 </div>
@@ -240,23 +230,23 @@
                                     <label for="serviceDialog">Service:</label>
                                     <select class="form-control" id="serviceDialogTrans">
                                         <%
-                            try{
-                        
-                            PgConnection con = new PgConnection();
-                            ServiceController sc = new ServiceController(con.getStatement());
-                            ArrayList<Service> services = sc.getAll();
-                            for (Service service : services){
-                                    
-                                if(service.getStatus()==1){
+                                            try {
+
+                                                PgConnection con = new PgConnection();
+                                                ServiceController sc = new ServiceController(con.getStatement());
+                                                ArrayList<Service> services = sc.getAll();
+                                                for (Service service : services) {
+
+                                                    if (service.getStatus() == 1) {
                                         %>
 
-                                        <option value="<%=service.getId() %>" label="<%= service.getName() %>"><%=service.getName() %></option>
+                                        <option value="<%=service.getId()%>" label="<%= service.getName()%>"><%=service.getName()%></option>
                                         <%
-                                    }
-                                }
-                                } catch (Exception  ex) {
-                                        %> <script>console.log("SERVER: <%= ex.getMessage() %>"); </script> <%
-                                }
+                                                }
+                                            }
+                                        } catch (Exception ex) {
+                                        %> <script>console.log("SERVER: <%= ex.getMessage()%>");</script> <%
+                                            }
                                         %>
                                     </select>
                                 </div>
@@ -274,84 +264,99 @@
     </body>
 </html>
 <script type="text/javascript">
-   /* $.ajaxSetup({
-        global  : false,
-        complete: function (XMLHttpRequest, textStatus) {
-            var sessionstatus = XMLHttpRequest.getResponseHeader("sessionStatus"); //通过XMLHttpRequest取得响应头，sessionstatus，
-            if (sessionstatus == "timeout") {
-                try {
-                    var MSG1 = new CLASS_MSN_MESSAGE("timeout", 300, 160, "",
-                        "<spring:message code="server.ticket.tip"/> ", "<spring:message code="server.ticket.error1"/>", "_blank");
-                    MSG1.show();
-                } catch (e) {
-                }
-               
-                clearInterval(freshBizTick);
-                setTimeout(function () {
-                    window.location.href = loginUrl;
-                }, 5000);
-            }
-        },
-        error   : function (XMLHttpRequest, textStatus, errorThrown) {
-            setTicketStateBar("<spring:message code="server.ticket.error2"/> ");//在状态栏显示
-        }
-    });*/
+    /* $.ajaxSetup({
+     global  : false,
+     complete: function (XMLHttpRequest, textStatus) {
+     var sessionstatus = XMLHttpRequest.getResponseHeader("sessionStatus"); //通过XMLHttpRequest取得响应头，sessionstatus，
+     if (sessionstatus == "timeout") {
+     try {
+     var MSG1 = new CLASS_MSN_MESSAGE("timeout", 300, 160, "",
+     "<spring:message code="server.ticket.tip"/> ", "<spring:message code="server.ticket.error1"/>", "_blank");
+     MSG1.show();
+     } catch (e) {
+     }
+     
+     clearInterval(freshBizTick);
+     setTimeout(function () {
+     window.location.href = loginUrl;
+     }, 5000);
+     }
+     },
+     error   : function (XMLHttpRequest, textStatus, errorThrown) {
+     setTicketStateBar("<spring:message code="server.ticket.error2"/> ");//在状态栏显示
+     }
+     });*/
 
     $(function () {
-        //basePath = "http://<%=request.getLocalAddr() %>:8888/server/";
-        basePath = getPath().base;
-       // loginUrl = "http://<%=request.getLocalAddr() %>:8888/Qcall/";
-        loginUrl= getPath().login;
-        evalType = '${eval_type}';
-        autoDeal = '${auto_deal}';
-        autoDeal = autoDeal === '' ? 0 : autoDeal;
-        autoCallTime = '${auto_call_time}';
-        autoCallTime = autoCallTime === '' ? 10 : autoCallTime;
-        autoCallTime = autoCallTime * 1000;
-        call_wait_time = "${call_wait_time}" === "" ? 0 : '${call_wait_time}';
-        call_wait_time = call_wait_time * 1;
-        fvts_client_tag = '${fvts_client_tag}';
-        enableEval = "${enable_eval}";
-        userId = "${userId}";
-        record_items = "${record_items}";
-        timeoutSec = '${eval_timeout}';
-        timeoutSec = timeoutSec === '' ? 5 : timeoutSec;
-        evalLevel = "${evalLevel}";
-        machineAccount_tag = "${machine_account}";
-        luruGZL_tag = "${DEAL_WITH_NSR}";
-        pauseSubItem = "${pasue_subitem}";
-        branchId = "${branchId}";
-        showTransferConfirm = "${SHOW_TRANSFER_CONFIRM}";
+    //basePath = "http://<%=request.getLocalAddr()%>:8888/server/";
+    basePath = getPath().base;
+            // loginUrl = "http://<%=request.getLocalAddr()%>:8888/Qcall/";
+            loginUrl = getPath().login;
+            evalType = '${eval_type}';
+            autoDeal = '${auto_deal}';
+            autoDeal = autoDeal === '' ? 1 : autoDeal;
+            autoCallTime = '${auto_call_time}';
+            autoCallTime = autoCallTime === '' ? 4 : autoCallTime;
+            autoCallTime = autoCallTime * 1000;
+            call_wait_time = "${call_wait_time}" === "" ? 0 : '${call_wait_time}';
+            call_wait_time = call_wait_time * 1;
+            fvts_client_tag = '${fvts_client_tag}';
+            enableEval = "${enable_eval}";
+            userId = "${userId}";
+            record_items = "${record_items}";
+            timeoutSec = '${eval_timeout}';
+            timeoutSec = timeoutSec === '' ? 5 : timeoutSec;
+            evalLevel = "${evalLevel}";
+            machineAccount_tag = "${machine_account}";
+            luruGZL_tag = "${DEAL_WITH_NSR}";
+            pauseSubItem = "${pasue_subitem}";
+            branchId = "${branchId}";
+            showTransferConfirm = "${SHOW_TRANSFER_CONFIRM}";
+            //$('.menu a[id!="stopMenuA"]').bind('click', select_menu);
+            init();
+            //seting autoCall checkbox to checked if auto call activated
 
-        //$("#scrollDiv").Scroll({line: 1, speed: 1000, timer: 5000});
-        //$('.menu a[id!="stopMenuA"]').bind('click', select_menu);
-        init();
-    });
+        <c:if test='${auto_call == "1"}'>
+            <c:set var="au_ck" value="checked"></c:set>
+            <c:set var="au_dis" value="disabled"></c:set>
+            <c:set var="au_title" value="${server.auto.title2}"></c:set>
+            $(function () {
+            auto_call_tag = true;
+                    setTimeout(function () {
+                    var MSG1 = new CLASS_MSN_MESSAGE("autoCallOn", 300, 160, "",
+                            "<spring:message code='server.ticket.tip'/> ", "<spring:message code='server.ticket.timeout1'/> <br/><br/><spring:message code='server.ticket.timeout2'/> <span style='color:red'>${auto_call_time==null?10:auto_call_time}S</span><spring:message code='server.ticket.timeout3'/> ", "_blank");
+                            MSG1.show();
+                    }, 15000);
+                    $("#enabel_auto_call").prop("checked", true);
+                   // $("#enabel_auto_call").prop("disabled", "disabled");
+            }) ;
+        </c:if>
+});
 
-    
 
-    
-    function MM_showHideLayers() { //v9.0
-        var i, p, v, obj, args = MM_showHideLayers.arguments;
-        for (i = 0; i < (args.length - 2); i += 3)
-            with (document)
-                if (getElementById && ((obj = getElementById(args[i])) !== null)) {
-                    v = args[i + 2];
-                    if (obj.style) {
-                        obj = obj.style;
-                        v = (v === 'show') ? 'visible' : (v === 'hide') ? 'hidden' : v;
-                    }
-                    obj.visibility = v;
-                }
-    }
 
-    function hide_menu() {
-        setTimeout("MM_showHideLayers('topmenu','','hide')", 200);
-    }
 
-    function open_ticket_win() {
-        var pars = "branchId=${branchId}&areaId=${areaids}";
-        var tik_url = basePath+"/client/ticket.do?guide=seat&" + pars;
-        window.open(tik_url, "_ticket_win", "height=650, width=1024, toolbar= no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,left=100,top=20");
-    }
+function MM_showHideLayers() { //v9.0
+var i, p, v, obj, args = MM_showHideLayers.arguments;
+for (i = 0; i < (args.length - 2); i += 3)
+with (document)
+if (getElementById && ((obj = getElementById(args[i])) !== null)) {
+v = args[i + 2];
+if (obj.style) {
+obj = obj.style;
+v = (v === 'show') ? 'visible' : (v === 'hide') ? 'hidden' : v;
+}
+obj.visibility = v;
+}
+}
+
+function hide_menu() {
+setTimeout("MM_showHideLayers('topmenu','','hide')", 200);
+}
+
+function open_ticket_win() {
+var pars = "branchId=${branchId}&areaId=${areaids}";
+var tik_url = basePath + "/client/ticket.do?guide=seat&" + pars;
+window.open(tik_url, "_ticket_win", "height=650, width=1024, toolbar= no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,left=100,top=20");
+}
 </script>

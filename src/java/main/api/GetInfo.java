@@ -26,7 +26,7 @@ public class GetInfo extends HttpServlet {
         if (StringUtils.isNoneBlank(id_user, id_ticket)) {
             try {
                 PgConnection con = new PgConnection();
-                String SQL = "SELECT count(*) FROM t_ticket "
+                String SQL = "SELECT count(*) as dealCount FROM t_ticket "
                         + "WHERE status=4 and deal_user=? and "
                         + " to_date(to_char(ticket_time,'YYYY-MM-DD'),'YYYY-MM-DD')  >= TO_DATE(?,'YYYY-MM-DD') ";
                 PreparedStatement ps = con.getStatement().getConnection().prepareStatement(SQL);
@@ -42,7 +42,7 @@ public class GetInfo extends HttpServlet {
                 all.put("error", e.getMessage());
             }
         }else{
-            all.put("error", "Empty field");
+            all.put("error", "Empty field in ajax params");
         }
 
         all.put("id_user", id_user);

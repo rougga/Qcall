@@ -21,7 +21,7 @@ var luruGZL_tag = 0;
 var op_tag;
 var process_btn = '';
 var screen_tag;
-var auto_call_tag = false;
+var auto_call_tag = true;//
 var call_sta = 1;
 var reCall_sta = 2;
 var abandonCall_sta = 3;
@@ -45,8 +45,8 @@ var scrollTick;
 var freshBizTick;
 
 var evalType = "";
-var autoCallTime = 10000;
-var autoDeal = 0;
+var autoCallTime = 4000; //value(in miliseconds) for the time betwen call in auto call mode
+var autoDeal = 1; // 
 var fvts_client_tag;
 var call_wait_time = 0;
 
@@ -246,32 +246,9 @@ function call(tid) {
                 pars2.id_ticket = r.tid;
                 pars2.id_user = userId;
                 pars2.id_service = r.biz_type_id;
-                $.ajax({
-                    url: loginUrl + 'GetInfo',
-                    type: 'post',
-                    data: pars2,
-                    success: function (data) {
-                        $('#todayUserDeal').html(r.ticket_ser);
-                    }
-                });
-                $.ajax({
-                    url: loginUrl + 'GetTasks',
-                    type: 'post',
-                    data: pars2,
-                    success: function (r) {
-                        let html = "<div class='w-100'>";
-                        for (let i = 0; i < r.result.length; i++) {
-                            html += "<div class='btn bg-warning col-4 text-dark bordered border-dark task font-weight-bold p-0  m-0 my-1' > "
-                                    + "<input name='task' value='" + r.result[i].id_task + "' type='checkbox' class='float-left ml-2 my-1'  onChange='taskInit(this)' style='width: 30px;height: 30px;' >"
-                                    + "<span class='mx-2'>" + r.result[i].name + "</span>"
-                                    + "<input name='' value='0' type='number' class='float-right mr-2 my-1 qte' style='width: 40px;height: 30px;' min='1'>"
+                updateTotalDealtTicketsCounter(pars2); //updating totale dealt counter
+                getTasks(pars2);
 
-                                    + "</div>";
-                        }
-                        html += "</div>";
-                        $('#tasks').append(html);
-                    }
-                });
                 /* if (autoDeal == 1) {
                  deal();
                  } */
@@ -1470,14 +1447,14 @@ var countTime = false;
 
 function t_clock(t) {
     if (t == 'start') {
-        $($timer).html('1');
+        $($timer).html(formatTime(1)); //timer start value
         tim = 1;
         $($timer).show();
         $($timer_mask).hide();
         countTime = true;
     } else if (t == 'stop') {
         if (auto_call_tag == true) {
-            $($timer).html(autoCallTime / 1000);
+            $($timer).html(formatTime(autoCallTime / 1000));
         }
         tim = 1;
 
@@ -1497,13 +1474,13 @@ function timerTick() {
         $timer_mask = $('#timer_mask');
     }
     if (auto_call_tag == true && countTime == false) {
-        $($timer).html(autoCallTime / 1000 - tim);
+        $($timer).html(formatTime(autoCallTime / 1000 - tim));
         if (autoCallTime / 1000 - tim == 0) {
             $($timer).hide();
             $($timer_mask).show();
         }
     } else {
-        $($timer).html(tim);
+        $($timer).html(formatTime(tim));// updating the timer with formated time
     }
     if (tim >= dealTimeWarn && dealTimeWarn > 0 && countTime == true) {
         var mes = "";
@@ -1521,6 +1498,25 @@ function timerTick() {
         abandon();
     }
     tim++;
+}
+
+//function to format seconds to minuts
+function formatTime(sec) {
+    let formatedTime = "";
+    let hours = Math.floor(sec / 3600);
+    let minutes = Math.floor((sec % 3600) / 60);
+    let seconds = Math.floor(sec % 60);
+    if (hours > 0) {
+        formatedTime = hours + ":";
+    }
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    formatedTime = formatedTime + minutes + ":" + seconds;
+    return formatedTime;
 }
 
 function openWindowInfo() {
@@ -1652,3 +1648,46 @@ let setTasks = function () {
         });
     });
 };
+
+//update Total Dealt Tickets Counter
+function updateTotalDealtTicketsCounter(pars) {
+    $.ajax({
+        url: loginUrl + 'GetInfo',
+        type: 'post',
+        data: pars,
+        success: function (data) {
+            $('#todayUserDeal').html(data.dealCount);
+         //   console.log("AJAX.GetInfo.success :");
+        //    console.log(data);
+        },
+        error: function (request, status, error) {
+            console.log("AJAX.GetInfo.error :  ");
+            console.log(request.responseText);
+        }
+    });
+}
+
+//geting tasks for that service 
+function getTasks(pars) {
+    $.ajax({
+        url: loginUrl + 'GetTasks',
+        type: 'post',
+        data: pars,
+        success: function (r) {
+            let html = "<div class='w-100'>";
+            for (let i = 0; i < r.result.length; i++) {
+                html += "<div class='btn bg-warning col-4 text-dark bordered border-dark task font-weight-bold p-0  m-0 my-1' > "
+                        + "<input name='task' value='" + r.result[i].id_task + "' type='checkbox' class='float-left ml-2 my-1'  onChange='taskInit(this)' style='width: 30px;height: 30px;' >"
+                        + "<span class='mx-2'>" + r.result[i].name + "</span>"
+                        + "<input name='' value='0' type='number' class='float-right mr-2 my-1 qte' style='width: 40px;height: 30px;' min='1'>"
+
+                        + "</div>";
+            }
+            html += "</div>";
+            $('#tasks').append(html);
+        },
+        error: function (request, status, error) {
+            console.log("AJAX.GetTasks: " + request.responseText);
+        }
+    });
+}
