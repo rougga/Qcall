@@ -1147,11 +1147,13 @@ function setLogoff(status) {
 
             //changing status to disconected
             $.post("./ChangeStatus", {status: 0}, function (data) {
+                console.log("logout change status 0");
                 window.location = "./index.jsp";
             });
         },
         error: function () {
             window.location.href = loginUrl;
+            console.log("logout change status error");
         }
     });
 
