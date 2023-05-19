@@ -1681,7 +1681,7 @@ function getTasks(pars) {
                 html += "<div class='btn bg-warning col-4 text-dark bordered border-dark task font-weight-bold p-0  m-0 my-1' > "
                         + "<input name='task' value='" + r.result[i].id_task + "' type='checkbox' class='float-left ml-2 my-1'  onChange='taskInit(this)' style='width: 30px;height: 30px;' >"
                         + "<span class='mx-2'>" + r.result[i].name + "</span>"
-                        + "<input name='' value='0' type='number' class='float-right mr-2 my-1 qte' style='width: 40px;height: 30px;' min='1'>"
+                        + "<input name='' value='1' type='number' class='float-right mr-2 my-1 qte' style='width: 40px;height: 30px;' min='1'>"
 
                         + "</div>";
             }
