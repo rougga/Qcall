@@ -37,33 +37,30 @@
                         <input type="password" id="password" class="form-control p-4"/>
                     </div>
                     <div class="form-group">
-                        <label for="window"><img src="img/guichet.png" alt=""/> Guichet:</label>
-                        <select id="window" class="form-control form-control-lg">
+                        <label for="window"><img src="img/guichet.png" alt=""/> Connecté temporairement à Guichet: </label>
                             <%
-                                try{
-                        
-                                PgConnection con = new PgConnection();
-                                ResultSet r = con.getStatement().executeQuery("select id,name,win_number,status from t_window order by win_number;");
-                                while(r.next()){
-                                    if(r.getInt("status")==1){
+                                try {
+
+                                    PgConnection con = new PgConnection();
+                                    ResultSet r = con.getStatement().executeQuery("select id,name,win_number,status from t_window where status = 1 order by win_number;");
+                                    if (r.next()) {
                             %>
 
-                            <option value="<%=r.getString("id")%>" label="<%=r.getString("name")%>"><%=r.getString("name")%></option>
+                            <input value="<%=r.getString("id")%>" type="hidden" id="window"/>
+                            <span class="badge badge-pill badge-info"><%=r.getString("name")%></span>
                             <%
-                        }
-                    }
-                    } catch (ClassNotFoundException | SQLException ex) {
-                            %> <script>console.log("SERVER: <%= ex.getMessage() %>"); </script> <%
-                    }
-                            %>
 
-                        </select>
+                                }
+                            } catch (ClassNotFoundException | SQLException ex) {
+                            %> <script>console.log("SERVER: <%= ex.getMessage()%>");</script> <%
+                                }
+                            %>
                     </div>
                     <input type="hidden" id="branchId" class="form-control"/>
                     <input type="hidden" id="windowText" value="Guichet 11" class="form-control"/>
                     <button type="button" id="submit" class="btn bg-costum btn-lg float-right text-white"><img src="img/login.png" alt=""/> Connexion</button>
                     <a href="#" id="settingsBtn" class="float-right btn btn-secondary mx-2 btn-lg "><img src="img/setting.png" alt=""/></a>
-                    
+
                 </form>
             </div>
             <div>
