@@ -16,6 +16,11 @@ var transfer_btn;
 var return_btn;
 var machineAccount_btn;
 var buluMachineAccount_btn;
+// a select filled with windows(Quichet) to call tickets to 
+let windowSelectForCall; // 
+let serviceSelectForCall;
+
+
 var luruGZL_btn;
 var luruGZL_tag = 0;
 var op_tag;
@@ -89,7 +94,8 @@ var refresh_biz_delay = 5000;
 function init() {
     initButton();
     bindEvent2Button();
-
+    initSelect();
+    bindEvent2Select();
 
     op_tag = default_sta;
     setButton();
@@ -819,9 +825,12 @@ function initButton() {
     buluMachineAccount_btn = $("#bulu_machineAccount");
     luruGZL_btn = $("#luruGZL");
 }
-
+function initSelect() {
+    windowSelectForCall = $("#windowSelectForCall");
+    serviceSelectForCall = $("#serviceId");
+}
 function bindEvent2Button() {
-    call_btn.bind('click', call);
+    call_btn.bind('click', ServiceCallFilter);
     reCall_btn.bind('click', reCall);
     abandonCall_btn.bind('click', abandonCall);
     specialCall_btn.bind('click', specialCall);
@@ -842,10 +851,15 @@ function bindEvent2Button() {
     luruGZL_btn.bind('click', lurugongzuoliang);
 }
 
+function bindEvent2Select() {
+    windowSelectForCall.bind('change', changeWindowId);
+    serviceSelectForCall.bind('change', updateWindowSelect);
+}
 
 function setButton() {
 
     $("#batch_handle").removeAttr("checked");
+    $("#guichetLoadIcon").hide();
     switch (op_tag) {
         case call_sta :
             call_btn.hide();
@@ -1659,8 +1673,8 @@ function updateTotalDealtTicketsCounter(pars) {
         data: pars,
         success: function (data) {
             $('#todayUserDeal').html(data.dealCount);
-         //   console.log("AJAX.GetInfo.success :");
-        //    console.log(data);
+            //   console.log("AJAX.GetInfo.success :");
+            //    console.log(data);
         },
         error: function (request, status, error) {
             console.log("AJAX.GetInfo.error :  ");
@@ -1692,4 +1706,95 @@ function getTasks(pars) {
             console.log("AJAX.GetTasks: " + request.responseText);
         }
     });
+}
+
+function changeWindowId() {
+    let selectedWindowId = $(this).val();
+    console.log(selectedWindowId);
+
+
+
+    //send an http req to change value of windowId and/or windowText and/or windowNumber in the session params
+}
+
+
+//function that call only tickets in selectedservice on UI <select>
+function ServiceCallFilter() {
+    let selectedServiceId = $("#serviceId").val();
+    console.log(selectedServiceId);
+    if (selectedServiceId == 0) {
+        // normal call
+        call();
+    } else {
+
+        // call only tickets in sthe selected service
+        setBiz(selectedServiceId);
+    }
+
+}
+function  GetAllWindows() {
+    $.ajax({
+        url: loginUrl + 'GetAllWindows',
+        type: 'get',
+        data: {},
+        success: function (r) {
+            return r;
+        },
+        error: function (request, status, error) {
+            console.log("AJAX.updateWindowSelect.GetAllWindows: " + request.responseText);
+        }
+    });
+}
+
+function GetWindowsByServiceId(pars) {
+    $.ajax({
+        url: loginUrl + 'GetWindowsByServiceId',
+        type: 'get',
+        data: pars,
+        success: function (r) {
+            console.log(r);
+            return r;
+        },
+        error: function (request, status, error) {
+            console.log("AJAX.updateWindowSelect.GetWindowsByServiceId: " + request.responseText);
+            console.log(pars);
+        }
+    });
+
+}
+
+
+function updateWindowSelect() {
+    let selectedServiceId = $(this).val();
+    let pars = {};
+
+    if (selectedServiceId == 0) {
+        // Load all windows
+        $("#guichetLoadIcon").show();
+        $("#windowSelectForCall").attr("disabled",true);
+        $('#windowSelectForCall').empty();
+        loadWindowSelectHTML(GetAllWindows());
+    } else {
+        //load windows that has the service 
+        pars.serviceId = selectedServiceId;
+        $("#guichetLoadIcon").show();
+        $("#windowSelectForCall").attr("disabled",true);
+        $('#windowSelectForCall').empty();
+        loadWindowSelectHTML(GetWindowsByServiceId(pars));
+
+    }
+}
+function  loadWindowSelectHTML(r) {
+    if (r) {
+        let html = "";
+        for (let i = 0; i < r.result.length; i++) {
+            html += "<option value=" + r.result[i].id + " data-name=" + r.result[i].name + " data-number=" + r.result[i].win_number + ">" + r.result[i].name + "</option>";
+        }
+        $('#windowSelectForCall').append(html);
+        $("#windowSelectForCall").attr("disabled",false);
+        $("#guichetLoadIcon").hide();
+    } else {
+        console.log("home.js.loadWindowSelectHTML(): the passed data is empty");
+        console.log(r);
+    }
 }

@@ -10,7 +10,7 @@ $(document).ready(function () {
         par.username = $("#username").val();
         par.password = $("#password").val();
         par.branchId = $("#branchId").val();
-        par.windowText = $("#window option:selected").html();
+        par.windowText = $("#windowText").val();
         par.rand = Math.random();
         par.window = $("#window").val();
 

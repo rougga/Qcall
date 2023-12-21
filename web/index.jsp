@@ -10,7 +10,7 @@
         <link rel="icon" type="image/png" href="./img/favicon-32x32.png">
         <script src="./js/lib/jquery.js"></script>
         <link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="./css/body.css" rel="stylesheet" type="text/css"/>
+        <link href="./css/index.css" rel="stylesheet" type="text/css"/>
         <script src="./js/lib/bootstrap.bundle.min.js"></script>
         <script src="./js/script.js"></script>
         <script src="./js/login.js"></script>
@@ -24,7 +24,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="col-12 col-md-6 mx-auto mt-4">
+            <div class="col-12 col-md-6 mx-auto mt-4 bg-dark pb-1 rounded">
                 <h1 class="text-center text-white"><img src="img/qcall.png" class="img-fluid"/></h1>
                 <h4 class="text-white">Connexion:</h4>
                 <form action="Login" method="POST" class="form text-white">
@@ -48,6 +48,7 @@
 
                             <input value="<%=r.getString("id")%>" type="hidden" id="window"/>
                             <span class="badge badge-pill badge-info"><%=r.getString("name")%></span>
+                            <input type="hidden" id="windowText" value="<%=r.getString("name")%>"/>
                             <%
 
                                 }
@@ -57,10 +58,12 @@
                             %>
                     </div>
                     <input type="hidden" id="branchId" class="form-control"/>
-                    <input type="hidden" id="windowText" value="Guichet 11" class="form-control"/>
-                    <button type="button" id="submit" class="btn bg-costum btn-lg float-right text-white"><img src="img/login.png" alt=""/> Connexion</button>
-                    <a href="#" id="settingsBtn" class="float-right btn btn-secondary mx-2 btn-lg "><img src="img/setting.png" alt=""/></a>
+                    <div class="form-group">
+                        <button type="button" id="submit" class="btn bg-costum btn-lg text-white"><img src="img/login.png" alt=""/> Connexion</button>
+                        <a href="#" id="settingsBtn" class="btn btn-secondary mx-2 btn-lg "><img src="img/setting.png" alt=""/></a>
 
+                    </div>
+                    
                 </form>
             </div>
             <div>

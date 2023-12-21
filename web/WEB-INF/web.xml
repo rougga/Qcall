@@ -24,6 +24,10 @@
         <servlet-name>GetTasks</servlet-name>
         <servlet-class>main.api.GetTasks</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetWindowsByServiceId</servlet-name>
+        <servlet-class>main.api.GetWindowsByServiceId</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>GetTasks</servlet-name>
         <url-pattern>/GetTasks</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetWindowsByServiceId</servlet-name>
+        <url-pattern>/GetWindowsByServiceId</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

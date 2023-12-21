@@ -1,5 +1,11 @@
+@font-face{
+ font-family:'digital-clock-font';
+ src: url('../font/digital-7.ttf');
+}
+
 body{
-    
+    background: url(../img/background-yellow.webp) no-repeat center center fixed;
+    background-size: cover;
 }
 a{
    
@@ -17,3 +23,83 @@ a{
 .appHover:hover{
     background-color: #00cc66;
 }
+
+.secondary-color{
+    color: #dfbf5c !important;
+}
+
+.secondary-color-disabled{
+    color: #dfbf5c !important;
+    opacity: 0.7 !important;
+}
+
+.font-digital{
+    font-family:'digital-clock-font' !important;
+}
+
+
+html {
+
+.dark-mode {
+    background: black;
+    color: #cccccc;
+}
+
+b
+.toggle-darkmode {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  max-width: 140px;
+}
+.toggle-darkmode span {
+  margin: 0;
+}
+.toggle-darkmode input[type=checkbox] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+.toggle-darkmode input[type=checkbox]:checked + label {
+  background: #dfbf5c;
+}
+.toggle-darkmode input[type=checkbox]:checked + label:after {
+  left: calc(100% - 2px);
+  transform: translateX(-100%);
+}
+.toggle-darkmode label {
+  cursor: pointer;
+  width: 75px;
+  height: 34px;
+  background: rgba(0, 0, 0, 0.27);
+  display: inline-block;
+  border-radius: 40px;
+  position: relative;
+}
+.toggle-darkmode label:after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  border-radius: 40px;
+  transition: 0.3s;
+}
+
+.screen-reader-text {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute !important;
+  width: 1px;
+  word-wrap: normal !important;
+}
+
+
