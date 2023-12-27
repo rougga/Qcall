@@ -53,6 +53,12 @@
             <div>
                 <%@include file="./addon/navbar.jsp" %>
             </div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alertBox">
+                <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <div class="d-md-flex">
                 <div id="console" class="col-12 col-md-9 p-2 m-0">
                     <div class="col-12 p-0 rounded border border-dark" id="displayPanel">
@@ -101,8 +107,9 @@
                         <!-- Dropdown to select a window to call the tickets to -->
                         <div class="col-12 d-flex p-2 justify-content-center">
 
-                            <label for="windowSelectForCall" class="mr-1 font-weight-bold text-center align-items-center"><img src="img/desktop-2-24.png" alt=""/> Quichet:</label>
+                            <label for="windowSelectForCall" id="reminderWindowSelect" data-toggle="popover" data-trigger="focus" data-placement="top" data-content="Choisissez un guichet !!" class="mr-1 font-weight-bold text-center align-items-center"><img src="img/desktop-2-24.png" alt=""/> Quichet:</label>
                             <select id="windowSelectForCall" class="col-8" class="form-control form-control-lg align-items-center">
+                                 <option value='0' selected disabled >Choisissez un guichet ...</option>
                                 <%
                                     try {
 
@@ -177,9 +184,9 @@
                         -->
 
                         <div id="next" class="w-100">
-                            <a class="btn btn-lg bg-costum text-white border w-100 py-4 my-2" id="call_btn">
+                            <button class="btn btn-lg bg-costum text-white border w-100 py-4 my-2" id="call_btn">
                                 <img src="./img/icon/call.png" class="pb-1 m-0"/> Suivant
-                            </a>
+                            </button>
                             <a class="btn btn-lg bg-costum text-white border w-100 py-4 my-2" id="finish_btn">
                                 <img src="./img/icon/deal.png" class="pb-1 m-0"/> Suivant
                             </a>
@@ -346,6 +353,9 @@
         init();
         //seting autoCall checkbox to checked if auto call activated
 
+        $("#alertBox").hide();
+        $("#call_btn").prop( "disabled", true );
+        
     <c:if test='${auto_call == "1"}'>
         <c:set var="au_ck" value="checked"></c:set>
         <c:set var="au_dis" value="disabled"></c:set>

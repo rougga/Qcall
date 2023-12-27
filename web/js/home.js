@@ -19,14 +19,12 @@ var buluMachineAccount_btn;
 // a select filled with windows(Quichet) to call tickets to 
 let windowSelectForCall; // 
 let serviceSelectForCall;
-
-
 var luruGZL_btn;
 var luruGZL_tag = 0;
 var op_tag;
 var process_btn = '';
 var screen_tag;
-var auto_call_tag = true;//
+var auto_call_tag = true; //
 var call_sta = 1;
 var reCall_sta = 2;
 var abandonCall_sta = 3;
@@ -41,68 +39,41 @@ var finish_sta = 11;
 var abandon_sta = 12;
 var default_sta = 13;
 var seccall_sta = 14;
-
 var ticketId = "";
 var userInfoWindow;
 var loginUrl = "";
 var basePath = "";
 var scrollTick;
 var freshBizTick;
-
 var evalType = "";
 var autoCallTime = 4000; //value(in miliseconds) for the time betwen call in auto call mode
 var autoDeal = 1; // 
 var fvts_client_tag;
 var call_wait_time = 0;
-
-
 var enableEval = 1;
 var record_items = 0;
-
-
 var screenEvalWin;
-
 var userId;
-
-
 window.isExit = false;
-
-
 var eval_inter;
-
 var double_screen_obj;
-
 var dealTimeWarn = 0;
-
 var sys_error = $.i18n.prop('server.system.fail');
-
 var pauseSubItem = "0";
-
 var autoCall_Timer;
-
 var flag;
-
-
 var branchId;
-
-
 var wxTag = 0;
-
 var refresh_biz_delay = 5000;
-
-
 function init() {
     initButton();
     bindEvent2Button();
     initSelect();
     bindEvent2Select();
-
     op_tag = default_sta;
     setButton();
-
     if (evalType == 'SCREEN') {
         double_screen_obj = $("#double_screen")[0];
-
         screen_tag = doubleScreen_sta;
         setScreenButton();
     }
@@ -116,8 +87,6 @@ function init() {
     reFreshBiz(windowId, userId, 0);
     flag = 0;
     freshBizTick = setInterval("reFreshBiz(windowId,userId,flag)", refresh_biz_delay);
-
-
     //var evalObj = getEvaluation("evalFac");
 
     var evalObj = getEvaluationByToolFac(eval_tool_fac);
@@ -125,10 +94,7 @@ function init() {
         evalObj.setStars(5);
     }
     recoverTkt();
-
     $.cookie("eval_val", null);
-
-
     setInterval("timerTick()", 1000);
 }
 
@@ -182,7 +148,6 @@ function showUserInfo() {
                 + "&userId=" + userId;
         try {
             var r = double_screen_obj.ExternOpenUrl(url);
-
             screen_tag = doubleScreen_sta;
             setScreenButton();
         } catch (e) {
@@ -208,7 +173,7 @@ function call(tid) {
         if (tid != 'auto') {
             alert($.i18n.prop('server.call.next.banks.error'));
         } else {
-            //alert("自动呼叫");
+//alert("自动呼叫");
         }
         return;
     }
@@ -254,14 +219,11 @@ function call(tid) {
                 pars2.id_service = r.biz_type_id;
                 updateTotalDealtTicketsCounter(pars2); //updating totale dealt counter
                 getTasks(pars2);
-
                 /* if (autoDeal == 1) {
                  deal();
                  } */
                 deal();
                 openDscreenCall(r.ticket_id);
-
-
                 if (auto_call_tag) {
                     var MSG1 = new CLASS_MSN_MESSAGE("autoCall", 300, 160, "",
                             $.i18n.prop('server.auto.call.reminder'), $.i18n.prop('server.enable.automatic.call') + "<span style='color: red'>" + r.ticket_id + "</span>", "_blank");
@@ -343,7 +305,6 @@ function abandonCall() {
                 $('#current_ticket').text(r.ticketId);
                 setTicketStateBar(r.ticket_id + "," + r.biz_name + ","
                         + r.type_name);
-
                 if (autoDeal == 1) {
                     deal();
                 }
@@ -378,7 +339,6 @@ function specialCall() {
                 $('#current_ticket').text(r.ticket_id);
                 setTicketStateBar(r.ticket_id + "," + r.biz_name + ","
                         + r.type_name);
-
                 if (autoDeal == 1) {
                     deal();
                 }
@@ -479,7 +439,6 @@ function suspend() {
             unlockProcess();
             if (r.error != undefined && r.error != '') {
                 setTicketStateBar(r.error);
-
             } else {
                 t_clock('stop');
                 op_tag = suspend_sta;
@@ -512,7 +471,6 @@ function continued() {
         $.get(url, par, function (r) {
             if (r.error != undefined && r.error != '') {
                 setTicketStateBar(r.error);
-
             } else {
                 dealTimeWarn = 0;
                 if (r.dealTimeWarn) {
@@ -535,7 +493,7 @@ function continued() {
 }
 
 function doubleScreen() {
-    // dsc.doubleScr();
+// dsc.doubleScr();
     try {
         double_screen_obj.DualScreen();
     } catch (e) {
@@ -545,7 +503,7 @@ function doubleScreen() {
 }
 
 function singleScreen() {
-    // dsc.singleScr();
+// dsc.singleScr();
     try {
         double_screen_obj.SingleScreen();
     } catch (e) {
@@ -556,7 +514,7 @@ function singleScreen() {
 
 
 function screenShot() {
-    // dsc.shortcutScr();
+// dsc.shortcutScr();
     try {
         double_screen_obj.CutScreen();
     } catch (e) {
@@ -566,10 +524,9 @@ function screenShot() {
 }
 
 function doRefuseDeal() {
-    //alert("doRefuseDeal");
+//alert("doRefuseDeal");
     var tid = getTidFromCookie();
     var url = 'tid=' + tid;
-
     $.ajax({
         url: basePath + "client/seat/refuseDeal",
         type: 'post',
@@ -629,7 +586,6 @@ function doStartCall() {
 
 
     wxTag = 0;
-
     $.ajax({
         url: basePath + "client/seat/deal",
         type: 'post',
@@ -672,7 +628,7 @@ function evaluation(func) {
     var evalRet = -1;
     if (enableEval == 1 && wxTag != 1) {
         if (evalType == "BUTTON") {
-            //var obj = getEvaluation('evalFac');
+//var obj = getEvaluation('evalFac');
             var obj = getEvaluationByToolFac(eval_tool_fac);
             if (obj == null) {
                 func(-1);
@@ -699,7 +655,6 @@ function evaluation(func) {
 
 function setBizItemCount(evalRet) {
     var tkid = getTidFromCookie();
-
     var urlshow = basePath + 'client/seat/finishBiz?action=show&tid=' + tkid
             + "&rand=" + Math.random();
     var msg = showModDialog(urlshow, 900, 460);
@@ -709,10 +664,10 @@ function setBizItemCount(evalRet) {
         if (confirm($.i18n.prop('server.effort.fail'))) {
             finishAction(evalRet);
         } else {
-            //$(document).unmask();
+//$(document).unmask();
         }
     } else {
-        // $(document).unmask();
+// $(document).unmask();
     }
 }
 
@@ -756,7 +711,7 @@ function trans() {
                     result = confirm($.i18n.prop('server.auto.transferred.business') + '【' + r.name + '】？');
                 }
                 if (result) {
-                    var priority = false;//confirm($.i18n.prop('server.banks.priority'));
+                    var priority = false; //confirm($.i18n.prop('server.banks.priority'));
                     var biz = {};
                     biz.type = "bizTrans";
                     biz.id = autotrans;
@@ -770,7 +725,7 @@ function trans() {
 
 
 function abandon() {
-    //alert(111);
+//alert(111);
     var tid = getTidFromCookie();
     if (!tid) {
         return;
@@ -1101,7 +1056,6 @@ function setOnline() {
         $('#statusImg').attr('src', './img/icon/online.png');
         if (evalType == 'SCREEN') {
             var url = basePath + "client/seat/userInfo?rand=" + Math.random() + "&userId=" + userId;
-
             try {
                 double_screen_obj.ExternOpenUrl(url);
             } catch (e) {
@@ -1123,7 +1077,7 @@ function setStop() {
 }
 
 function toStop(type) {
-    //$("#stopIcon").find("ul").hide();
+//$("#stopIcon").find("ul").hide();
     $('#statusImg').attr('src', './img/icon/pause.png');
     var pauseTime = "0";
     if (type) {
@@ -1170,7 +1124,6 @@ function setLogoff(status) {
             console.log("logout change status error");
         }
     });
-
 }
 
 function setLogout() {
@@ -1204,7 +1157,6 @@ function saveTicket2Cookie(t) {
     $.cookie('fvts_seat_autotrans', '');
     $.cookie('fvts_seat_transfered', 'N');
     $.cookie('fvts_seat_nsrdzdah', '');
-
     $.cookie('fvts_seat_tid', t.tid);
     $.cookie('fvts_seat_ticketId', t.ticket_id);
     $.cookie('fvts_seat_callLanguage', t.call_language);
@@ -1306,14 +1258,12 @@ function reFreshBiz(windowId, userId, flag) {
                         ;
                 //counting tickets on wait
                 totalTicketsWaiting = totalTicketsWaiting + (d.waitcount < 0 ? 0 : d.waitcount);
-
                 if (d.nextticket) {
                     html = html + "<span title=" + $.i18n.prop('page.tickettype.next.number') + ">"
                             + d.nextticket
                             + "</span>";
                 }
                 html = html + "</li>";
-
                 l.append(html);
                 if (Number(d.waitcount) > 0) {
                     show = true;
@@ -1333,7 +1283,6 @@ function reFreshBiz(windowId, userId, flag) {
             // alert('after:'+iswait);
         }
     });
-
     /*
      if (flag == 0) {
      var checkUrl = basePath + "client/seat/checkBeforeFreshBiz?rand=" + Math.random()
@@ -1368,7 +1317,6 @@ function togglePaus(tag) {
         $('#pause_icon').show();
         $('#controlPanel').hide();
         $('#displayPanel').hide();
-
         if (autoCall_Timer !== null) {
             clearTimeout(autoCall_Timer);
         }
@@ -1384,7 +1332,7 @@ function playWelcome() {
 
     if (enableEval == 1) {
         if (evalType == "BUTTON") {
-            //var evalObj = getEvaluation("evalFac");
+//var evalObj = getEvaluation("evalFac");
             var evalObj = getEvaluationByToolFac(eval_tool_fac);
             if (evalObj != null) {
                 evalObj.welcome();
@@ -1403,7 +1351,7 @@ function palyEval() {
     try {
         document.getElementById('Evaluate').controls.play();
     } catch (e) {
-        // alert(e.message);
+// alert(e.message);
     }
 }
 
@@ -1439,8 +1387,6 @@ function stopReadEval() {
 }
 
 var et = timeoutSec;
-
-
 function readEval(callback) {
     return function () {
         var eval = $.cookie("eval_val");
@@ -1460,7 +1406,6 @@ var tim = 1;
 var $timer = document.getElementById("timer_");
 var $timer_mask = document.getElementById("timer_mask");
 var countTime = false;
-
 function t_clock(t) {
     if (t == 'start') {
         $($timer).html(formatTime(1)); //timer start value
@@ -1473,7 +1418,6 @@ function t_clock(t) {
             $($timer).html(formatTime(autoCallTime / 1000));
         }
         tim = 1;
-
         if (auto_call_tag == false) {
             $($timer).hide();
             $($timer_mask).show();
@@ -1496,7 +1440,7 @@ function timerTick() {
             $($timer_mask).show();
         }
     } else {
-        $($timer).html(formatTime(tim));// updating the timer with formated time
+        $($timer).html(formatTime(tim)); // updating the timer with formated time
     }
     if (tim >= dealTimeWarn && dealTimeWarn > 0 && countTime == true) {
         var mes = "";
@@ -1507,7 +1451,6 @@ function timerTick() {
                     return false;
                 });
         MSG1.show();
-
         dealTimeWarn = 0;
     }
     if (countTime == true && auto_call_tag == true && tim == call_wait_time && op_tag == call_sta) {
@@ -1610,7 +1553,6 @@ function openDscreenCall(ticket) {
         try {
             // alert(ticket);
             double_screen_obj.ExternOpenUrl(url);
-
             setTimeout("showUserInfo()", 30000);
         } catch (e) {
         }
@@ -1653,7 +1595,6 @@ let setTasks = function () {
     $('input[name="task"]:checked').each(function () {
         pars3.id_task = $(this).val();
         pars3.qte = $(this).parent("div").find(".qte").val();
-
         $.ajax({
             url: './SetTaskToTicket',
             type: 'post',
@@ -1664,7 +1605,6 @@ let setTasks = function () {
         });
     });
 };
-
 //update Total Dealt Tickets Counter
 function updateTotalDealtTicketsCounter(pars) {
     $.ajax({
@@ -1710,88 +1650,102 @@ function getTasks(pars) {
 
 function changeWindowId() {
     let selectedWindowId = $(this).val();
-    console.log(selectedWindowId);
-
-
-
-    //send an http req to change value of windowId and/or windowText and/or windowNumber in the session params
+    console.log("Selected WindowId: " + selectedWindowId);
+    $('#reminderWindowSelect').popover('hide');
+    if (selectedWindowId != 0) {
+        $("#call_btn").prop("disabled", false);
+        //send an http req to change value of windowId and/or windowText and/or windowNumber in the session params
+    }
 }
 
 
 //function that call only tickets in selectedservice on UI <select>
 function ServiceCallFilter() {
     let selectedServiceId = $("#serviceId").val();
+    let windowSelectForCall = $("#windowSelectForCall").val();
     console.log(selectedServiceId);
     if (selectedServiceId == 0) {
-        // normal call
+// normal call
         call();
     } else {
 
-        // call only tickets in sthe selected service
+// call only tickets in sthe selected service
         setBiz(selectedServiceId);
     }
 
 }
-function  GetAllWindows() {
+function  GetAllActiveWindows() {
+    let result;
     $.ajax({
-        url: loginUrl + 'GetAllWindows',
+        url: loginUrl + 'getAllWindows',
         type: 'get',
         data: {},
         success: function (r) {
-            return r;
+            console.log(r);
+            loadWindowSelectHTML(r);
+            result = r;
         },
         error: function (request, status, error) {
             console.log("AJAX.updateWindowSelect.GetAllWindows: " + request.responseText);
         }
     });
+    return result;
 }
 
-function GetWindowsByServiceId(pars) {
+function GetActiveWindowsByServiceId(pars) {
+    let result;
     $.ajax({
         url: loginUrl + 'GetWindowsByServiceId',
         type: 'get',
         data: pars,
         success: function (r) {
             console.log(r);
-            return r;
+            loadWindowSelectHTML(r);
+            result = r;
         },
         error: function (request, status, error) {
             console.log("AJAX.updateWindowSelect.GetWindowsByServiceId: " + request.responseText);
             console.log(pars);
         }
     });
-
+    return result;
 }
 
 
 function updateWindowSelect() {
     let selectedServiceId = $(this).val();
     let pars = {};
-
     if (selectedServiceId == 0) {
-        // Load all windows
+// Load all windows
         $("#guichetLoadIcon").show();
-        $("#windowSelectForCall").attr("disabled",true);
+        $("#windowSelectForCall").attr("disabled", true);
         $('#windowSelectForCall').empty();
-        loadWindowSelectHTML(GetAllWindows());
+        GetAllActiveWindows();
+        $('#reminderWindowSelect').popover('toggle');
+        $("#call_btn").prop("disabled", true);
     } else {
-        //load windows that has the service 
+//load windows that has the service 
         pars.serviceId = selectedServiceId;
         $("#guichetLoadIcon").show();
-        $("#windowSelectForCall").attr("disabled",true);
+        $("#windowSelectForCall").attr("disabled", true);
         $('#windowSelectForCall').empty();
-        loadWindowSelectHTML(GetWindowsByServiceId(pars));
-
+        GetActiveWindowsByServiceId(pars);
+        $('#reminderWindowSelect').popover('toggle');
+        $("#call_btn").prop("disabled", true);
     }
 }
 function  loadWindowSelectHTML(r) {
     if (r) {
         let html = "";
+        html += "<option value='0' selected disabled >Choisissez un guichet ...</option>";
+
         for (let i = 0; i < r.result.length; i++) {
-            html += "<option value=" + r.result[i].id + " data-name=" + r.result[i].name + " data-number=" + r.result[i].win_number + ">" + r.result[i].name + "</option>";
+            if (r.result[i].status == "1") {
+                html += "<option value='" + r.result[i].id + "' data-name='" + r.result[i].name + "' data-number='" + r.result[i].win_number + "'>" + r.result[i].name + "</option>";
+            }
         }
         $('#windowSelectForCall').append(html);
-        $("#windowSelectForCall").attr("disabled",false);
+        $("#windowSelectForCall").attr("disabled", false);
         $("#guichetLoadIcon").hide();
     } else {
         console.log("home.js.loadWindowSelectHTML(): the passed data is empty");
