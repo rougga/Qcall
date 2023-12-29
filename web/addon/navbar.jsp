@@ -48,7 +48,7 @@
                 <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <b id="userInfo">${userName}</b>
                     @
-                    <small>${SEAT_WINSTR}</small>
+                    <small id="windowNameNavDisplay">${SEAT_WINSTR}</small>
                     <img src="./img/icon/online.png" id="statusImg"/>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">

@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.core5.net.URIBuilder;
 
@@ -27,25 +28,30 @@ public class Login extends HttpServlet {
 
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            String branchId = request.getParameter("branchId");
+            String branchId = StringUtils.isBlank(request.getParameter("branchId")) ? "1": request.getParameter("branchId") ;
             String windowText = request.getParameter("windowText");
             String rand = request.getParameter("rand");
             String window = request.getParameter("window");
-
-            URI uri = new URIBuilder()
-                    .setScheme("http")
-                    .setHost("localhost")
-                    .setPort(8888)
-                    .setPath("/server/client/login")
-                    .setParameter("username", username)
-                    .setParameter("password", password)
-                    .setParameter("branchId", branchId)
-                    .setParameter("windowText", windowText)
-                    .setParameter("rand", rand)
-                    .setParameter("window", window)
-                    .build();
-            HttpGet httpget = new HttpGet(uri);
-            System.out.println(httpget.getUri() );
+            String host = request.getParameter("host");
+            String port = request.getParameter("port");
+            if (StringUtils.isNoneBlank(username, password, branchId, windowText, rand, window)) {
+                URI uri = new URIBuilder()
+                        .setScheme("http")
+                        .setHost("localhost")
+                        .setPort(8888)
+                        .setPath("/server/client/login")
+                        .setParameter("username", username)
+                        .setParameter("password", password)
+                        .setParameter("branchId", branchId)
+                        .setParameter("windowText", windowText)
+                        .setParameter("rand", rand)
+                        .setParameter("window", window)
+                        .build();
+                HttpGet httpget = new HttpGet(uri);
+                System.out.println(httpget.getUri().toString());
+            } else {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, "Some Login form data are empty", "");
+            }
         } catch (URISyntaxException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.StringUtils;
 
 public class ChangeStatus extends HttpServlet {
 
@@ -18,18 +19,29 @@ public class ChangeStatus extends HttpServlet {
             String windowText = request.getParameter("windowText");
             String branchId = request.getParameter("branchId");
             String auto_call = "1";
-
-            request.getSession().setAttribute("status", status);
-            request.getSession().setAttribute("userName", username);
-            request.getSession().setAttribute("SEAT_WINSTR", windowText);
+            if (StringUtils.isNotBlank(status)) {
+                request.getSession().setAttribute("status", status);
+            }
+            if (StringUtils.isNotBlank(username)) {
+                request.getSession().setAttribute("userName", username);
+            }
+            if (StringUtils.isNotBlank(windowText)) {
+                request.getSession().setAttribute("SEAT_WINSTR", windowText);
+            }
+            if (StringUtils.isNotBlank(username)) {
+                request.getSession().setAttribute("userId", username);
+            }
+            if (StringUtils.isNotBlank(branchId)) {
+                request.getSession().setAttribute("branchId", branchId);
+            }
+            if (StringUtils.isNotBlank(auto_call)) {
+                request.getSession().setAttribute("auto_call", auto_call);
+            }
             request.getSession().setAttribute("auto_deal", 1);
             request.getSession().setAttribute("auto_call_time", 4);
             request.getSession().setAttribute("call_wait_time", 10);
-            request.getSession().setAttribute("userId", username);
-            request.getSession().setAttribute("branchId", branchId);
-            request.getSession().setAttribute("auto_call", auto_call);
 
-            System.err.println(status);
+            System.err.println("QCall.ChangeStatus.status = " + status);
         }
     }
 

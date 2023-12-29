@@ -28,6 +28,10 @@
         <servlet-name>GetWindowsByServiceId</servlet-name>
         <servlet-class>main.api.GetWindowsByServiceId</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangeWindow</servlet-name>
+        <servlet-class>main.servlet.ChangeWindow</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>GetWindowsByServiceId</servlet-name>
         <url-pattern>/GetWindowsByServiceId</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeWindow</servlet-name>
+        <url-pattern>/ChangeWindow</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -1655,6 +1655,7 @@ function changeWindowId() {
     if (selectedWindowId != 0) {
         $("#call_btn").prop("disabled", false);
         //send an http req to change value of windowId and/or windowText and/or windowNumber in the session params
+        changeWindow(selectedWindowId);
     }
 }
 
@@ -1663,7 +1664,6 @@ function changeWindowId() {
 function ServiceCallFilter() {
     let selectedServiceId = $("#serviceId").val();
     let windowSelectForCall = $("#windowSelectForCall").val();
-    console.log(selectedServiceId);
     if (selectedServiceId == 0) {
 // normal call
         call();
@@ -1673,6 +1673,21 @@ function ServiceCallFilter() {
         setBiz(selectedServiceId);
     }
 
+}
+function changeWindow(selectedWindowId){
+    let pars = {};
+    pars.windowId = selectedWindowId;
+    $.ajax({
+        url: loginUrl + 'ChangeWindow',
+        type: 'post',
+        data: pars,
+        success: function (r) {
+            $("#windowNameNavDisplay").text(r.name);
+        },
+        error: function (request, status, error) {
+            console.log("AJAX.updateWindowSelect.GetAllWindows: " + request.responseText);
+        }
+    });
 }
 function  GetAllActiveWindows() {
     let result;
@@ -1721,7 +1736,7 @@ function updateWindowSelect() {
         $("#windowSelectForCall").attr("disabled", true);
         $('#windowSelectForCall').empty();
         GetAllActiveWindows();
-        $('#reminderWindowSelect').popover('toggle');
+        $('#reminderWindowSelect').popover('show');
         $("#call_btn").prop("disabled", true);
     } else {
 //load windows that has the service 
@@ -1730,7 +1745,7 @@ function updateWindowSelect() {
         $("#windowSelectForCall").attr("disabled", true);
         $('#windowSelectForCall').empty();
         GetActiveWindowsByServiceId(pars);
-        $('#reminderWindowSelect').popover('toggle');
+        $('#reminderWindowSelect').popover('show');
         $("#call_btn").prop("disabled", true);
     }
 }
