@@ -18,12 +18,18 @@
     </head>
     <body>
         <div class="modal-dialog text-center">
+            <div class="alert alert-danger alert-dismissible fade show m-4" role="alert" id="err">
+                <strong id="errText"></strong>
+                <button type="button" class="close" id="errClose" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <div class="col-sm-8 main-section">
                 <div class="modal-content">
                     <div class="col-12 user-img">
                         <img src="img/fav.png" />
                     </div>
-                    <form action="Login" method="POST" class="col-12">
+                    <form action="" method="POST" class="col-12">
                         <label class="badge badge-pill badge-light font-weight-bold">Connexion  à QCALL:</label>
                         <div class="form-group" id="user-group">
                             <input type="text" id="username" class="form-control" placeholder="Nom d'utilisateur"/>

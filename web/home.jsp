@@ -39,9 +39,11 @@
         <script src="./js/addon.js"></script>
         <script type="text/javascript">
             var windowId = "${windowId}";
-            var userId = "${userId}";
+            var userId = "${userName}";
             var pauseCount = "${pauseCount}";
             var ip = "${ip}";
+            let pp = "${pp}";
+            let windowName = "${SEAT_WINSTR}";
             window.win_quit = function () {
                 setLogout();
             };
@@ -54,7 +56,7 @@
                 <%@include file="./addon/navbar.jsp" %>
             </div>
             <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alertBox">
-                <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                <strong id="errText">ERREUR:</strong>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -62,54 +64,12 @@
             <div class="d-md-flex">
                 <div id="console" class="col-12 col-md-9 p-2 m-0">
                     <div class="col-12 p-0 rounded border border-dark" id="displayPanel">
-                        <!-- Dropdown to select service to call tickets to -->
-                        <div class="col-12 d-flex p-2 justify-content-center">
-
-                            <label for="serviceId" class="mr-1 font-weight-bold text-center align-items-center text-secondary"><img src="img/services-24.png" alt=""/> Service:</label>
-                            <select id="serviceId" class="col-8" class="form-control form-control-lg align-items-center">
-                                <option value="0">Tous les services accessibles</option>
-                                <%
-                                    try {
-
-                                        PgConnection con = new PgConnection();
-                                        ServiceController sc = new ServiceController(con.getStatement());
-                                        services = sc.getAll();
-                                        for (Service service : services) {
-                                            if (service.getStatus() == 1) {
-                                %>
-
-                                <option value="<%=service.getId()%>" label="<%= service.getName()%>"><%=service.getName()%></option>
-                                <%
-                                        }
-                                    }
-                                } catch (Exception ex) {
-                                %> <script>console.log("SERVER: <%= ex.getMessage()%>");</script> <%
-                                    }
-                                %>
-                            </select>
-                        </div>
-                        <!<!-- comment -->
-                        <h1 class="text-dark text-center font-weight-bolder" id="current_ticket"></h1>
-                        <!<!-- comment -->
-                        <h2 id="ticket_state_bar" class="text-dark text-center">---</h2>
-                        <!<!-- comment -->
-                        <h4 id="nsr_state_bar" class="text-center text-dark"></h4>
-                        <!<!-- comment -->
-                        <h4 id="ticket_time" class="text-dark text-center">---</h4>
-                        <!-- Time counter -->
-                        <h2 class="text-center">
-                            Compteur ：
-                            <span style="display:none" id="timer_" class="text-danger text-center"></span>
-                            <span id="timer_mask" class="text-danger text-center font-digital">00:00</span>
-                        </h2>
-                        <!-- Total deal count -->
-                        <h5 class="text-dark text-center ">Totale Traité: <span id="todayUserDeal">0</span></h5>
                         <!-- Dropdown to select a window to call the tickets to -->
                         <div class="col-12 d-flex p-2 justify-content-center">
 
                             <label for="windowSelectForCall" id="reminderWindowSelect" data-toggle="popover" data-trigger="focus" data-placement="top" data-content="Choisissez un guichet !!" class="mr-1 font-weight-bold text-center align-items-center"><img src="img/desktop-2-24.png" alt=""/> Quichet:</label>
                             <select id="windowSelectForCall" class="col-8" class="form-control form-control-lg align-items-center">
-                                 <option value='0' selected disabled >Choisissez un guichet ...</option>
+                                <option value='' selected disabled >Choisissez un guichet ...</option>
                                 <%
                                     try {
 
@@ -133,6 +93,48 @@
                                 <span class="sr-only">Loading...</span>
                             </div>
                         </div>
+                    </div>
+                    <!<!-- comment -->
+                    <h1 class="text-dark text-center font-weight-bolder" id="current_ticket"></h1>
+                    <!<!-- comment -->
+                    <h2 id="ticket_state_bar" class="text-dark text-center">---</h2>
+                    <!<!-- comment -->
+                    <h4 id="nsr_state_bar" class="text-center text-dark"></h4>
+                    <!<!-- comment -->
+                    <h4 id="ticket_time" class="text-dark text-center">---</h4>
+                    <!-- Time counter -->
+                    <h2 class="text-center">
+                        Compteur ：
+                        <span style="display:none" id="timer_" class="text-danger text-center font-digital"></span>
+                        <span id="timer_mask" class="text-danger text-center font-digital">00:00</span>
+                    </h2>
+                    <!-- Total deal count -->
+                    <h5 class="text-dark text-center ">Totale Traité: <span id="todayUserDeal">0</span></h5>
+                    <!-- Dropdown to select service to call tickets to -->
+                    <div class="col-12 d-flex p-2 justify-content-center">
+
+                        <label for="serviceId" class="mr-1 font-weight-bold text-center align-items-center text-secondary"><img src="img/services-24.png" alt=""/> Service:</label>
+                        <select id="serviceId" class="col-8" class="form-control form-control-lg align-items-center">
+                            <option value="0">Tous les services accessibles</option>
+                            <%
+                                try {
+
+                                    PgConnection con = new PgConnection();
+                                    ServiceController sc = new ServiceController(con.getStatement());
+                                    services = sc.getAll();
+                                    for (Service service : services) {
+                                        if (service.getStatus() == 1) {
+                            %>
+
+                            <option value="<%=service.getId()%>" label="<%= service.getName()%>"><%=service.getName()%></option>
+                            <%
+                                    }
+                                }
+                            } catch (Exception ex) {
+                            %> <script>console.log("SERVER: <%= ex.getMessage()%>");</script> <%
+                                }
+                            %>
+                        </select>
                     </div>
                     <div class="col-12 p-0 pt-2" id="controlPanel">
                         <div id="otherBtn" class="w-100">
@@ -339,7 +341,7 @@
         call_wait_time = call_wait_time * 1;
         fvts_client_tag = '${fvts_client_tag}';
         enableEval = "${enable_eval}";
-        userId = "${userId}";
+        userId = "${userName}";
         record_items = "${record_items}";
         timeoutSec = '${eval_timeout}';
         timeoutSec = timeoutSec === '' ? 5 : timeoutSec;
@@ -354,8 +356,8 @@
         //seting autoCall checkbox to checked if auto call activated
 
         $("#alertBox").hide();
-        $("#call_btn").prop( "disabled", true );
-        
+        //$("#call_btn").prop("disabled", true);
+        $("#windowSelectForCall").val(windowId);
     <c:if test='${auto_call == "1"}'>
         <c:set var="au_ck" value="checked"></c:set>
         <c:set var="au_dis" value="disabled"></c:set>

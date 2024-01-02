@@ -16,8 +16,12 @@ public class ChangeStatus extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String status = request.getParameter("status");
             String username = request.getParameter("username");
+            String password = request.getParameter("password");
             String windowText = request.getParameter("windowText");
             String branchId = request.getParameter("branchId");
+            String window = request.getParameter("window");
+            String host = request.getParameter("host");
+            String port = request.getParameter("port");
             String auto_call = "1";
             if (StringUtils.isNotBlank(status)) {
                 request.getSession().setAttribute("status", status);
@@ -36,6 +40,18 @@ public class ChangeStatus extends HttpServlet {
             }
             if (StringUtils.isNotBlank(auto_call)) {
                 request.getSession().setAttribute("auto_call", auto_call);
+            }
+            if (StringUtils.isNotBlank(window)) {
+                request.getSession().setAttribute("windowId", window);
+            }
+            if (StringUtils.isNotBlank(password)) {
+                request.getSession().setAttribute("pp", password);
+            }
+            if (StringUtils.isNotBlank(host)) {
+                request.getSession().setAttribute("host", host);
+            }
+            if (StringUtils.isNotBlank(port)) {
+                request.getSession().setAttribute("port", port);
             }
             request.getSession().setAttribute("auto_deal", 1);
             request.getSession().setAttribute("auto_call_time", 4);

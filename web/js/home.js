@@ -370,6 +370,7 @@ function seccall() {
 }
 
 function transfer(tag, needFin, bid) {
+    console.log("Transfering Ticket ... ");
     var seccallTran = false;
     needFin = (!needFin ? true : needFin);
     if (op_tag == seccall_sta) {
@@ -393,15 +394,18 @@ function transfer(tag, needFin, bid) {
             par.tId = getTidFromCookie();
             par.bizId = bizid.id;
             par.priority = bizid.priority;
+            console.log("The Ticket (" + par.tId + ") will transfer to biz_type(" + par.bizId + ")");
         } else if (bizid.type == "winTrans") {
             url = basePath + "client/seat/transfer?action=winTrans&rand="
                     + Math.random();
             par.tId = getTidFromCookie();
             par.winId = bizid.id;
             par.priority = bizid.priority;
+            console.log("The Ticket (" + par.tId + ") will transfer to Window(" + par.winId + ")");
         }
         $.getJSON(url, par, function (r) {
             t_clock('stop');
+            console.log("Ticket Transfred !");
             if (r.error == undefined || r.error == "") {
                 setTransferedTag('Y');
                 if (needFin != false) {
@@ -1650,13 +1654,66 @@ function getTasks(pars) {
 
 function changeWindowId() {
     let selectedWindowId = $(this).val();
+    let selectedWindowName = $(this).find('option:selected').text();
     console.log("Selected WindowId: " + selectedWindowId);
     $('#reminderWindowSelect').popover('hide');
-    if (selectedWindowId != 0) {
-        $("#call_btn").prop("disabled", false);
-        //send an http req to change value of windowId and/or windowText and/or windowNumber in the session params
-        changeWindow(selectedWindowId);
-    }
+//    let pars = {};
+//    pars.type = "winTrans";
+//    pars.id = selectedWindowId;
+//    pars.priority = true;
+//    console.log("ticket Changed to:");
+//    transfer(undefined, false, pars);
+//    if (selectedWindowId) {
+//        $("#call_btn").prop("disabled", false);
+//        //send an http req to change value of windowId and/or windowText and/or windowNumber in the session params
+//
+//    }
+
+    var url = getPath().base + "client/login";
+    var par = {};
+    par.username = userId;
+    par.password = pp;
+    par.branchId = "1";
+    par.windowText = selectedWindowName;
+    par.rand = Math.random();
+    par.window = selectedWindowId;
+    par.host = localStorage.getItem("ipSS");
+    par.port = localStorage.getItem("portSS");
+
+
+    flag = 1;
+    clearInterval(freshBizTick);
+    var Logoffurl = basePath + "client/logout";
+    $.ajax({
+        url: Logoffurl,
+        type: "post",
+        async: false,
+        data: {"status": 0},
+        success: function () {
+            $.post("./ChangeStatus", {status: 0}, function (data) {
+                console.log("logout change status 0");
+                $.post(url, par, function (data) {
+                    if (data.indexOf("login_center") >= 0) {
+                        $("#alertBox").show();
+                        $("#errText").html("Impossible de change Quichet");
+                        console.log("Connection to pdjh BACKEND IS FAILED!!");
+                    } else {
+                        console.log("Connected to pdjh BACKEND, redirecting to home page...");
+                        par.status = 1;
+                        $.post("./ChangeStatus", par, function (data) {
+                            window.location = "./home.jsp";
+                        });
+                    }
+                });
+            });
+        },
+        error: function () {
+            window.location.href = loginUrl;
+            console.log("logout change status error");
+        }
+    });
+
+
 }
 
 
@@ -1674,20 +1731,7 @@ function ServiceCallFilter() {
     }
 
 }
-function changeWindow(selectedWindowId){
-    let pars = {};
-    pars.windowId = selectedWindowId;
-    $.ajax({
-        url: loginUrl + 'ChangeWindow',
-        type: 'post',
-        data: pars,
-        success: function (r) {
-            $("#windowNameNavDisplay").text(r.name);
-        },
-        error: function (request, status, error) {
-            console.log("AJAX.updateWindowSelect.GetAllWindows: " + request.responseText);
-        }
-    });
+function changeWindow(selectedWindowId) {
 }
 function  GetAllActiveWindows() {
     let result;
@@ -1698,6 +1742,7 @@ function  GetAllActiveWindows() {
         success: function (r) {
             console.log(r);
             loadWindowSelectHTML(r);
+            $('#windowSelectForCall').val(windowId);
             result = r;
         },
         error: function (request, status, error) {
@@ -1716,6 +1761,7 @@ function GetActiveWindowsByServiceId(pars) {
         success: function (r) {
             console.log(r);
             loadWindowSelectHTML(r);
+            $('#windowSelectForCall').val(windowId);
             result = r;
         },
         error: function (request, status, error) {
@@ -1732,27 +1778,28 @@ function updateWindowSelect() {
     let pars = {};
     if (selectedServiceId == 0) {
 // Load all windows
-        $("#guichetLoadIcon").show();
+        //$("#guichetLoadIcon").show();
         $("#windowSelectForCall").attr("disabled", true);
         $('#windowSelectForCall').empty();
         GetAllActiveWindows();
-        $('#reminderWindowSelect').popover('show');
-        $("#call_btn").prop("disabled", true);
+        $('#windowSelectForCall').val(windowId);
+        //$('#reminderWindowSelect').popover('show');
+        //$("#call_btn").prop("disabled", true);
     } else {
 //load windows that has the service 
         pars.serviceId = selectedServiceId;
-        $("#guichetLoadIcon").show();
+        // $("#guichetLoadIcon").show();
         $("#windowSelectForCall").attr("disabled", true);
         $('#windowSelectForCall').empty();
         GetActiveWindowsByServiceId(pars);
-        $('#reminderWindowSelect').popover('show');
-        $("#call_btn").prop("disabled", true);
+        //$('#reminderWindowSelect').popover('show');
+        //$("#call_btn").prop("disabled", true);
     }
 }
 function  loadWindowSelectHTML(r) {
     if (r) {
         let html = "";
-        html += "<option value='0' selected disabled >Choisissez un guichet ...</option>";
+        html += "<option value='' selected disabled >Choisissez un guichet ...</option>";
 
         for (let i = 0; i < r.result.length; i++) {
             if (r.result[i].status == "1") {

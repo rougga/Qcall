@@ -24,7 +24,7 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            System.err.println("hello");
+            System.err.println("[QCall] Login.Servlet.doPost: Connecting...");
 
             String username = request.getParameter("username");
             String password = request.getParameter("password");
@@ -56,6 +56,11 @@ public class Login extends HttpServlet {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+       
     }
 
 }
