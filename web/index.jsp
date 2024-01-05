@@ -6,7 +6,7 @@
 <html lang="fr" >
     <head>
         <meta charset="utf-8"/>
-        <title>Connexion - QCALL</title>
+        <title>Connexion - Qcall+</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="js/lib/jquery.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -30,7 +30,7 @@
                         <img src="img/fav.png" />
                     </div>
                     <form action="" method="POST" class="col-12">
-                        <label class="badge badge-pill badge-light font-weight-bold">Connexion  à QCALL:</label>
+                        <label class="badge badge-pill badge-light font-weight-bold">Connexion  à Qcall+:</label>
                         <div class="form-group" id="user-group">
                             <input type="text" id="username" class="form-control" placeholder="Nom d'utilisateur"/>
                         </div>
