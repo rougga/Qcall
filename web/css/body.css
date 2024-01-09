@@ -113,12 +113,12 @@ footer {
     display: block;
     padding-top: 50px;
     text-align: center;
-    color: #ddd;
+    color: black;
     font-weight: normal;
     text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.2);
     font-size: 0.8em;
 }
 footer a, footer a:link {
-    color: #fff;
+    color: green;
     text-decoration: none;
 }

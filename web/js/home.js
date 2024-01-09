@@ -65,6 +65,62 @@ var flag;
 var branchId;
 var wxTag = 0;
 var refresh_biz_delay = 5000;
+
+
+// Binding 
+
+function initButton() {
+    call_btn = $('#call_btn');
+    reCall_btn = $('#reCall_btn');
+    abandonCall_btn = $('#abandonCall_btn');
+    specialCall_btn = $('#specialCall_btn');
+    seccall_btn = $('#seccall_btn');
+    suspend_btn = $('#suspend_btn');
+    continue_btn = $('#continue_btn');
+    doubleScreen_btn = $('#doubleScreen_btn');
+    singleScreen_btn = $('#singleScreen_btn');
+    screenShot_btn = $('#screenShot_btn');
+    start_btn = $('#start_btn');
+    finish_btn = $('#finish_btn');
+    abandon_btn = $('#abandon_btn');
+    transfer_btn = $('#transfer_btn');
+    return_btn = $('#return_btn');
+    machineAccount_btn = $("#to_machineAccount");
+    buluMachineAccount_btn = $("#bulu_machineAccount");
+    luruGZL_btn = $("#luruGZL");
+}
+function initSelect() {
+    windowSelectForCall = $("#windowSelectForCall");
+    serviceSelectForCall = $("#serviceId");
+}
+function bindEvent2Button() {
+    call_btn.bind('click', ServiceCallFilter);
+    reCall_btn.bind('click', reCall);
+    abandonCall_btn.bind('click', abandonCall);
+    specialCall_btn.bind('click', specialCall);
+    seccall_btn.bind('click', seccall);
+    suspend_btn.bind('click', suspend);
+    continue_btn.bind('click', continued);
+    doubleScreen_btn.bind('click', doubleScreen);
+    singleScreen_btn.bind('click', singleScreen);
+    screenShot_btn.bind('click', screenShot);
+    start_btn.bind('click', deal);
+    finish_btn.bind('click', finish);
+    //transfer_btn.bind('click', transfer);
+    abandon_btn.bind('click', abandon);
+    return_btn.bind('click', returnCallSta);
+    $('#enabel_auto_call').bind('click', setAutoCallTag);
+    machineAccount_btn.bind('click', toMachineAccount);
+    buluMachineAccount_btn.bind('click', buluMachineAccount);
+    luruGZL_btn.bind('click', lurugongzuoliang);
+}
+
+function bindEvent2Select() {
+    windowSelectForCall.bind('change', changeWindowId);
+    //serviceSelectForCall.bind('change', updateWindowSelect);
+}
+
+
 function init() {
     initButton();
     bindEvent2Button();
@@ -110,6 +166,7 @@ function recoverTkt() {
             var lastDate = $.cookie('last_tickedate');
             if (lastDate == new Date().getDate()) {
                 alert($.i18n.prop('server.last.time.error'));
+                showErrorInErrorAletBox($.i18n.prop('server.last.time.error'));
                 var data = {'tid': r.tid};
                 $.ajax({
                     url: basePath + 'client/seat/recoverTicket',
@@ -172,6 +229,7 @@ function call(tid) {
     if (op_tag == 1 || op_tag == 10) {
         if (tid != 'auto') {
             alert($.i18n.prop('server.call.next.banks.error'));
+            showErrorInErrorAletBox($.i18n.prop('server.call.next.banks.error'));
         } else {
 //alert("自动呼叫");
         }
@@ -647,6 +705,7 @@ function evaluation(func) {
                 startReadEval(func);
             } catch (e) {
                 alert(e.message);
+                showErrorInErrorAletBox(e.message);
                 // func(-1);
             }
         } else {
@@ -764,56 +823,6 @@ function abandon() {
 }
 
 
-function initButton() {
-    call_btn = $('#call_btn');
-    reCall_btn = $('#reCall_btn');
-    abandonCall_btn = $('#abandonCall_btn');
-    specialCall_btn = $('#specialCall_btn');
-    seccall_btn = $('#seccall_btn');
-    suspend_btn = $('#suspend_btn');
-    continue_btn = $('#continue_btn');
-    doubleScreen_btn = $('#doubleScreen_btn');
-    singleScreen_btn = $('#singleScreen_btn');
-    screenShot_btn = $('#screenShot_btn');
-    start_btn = $('#start_btn');
-    finish_btn = $('#finish_btn');
-    abandon_btn = $('#abandon_btn');
-    transfer_btn = $('#transfer_btn');
-    return_btn = $('#return_btn');
-    machineAccount_btn = $("#to_machineAccount");
-    buluMachineAccount_btn = $("#bulu_machineAccount");
-    luruGZL_btn = $("#luruGZL");
-}
-function initSelect() {
-    windowSelectForCall = $("#windowSelectForCall");
-    serviceSelectForCall = $("#serviceId");
-}
-function bindEvent2Button() {
-    call_btn.bind('click', ServiceCallFilter);
-    reCall_btn.bind('click', reCall);
-    abandonCall_btn.bind('click', abandonCall);
-    specialCall_btn.bind('click', specialCall);
-    seccall_btn.bind('click', seccall);
-    suspend_btn.bind('click', suspend);
-    continue_btn.bind('click', continued);
-    doubleScreen_btn.bind('click', doubleScreen);
-    singleScreen_btn.bind('click', singleScreen);
-    screenShot_btn.bind('click', screenShot);
-    start_btn.bind('click', deal);
-    finish_btn.bind('click', finish);
-    //transfer_btn.bind('click', transfer);
-    abandon_btn.bind('click', abandon);
-    return_btn.bind('click', returnCallSta);
-    $('#enabel_auto_call').bind('click', setAutoCallTag);
-    machineAccount_btn.bind('click', toMachineAccount);
-    buluMachineAccount_btn.bind('click', buluMachineAccount);
-    luruGZL_btn.bind('click', lurugongzuoliang);
-}
-
-function bindEvent2Select() {
-    windowSelectForCall.bind('change', changeWindowId);
-    serviceSelectForCall.bind('change', updateWindowSelect);
-}
 
 function setButton() {
 
@@ -1125,6 +1134,7 @@ function setLogoff(status) {
         },
         error: function () {
             window.location.href = loginUrl;
+            showErrorInErrorAletBox("logout change status error");
             console.log("logout change status error");
         }
     });
@@ -1621,6 +1631,7 @@ function updateTotalDealtTicketsCounter(pars) {
             //    console.log(data);
         },
         error: function (request, status, error) {
+            showErrorInErrorAletBox("AJAX.GetInfo.error :  ");
             console.log("AJAX.GetInfo.error :  ");
             console.log(request.responseText);
         }
@@ -1647,6 +1658,7 @@ function getTasks(pars) {
             $('#tasks').append(html);
         },
         error: function (request, status, error) {
+            showErrorInErrorAletBox("AJAX.GetTasks: " + request.responseText);
             console.log("AJAX.GetTasks: " + request.responseText);
         }
     });
@@ -1694,10 +1706,10 @@ function changeWindowId() {
                 console.log("logout change status 0");
                 $.post(url, par, function (data) {
                     if (data.indexOf("login_center") >= 0) {
-                        $("#alertBox").show();
-                        $("#errText").html("Impossible de change Quichet");
+                        showErrorInErrorAletBox("Connection to pdjh BACKEND IS FAILED!!");
                         console.log("Connection to pdjh BACKEND IS FAILED!!");
                     } else {
+                        showErrorInErrorAletBox("Connected to pdjh BACKEND, redirecting to home page...");
                         console.log("Connected to pdjh BACKEND, redirecting to home page...");
                         par.status = 1;
                         $.post("./ChangeStatus", par, function (data) {
@@ -1709,6 +1721,7 @@ function changeWindowId() {
         },
         error: function () {
             window.location.href = loginUrl;
+            showErrorInErrorAletBox("logout change status error");
             console.log("logout change status error");
         }
     });
@@ -1731,8 +1744,7 @@ function ServiceCallFilter() {
     }
 
 }
-function changeWindow(selectedWindowId) {
-}
+
 function  GetAllActiveWindows() {
     let result;
     $.ajax({
@@ -1746,6 +1758,7 @@ function  GetAllActiveWindows() {
             result = r;
         },
         error: function (request, status, error) {
+            showErrorInErrorAletBox("AJAX.updateWindowSelect.GetAllWindows: " + request.responseText);
             console.log("AJAX.updateWindowSelect.GetAllWindows: " + request.responseText);
         }
     });
@@ -1765,14 +1778,43 @@ function GetActiveWindowsByServiceId(pars) {
             result = r;
         },
         error: function (request, status, error) {
+            showErrorInErrorAletBox("AJAX.updateWindowSelect.GetWindowsByServiceId: " + request.responseText);
             console.log("AJAX.updateWindowSelect.GetWindowsByServiceId: " + request.responseText);
             console.log(pars);
         }
     });
     return result;
 }
+function getServicesByWindow(id) {
+    let result;
+    let pars = {};
+    if (windowId) {
+        pars.windowId = id;
+        $.ajax({
+            url: loginUrl + 'GetServicesByWindowId',
+            type: 'get',
+            data: pars,
+            success: function (r) {
+               // console.log(r);
+                result = r;
+                return r;
+            },
+            error: function (request, status, error) {
+                // showErrorInErrorAletBox("AJAX.getServicesByWindow: " + request.responseText);
+                console.log("AJAX.getServicesByWindow: " + request.responseText);
+                console.log(pars);
+            }
+        });
+    }
+    return result;
+}
+function updateServiceSelect() {
 
+    if (windowId) {
+        console.log(getServicesByWindow(windowId));
+    }
 
+}
 function updateWindowSelect() {
     let selectedServiceId = $(this).val();
     let pars = {};
@@ -1810,7 +1852,13 @@ function  loadWindowSelectHTML(r) {
         $("#windowSelectForCall").attr("disabled", false);
         $("#guichetLoadIcon").hide();
     } else {
+        showErrorInErrorAletBox("home.js.loadWindowSelectHTML(): the passed data is empty");
         console.log("home.js.loadWindowSelectHTML(): the passed data is empty");
         console.log(r);
     }
+}
+
+function showErrorInErrorAletBox(err) {
+    $("#err").show();
+    $("#errText").html(err);
 }

@@ -17,6 +17,13 @@ public class CfgHandler {
     public static String PAGE_LOGIN = "/QcallPlus/index.jsp";
     public static String PAGE_HOME = "/QcallPlus/home.jsp";
     
+    //database
+    public static String DB_HOST = "localhost";
+    public static String DB_PORT = "5432";
+    public static String DB_DATABASE = "postgres";
+    public static String DB_USER = "honyi";
+    public static String DB_PASSWORD = "honyi123";
+    
     public CfgHandler()  {
     }
 

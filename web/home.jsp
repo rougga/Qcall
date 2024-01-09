@@ -19,7 +19,7 @@
 <html>
     <head>
         <meta charset="utf-8"/>
-        <title>QCall - Console</title>
+        <title><%= CfgHandler.APP %> - Console</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/png" href="./img/favicon-32x32.png">
         <script src="./js/lib/jquery.js"></script>
@@ -55,7 +55,7 @@
             <div>
                 <%@include file="./addon/navbar.jsp" %>
             </div>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alertBox">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="err">
                 <strong id="errText"></strong>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -356,8 +356,11 @@
         //seting autoCall checkbox to checked if auto call activated
 
         $("#alertBox").hide();
-        //$("#call_btn").prop("disabled", true);
         $("#windowSelectForCall").val(windowId);
+        // filling service <select>  with services in the window
+        updateServiceSelect();
+        
+        
     <c:if test='${auto_call == "1"}'>
         <c:set var="au_ck" value="checked"></c:set>
         <c:set var="au_dis" value="disabled"></c:set>
