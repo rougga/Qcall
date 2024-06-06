@@ -24,7 +24,7 @@ var luruGZL_tag = 0;
 var op_tag;
 var process_btn = '';
 var screen_tag;
-var auto_call_tag = true; //
+var auto_call_tag = false; //
 var call_sta = 1;
 var reCall_sta = 2;
 var abandonCall_sta = 3;

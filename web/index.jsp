@@ -6,7 +6,7 @@
 <html lang="fr" >
     <head>
         <meta charset="utf-8"/>
-        <title>Connexion - <%= CfgHandler.APP %></title>
+        <title>Connexion - <%= CfgHandler.APP%></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="js/lib/jquery.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -38,8 +38,9 @@
                             <input class="form-control" placeholder="Mot de passe" type="password" id="password"/>
                         </div>
                         <div class="form-group">
-                            <label for="window" class="text-white font-weight-bold">Connecté temporairement à: </label>
+                            <label for="window" class="text-white font-weight-bold">Sélectionner Guichet: </label>
                             <br>
+                            <select class="form-control" id="selectWindowSelect">
                                 <%
                                     try {
 
@@ -47,20 +48,22 @@
                                         ResultSet r = con.getStatement().executeQuery("select id,name,win_number,status from t_window where status = 1 order by win_number;");
                                         if (r.next()) {
                                 %>
+                                <option value="<%=r.getString("id")%>"><%=r.getString("name")%></option>
+                                <%
 
-                            <input value="<%=r.getString("id")%>" type="hidden" id="window"/>
-                            <span class="badge badge-pill badge-info"><%=r.getString("name")%></span>
-                            <input type="hidden" id="windowText" value="<%=r.getString("name")%>"/>
-                            <%
-
-                                }
-                            } catch (ClassNotFoundException | SQLException ex) {
-                            %> <script>console.log("SERVER: <%= ex.getMessage()%>");</script> <%
-                                }
-                            %>
+                                    }
+                                } catch (ClassNotFoundException | SQLException ex) {
+                                %> <script>console.log("SERVER: <%= ex.getMessage()%>");</script> <%
+                                    }
+                                %>
+                            </select>
+                        </div>
+                        <div class="form-group">   
+                            <input value="" type="hidden" id="window"/>
+                            <input type="hidden" id="windowText" value=""/>
+                            <input type="hidden" id="branchId" class="form-control"/>
                         </div>
 
-                        <input type="hidden" id="branchId" class="form-control"/>
                         <button type="button" id="submit"  class="btn btn-success text-white"><img src="img/login.png" alt=""/>  CONNECTER </button>
 
                         <a href="#" id="settingsBtn" class="btn btn-primary"><img src="img/setting.png" alt=""/></a>
@@ -77,4 +80,14 @@
             </div>
         </div>
     </body>
+    <script>
+        $(document).ready(function (){
+           $("#selectWindowSelect").on("change",function (){
+               
+               $("#window").val($(this).val());
+               $("#windowText").val($("#selectWindowSelect option:selected").text());
+               
+           }) ;
+        });
+    </script>
 </html>
